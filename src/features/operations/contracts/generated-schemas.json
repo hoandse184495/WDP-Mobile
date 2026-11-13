@@ -1,0 +1,6420 @@
+{
+  "admission.admissionInputSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "horse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "registrationCode": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          },
+          "breed": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "gender": {
+            "type": "string",
+            "enum": ["colt", "filly", "stallion", "mare", "gelding"]
+          },
+          "dateOfBirth": {
+            "type": "string"
+          },
+          "color": {
+            "default": "",
+            "type": "string",
+            "maxLength": 100
+          },
+          "sireName": {
+            "default": "",
+            "type": "string",
+            "maxLength": 200
+          },
+          "damName": {
+            "default": "",
+            "type": "string",
+            "maxLength": 200
+          },
+          "identity": {
+            "type": "object",
+            "properties": {
+              "microchipNumber": {
+                "type": "string",
+                "maxLength": 80
+              },
+              "passportNumber": {
+                "type": "string",
+                "maxLength": 80
+              },
+              "registryName": {
+                "type": "string",
+                "maxLength": 200
+              },
+              "birthCountry": {
+                "type": "string",
+                "maxLength": 100
+              },
+              "markings": {
+                "type": "string",
+                "maxLength": 1000
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "required": ["name", "registrationCode", "breed", "gender", "dateOfBirth"],
+        "additionalProperties": false
+      }
+    },
+    "required": ["horse"],
+    "additionalProperties": false
+  },
+  "admission.admissionListSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "page": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 9007199254740991
+      },
+      "limit": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 100
+      },
+      "status": {
+        "type": "string",
+        "enum": [
+          "draft",
+          "pending_groom",
+          "needs_documents",
+          "pending_vet",
+          "pending_trainer",
+          "pending_manager",
+          "accepted",
+          "rejected"
+        ]
+      }
+    },
+    "required": ["page", "limit"],
+    "additionalProperties": false
+  },
+  "admission.attachmentQuerySchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "kind": {
+        "type": "string",
+        "enum": [
+          "horse_photo",
+          "registration",
+          "pedigree",
+          "vaccination",
+          "deworming",
+          "health_certificate",
+          "previous_medical",
+          "previous_injury"
+        ]
+      },
+      "fileName": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 180
+      }
+    },
+    "required": ["kind", "fileName"],
+    "additionalProperties": false
+  },
+  "admission.groomReviewSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "decision": {
+        "type": "string",
+        "enum": ["approve", "reject", "request_documents"]
+      },
+      "note": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 2000
+      },
+      "stallId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "identityChecked": {
+        "type": "boolean"
+      }
+    },
+    "required": ["decision", "note"],
+    "additionalProperties": false
+  },
+  "admission.vetReviewSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "decision": {
+        "type": "string",
+        "enum": ["approve", "reject"]
+      },
+      "note": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 2000
+      },
+      "examinationDate": {
+        "type": "string",
+        "format": "date-time",
+        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+      },
+      "diagnosis": {
+        "type": "string",
+        "maxLength": 4000
+      },
+      "treatment": {
+        "type": "string",
+        "maxLength": 4000
+      },
+      "symptoms": {
+        "maxItems": 30,
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        }
+      },
+      "weight": {
+        "type": "number",
+        "exclusiveMinimum": 0,
+        "maximum": 2000
+      },
+      "temperature": {
+        "type": "number",
+        "minimum": 30,
+        "maximum": 45
+      },
+      "height": {
+        "type": "number",
+        "exclusiveMinimum": 0,
+        "maximum": 30
+      },
+      "heartRate": {
+        "type": "number",
+        "exclusiveMinimum": 0,
+        "maximum": 250
+      },
+      "respiratoryRate": {
+        "type": "number",
+        "exclusiveMinimum": 0,
+        "maximum": 100
+      },
+      "quarantineReleaseAt": {
+        "type": "string",
+        "format": "date-time",
+        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+      }
+    },
+    "required": ["decision", "note"],
+    "additionalProperties": false
+  },
+  "admission.trainerReviewSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "decision": {
+        "type": "string",
+        "enum": ["approve", "reject"]
+      },
+      "note": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 2000
+      },
+      "score": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 100
+      },
+      "readiness": {
+        "type": "string",
+        "enum": ["ready", "conditional", "not_ready"]
+      }
+    },
+    "required": ["decision", "note"],
+    "additionalProperties": false
+  },
+  "admission.managerDecisionSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "decision": {
+        "type": "string",
+        "enum": ["approve", "reject"]
+      },
+      "note": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 2000
+      },
+      "stallId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "trainerId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      }
+    },
+    "required": ["decision", "note"],
+    "additionalProperties": false
+  },
+  "admission.departureClearanceSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "note": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 2000
+      }
+    },
+    "required": ["note"],
+    "additionalProperties": false
+  },
+  "admission.assignReviewersSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "groomId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "trainerId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "vetId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "reason": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 1000
+      }
+    },
+    "required": ["groomId", "trainerId", "vetId", "revision", "reason"],
+    "additionalProperties": false
+  },
+  "admission.departurePlanSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "plannedAt": {
+        "type": "string",
+        "format": "date-time",
+        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+      },
+      "contactNote": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 500
+      },
+      "note": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 1000
+      }
+    },
+    "required": ["revision", "plannedAt", "contactNote", "note"],
+    "additionalProperties": false
+  },
+  "admission.departureConfirmSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "physicallyDeparted": {
+        "type": "boolean",
+        "const": true
+      },
+      "note": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 1000
+      }
+    },
+    "required": ["revision", "physicallyDeparted", "note"],
+    "additionalProperties": false
+  },
+  "horse.createHorseSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string",
+        "minLength": 1
+      },
+      "registrationCode": {
+        "type": "string",
+        "minLength": 1
+      },
+      "breed": {
+        "type": "string",
+        "minLength": 1
+      },
+      "gender": {
+        "type": "string",
+        "enum": ["colt", "filly", "stallion", "mare", "gelding"]
+      },
+      "dateOfBirth": {
+        "type": "string"
+      },
+      "color": {
+        "type": "string"
+      },
+      "ownerId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "stallId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "trainerId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "groomId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "vetId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "stallNumber": {
+        "not": {}
+      },
+      "notes": {
+        "type": "string"
+      },
+      "sireId": {
+        "not": {}
+      },
+      "damId": {
+        "not": {}
+      },
+      "identity": {
+        "not": {}
+      }
+    },
+    "required": ["name", "registrationCode", "breed", "gender", "dateOfBirth", "ownerId"]
+  },
+  "horse.updateHorseSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string"
+      },
+      "breed": {
+        "type": "string"
+      },
+      "currentWeight": {
+        "type": "number",
+        "exclusiveMinimum": 0
+      },
+      "height": {
+        "type": "number",
+        "exclusiveMinimum": 0
+      },
+      "fitnessScore": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 100
+      },
+      "stallNumber": {
+        "not": {}
+      },
+      "notes": {
+        "type": "string"
+      },
+      "sireId": {
+        "not": {}
+      },
+      "damId": {
+        "not": {}
+      },
+      "identity": {
+        "not": {}
+      }
+    }
+  },
+  "horse.horseListQuerySchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "page": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 9007199254740991
+      },
+      "limit": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 100
+      },
+      "search": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "admissionStatus": {
+        "type": "string",
+        "enum": ["active", "candidate", "rejected"]
+      }
+    },
+    "required": ["page", "limit"]
+  },
+  "horse.emergencyLockSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "reason": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 500
+      },
+      "healthStatus": {
+        "default": "monitoring",
+        "type": "string",
+        "enum": ["monitoring", "injured", "isolated"]
+      }
+    },
+    "required": ["reason"]
+  },
+  "horse.emergencyUnlockSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "resolutionReason": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 500
+      }
+    },
+    "required": ["resolutionReason"]
+  },
+  "pedigree.pedigreeInput": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "reason": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 1000
+      },
+      "links": {
+        "type": "object",
+        "properties": {
+          "sire": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "const": "unknown"
+                  }
+                },
+                "required": ["kind"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "const": "keep"
+                  }
+                },
+                "required": ["kind"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "const": "internal"
+                  },
+                  "horseId": {
+                    "type": "string",
+                    "pattern": "^[0-9a-fA-F]{24}$"
+                  }
+                },
+                "required": ["kind", "horseId"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "const": "external"
+                  },
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "registrationCode": {
+                    "default": "",
+                    "type": "string",
+                    "maxLength": 80
+                  },
+                  "registry": {
+                    "default": "",
+                    "type": "string",
+                    "maxLength": 200
+                  },
+                  "breed": {
+                    "default": "",
+                    "type": "string",
+                    "maxLength": 200
+                  },
+                  "dateOfBirth": {
+                    "default": null,
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": ["kind", "name"],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "dam": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "const": "unknown"
+                  }
+                },
+                "required": ["kind"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "const": "keep"
+                  }
+                },
+                "required": ["kind"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "const": "internal"
+                  },
+                  "horseId": {
+                    "type": "string",
+                    "pattern": "^[0-9a-fA-F]{24}$"
+                  }
+                },
+                "required": ["kind", "horseId"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "const": "external"
+                  },
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "registrationCode": {
+                    "default": "",
+                    "type": "string",
+                    "maxLength": 80
+                  },
+                  "registry": {
+                    "default": "",
+                    "type": "string",
+                    "maxLength": 200
+                  },
+                  "breed": {
+                    "default": "",
+                    "type": "string",
+                    "maxLength": 200
+                  },
+                  "dateOfBirth": {
+                    "default": null,
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": ["kind", "name"],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "sireSire": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "const": "unknown"
+                  }
+                },
+                "required": ["kind"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "const": "keep"
+                  }
+                },
+                "required": ["kind"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "const": "internal"
+                  },
+                  "horseId": {
+                    "type": "string",
+                    "pattern": "^[0-9a-fA-F]{24}$"
+                  }
+                },
+                "required": ["kind", "horseId"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "const": "external"
+                  },
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "registrationCode": {
+                    "default": "",
+                    "type": "string",
+                    "maxLength": 80
+                  },
+                  "registry": {
+                    "default": "",
+                    "type": "string",
+                    "maxLength": 200
+                  },
+                  "breed": {
+                    "default": "",
+                    "type": "string",
+                    "maxLength": 200
+                  },
+                  "dateOfBirth": {
+                    "default": null,
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": ["kind", "name"],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "sireDam": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "const": "unknown"
+                  }
+                },
+                "required": ["kind"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "const": "keep"
+                  }
+                },
+                "required": ["kind"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "const": "internal"
+                  },
+                  "horseId": {
+                    "type": "string",
+                    "pattern": "^[0-9a-fA-F]{24}$"
+                  }
+                },
+                "required": ["kind", "horseId"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "const": "external"
+                  },
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "registrationCode": {
+                    "default": "",
+                    "type": "string",
+                    "maxLength": 80
+                  },
+                  "registry": {
+                    "default": "",
+                    "type": "string",
+                    "maxLength": 200
+                  },
+                  "breed": {
+                    "default": "",
+                    "type": "string",
+                    "maxLength": 200
+                  },
+                  "dateOfBirth": {
+                    "default": null,
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": ["kind", "name"],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "damSire": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "const": "unknown"
+                  }
+                },
+                "required": ["kind"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "const": "keep"
+                  }
+                },
+                "required": ["kind"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "const": "internal"
+                  },
+                  "horseId": {
+                    "type": "string",
+                    "pattern": "^[0-9a-fA-F]{24}$"
+                  }
+                },
+                "required": ["kind", "horseId"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "const": "external"
+                  },
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "registrationCode": {
+                    "default": "",
+                    "type": "string",
+                    "maxLength": 80
+                  },
+                  "registry": {
+                    "default": "",
+                    "type": "string",
+                    "maxLength": 200
+                  },
+                  "breed": {
+                    "default": "",
+                    "type": "string",
+                    "maxLength": 200
+                  },
+                  "dateOfBirth": {
+                    "default": null,
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": ["kind", "name"],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "damDam": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "const": "unknown"
+                  }
+                },
+                "required": ["kind"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "const": "keep"
+                  }
+                },
+                "required": ["kind"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "const": "internal"
+                  },
+                  "horseId": {
+                    "type": "string",
+                    "pattern": "^[0-9a-fA-F]{24}$"
+                  }
+                },
+                "required": ["kind", "horseId"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "const": "external"
+                  },
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "registrationCode": {
+                    "default": "",
+                    "type": "string",
+                    "maxLength": 80
+                  },
+                  "registry": {
+                    "default": "",
+                    "type": "string",
+                    "maxLength": 200
+                  },
+                  "breed": {
+                    "default": "",
+                    "type": "string",
+                    "maxLength": 200
+                  },
+                  "dateOfBirth": {
+                    "default": null,
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": ["kind", "name"],
+                "additionalProperties": false
+              }
+            ]
+          }
+        },
+        "required": ["sire", "dam", "sireSire", "sireDam", "damSire", "damDam"],
+        "additionalProperties": false
+      },
+      "sourceNote": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 1000
+      }
+    },
+    "required": ["revision", "reason", "links", "sourceNote"],
+    "additionalProperties": false
+  },
+  "pedigree.reviewInput": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "decision": {
+        "type": "string",
+        "enum": ["approve", "reject"]
+      },
+      "note": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 1000
+      }
+    },
+    "required": ["revision", "decision", "note"],
+    "additionalProperties": false
+  },
+  "pedigree.verifyInput": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "note": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 1000
+      }
+    },
+    "required": ["revision", "note"],
+    "additionalProperties": false
+  },
+  "pedigree.identityInput": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "reason": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 1000
+      },
+      "microchipNumber": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "passportNumber": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "registryName": {
+        "type": "string",
+        "maxLength": 200
+      },
+      "birthCountry": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "markings": {
+        "type": "string",
+        "maxLength": 1000
+      }
+    },
+    "required": [
+      "revision",
+      "reason",
+      "microchipNumber",
+      "passportNumber",
+      "registryName",
+      "birthCountry",
+      "markings"
+    ],
+    "additionalProperties": false
+  },
+  "pedigree.optionsQuery": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "page": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 9007199254740991
+      },
+      "limit": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 100
+      },
+      "search": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "sex": {
+        "type": "string",
+        "enum": ["sire", "dam"]
+      }
+    },
+    "required": ["page", "limit"],
+    "additionalProperties": false
+  },
+  "stable.stableSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 100
+      },
+      "layout": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "rows": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 20
+              },
+              "columns": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 20
+              },
+              "aisleRows": {
+                "default": [],
+                "maxItems": 20,
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 20
+                }
+              },
+              "aisleColumns": {
+                "default": [],
+                "maxItems": 20,
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 20
+                }
+              }
+            },
+            "required": ["rows", "columns"],
+            "additionalProperties": false
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "required": ["name"],
+    "additionalProperties": false
+  },
+  "stable.stallSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "stableId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "code": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 40
+      },
+      "type": {
+        "type": "string",
+        "enum": ["normal", "admission_quarantine", "medical_isolation"]
+      },
+      "position": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "row": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 20
+              },
+              "column": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 20
+              }
+            },
+            "required": ["row", "column"],
+            "additionalProperties": false
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "required": ["stableId", "code", "type"],
+    "additionalProperties": false
+  },
+  "stable.occupancySchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "horseId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "stallId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "reason": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 1000
+      }
+    },
+    "required": ["horseId", "stallId", "reason"],
+    "additionalProperties": false
+  },
+  "stable.assignmentSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "horseId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "groomId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "reason": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 1000
+      }
+    },
+    "required": ["horseId", "groomId", "reason"],
+    "additionalProperties": false
+  },
+  "stable.endSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "reason": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 1000
+      }
+    },
+    "required": ["reason"],
+    "additionalProperties": false
+  },
+  "stable.capacitySchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "maxAssignedHorses": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 100
+      }
+    },
+    "required": ["maxAssignedHorses"],
+    "additionalProperties": false
+  },
+  "stable.trainerAssignmentSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "horseId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "trainerId": {
+        "anyOf": [
+          {
+            "type": "string",
+            "pattern": "^[0-9a-fA-F]{24}$"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "reason": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 1000
+      }
+    },
+    "required": ["horseId", "trainerId", "reason"],
+    "additionalProperties": false
+  },
+  "stable.updateStableSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 100
+      },
+      "layout": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "rows": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 20
+              },
+              "columns": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 20
+              },
+              "aisleRows": {
+                "default": [],
+                "maxItems": 20,
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 20
+                }
+              },
+              "aisleColumns": {
+                "default": [],
+                "maxItems": 20,
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 20
+                }
+              }
+            },
+            "required": ["rows", "columns"],
+            "additionalProperties": false
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "isActive": {
+        "type": "boolean"
+      },
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "reason": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 1000
+      }
+    },
+    "required": ["name", "layout", "isActive", "revision", "reason"],
+    "additionalProperties": false
+  },
+  "stable.updateStallSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "code": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 40
+      },
+      "type": {
+        "type": "string",
+        "enum": ["normal", "admission_quarantine", "medical_isolation"]
+      },
+      "position": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "row": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 20
+              },
+              "column": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 20
+              }
+            },
+            "required": ["row", "column"],
+            "additionalProperties": false
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "isActive": {
+        "type": "boolean"
+      },
+      "maintenance": {
+        "type": "boolean"
+      },
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "reason": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 1000
+      }
+    },
+    "required": ["code", "type", "position", "isActive", "maintenance", "revision", "reason"],
+    "additionalProperties": false
+  },
+  "stable.stableAssignmentSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "stableId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "groomId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "reason": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 1000
+      }
+    },
+    "required": ["stableId", "groomId", "reason"],
+    "additionalProperties": false
+  },
+  "stable.detailQuerySchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "date": {
+        "type": "string",
+        "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+      }
+    },
+    "additionalProperties": false
+  },
+  "stable.layoutSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "rows": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 20
+      },
+      "columns": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 20
+      },
+      "aisleRows": {
+        "default": [],
+        "maxItems": 20,
+        "type": "array",
+        "items": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        }
+      },
+      "aisleColumns": {
+        "default": [],
+        "maxItems": 20,
+        "type": "array",
+        "items": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        }
+      }
+    },
+    "required": ["rows", "columns"],
+    "additionalProperties": false
+  },
+  "floorPlan.floorPlanSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "width": {
+        "type": "integer",
+        "minimum": 400,
+        "maximum": 4000
+      },
+      "height": {
+        "type": "integer",
+        "minimum": 300,
+        "maximum": 4000
+      },
+      "items": {
+        "maxItems": 250,
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+            },
+            "type": {
+              "type": "string",
+              "enum": ["stall", "aisle", "yard", "obstacle", "gate", "label"]
+            },
+            "x": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4000
+            },
+            "y": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4000
+            },
+            "width": {
+              "type": "integer",
+              "minimum": 20,
+              "maximum": 4000
+            },
+            "height": {
+              "type": "integer",
+              "minimum": 20,
+              "maximum": 4000
+            },
+            "label": {
+              "default": "",
+              "type": "string",
+              "maxLength": 100
+            },
+            "stallId": {
+              "type": "string",
+              "pattern": "^[0-9a-fA-F]{24}$"
+            }
+          },
+          "required": ["id", "type", "x", "y", "width", "height"],
+          "additionalProperties": false
+        }
+      }
+    },
+    "required": ["width", "height", "items"],
+    "additionalProperties": false
+  },
+  "floorPlan.floorPlanInput": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "floorPlan": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "width": {
+                "type": "integer",
+                "minimum": 400,
+                "maximum": 4000
+              },
+              "height": {
+                "type": "integer",
+                "minimum": 300,
+                "maximum": 4000
+              },
+              "items": {
+                "maxItems": 250,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+                    },
+                    "type": {
+                      "type": "string",
+                      "enum": ["stall", "aisle", "yard", "obstacle", "gate", "label"]
+                    },
+                    "x": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 4000
+                    },
+                    "y": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 4000
+                    },
+                    "width": {
+                      "type": "integer",
+                      "minimum": 20,
+                      "maximum": 4000
+                    },
+                    "height": {
+                      "type": "integer",
+                      "minimum": 20,
+                      "maximum": 4000
+                    },
+                    "label": {
+                      "default": "",
+                      "type": "string",
+                      "maxLength": 100
+                    },
+                    "stallId": {
+                      "type": "string",
+                      "pattern": "^[0-9a-fA-F]{24}$"
+                    }
+                  },
+                  "required": ["id", "type", "x", "y", "width", "height"],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": ["width", "height", "items"],
+            "additionalProperties": false
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "reason": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 1000
+      }
+    },
+    "required": ["floorPlan", "revision", "reason"],
+    "additionalProperties": false
+  },
+  "medicalRecord.createMedicalRecordSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "horseId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "examinationDate": {
+        "type": "string",
+        "format": "date-time",
+        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+      },
+      "type": {
+        "type": "string",
+        "enum": ["routine_checkup", "pre_race", "post_race", "emergency", "follow_up"]
+      },
+      "weight": {
+        "type": "number",
+        "exclusiveMinimum": 0,
+        "maximum": 2000
+      },
+      "height": {
+        "type": "number",
+        "exclusiveMinimum": 0,
+        "maximum": 30
+      },
+      "temperature": {
+        "type": "number",
+        "minimum": 30,
+        "maximum": 45
+      },
+      "heartRate": {
+        "type": "integer",
+        "exclusiveMinimum": 0,
+        "maximum": 250
+      },
+      "respiratoryRate": {
+        "type": "integer",
+        "exclusiveMinimum": 0,
+        "maximum": 120
+      },
+      "diagnosis": {
+        "type": "string"
+      },
+      "symptoms": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "treatment": {
+        "type": "string"
+      },
+      "medications": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "minLength": 1
+            },
+            "dosage": {
+              "type": "string",
+              "minLength": 1
+            },
+            "frequency": {
+              "type": "string",
+              "minLength": 1
+            },
+            "durationDays": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "maximum": 9007199254740991
+            }
+          },
+          "required": ["name", "dosage", "frequency", "durationDays"]
+        }
+      },
+      "nextCheckupDate": {
+        "type": "string",
+        "format": "date-time",
+        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+      },
+      "notes": {
+        "type": "string"
+      },
+      "injuryId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      }
+    },
+    "required": ["horseId", "examinationDate", "type"]
+  },
+  "medicalRecord.updateMedicalRecordSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "examinationDate": {
+        "type": "string",
+        "format": "date-time",
+        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+      },
+      "weight": {
+        "type": "number",
+        "exclusiveMinimum": 0,
+        "maximum": 2000
+      },
+      "height": {
+        "type": "number",
+        "exclusiveMinimum": 0,
+        "maximum": 30
+      },
+      "temperature": {
+        "type": "number",
+        "minimum": 30,
+        "maximum": 45
+      },
+      "heartRate": {
+        "type": "integer",
+        "exclusiveMinimum": 0,
+        "maximum": 250
+      },
+      "respiratoryRate": {
+        "type": "integer",
+        "exclusiveMinimum": 0,
+        "maximum": 120
+      },
+      "diagnosis": {
+        "type": "string"
+      },
+      "symptoms": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "treatment": {
+        "type": "string"
+      },
+      "medications": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "minLength": 1
+            },
+            "dosage": {
+              "type": "string",
+              "minLength": 1
+            },
+            "frequency": {
+              "type": "string",
+              "minLength": 1
+            },
+            "durationDays": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "maximum": 9007199254740991
+            }
+          },
+          "required": ["name", "dosage", "frequency", "durationDays"]
+        }
+      },
+      "nextCheckupDate": {
+        "type": "string",
+        "format": "date-time",
+        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+      },
+      "notes": {
+        "type": "string"
+      },
+      "injuryId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      }
+    }
+  },
+  "medicalRecord.medicalRecordListQuerySchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "page": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 9007199254740991
+      },
+      "limit": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 100
+      },
+      "horseId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "type": {
+        "type": "string",
+        "enum": ["routine_checkup", "pre_race", "post_race", "emergency", "follow_up"]
+      }
+    },
+    "required": ["page", "limit"]
+  },
+  "medicalEncounter.encounterSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "incident": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[0-9a-fA-F]{24}$"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": ["id", "revision"],
+        "additionalProperties": false
+      },
+      "requestKey": {
+        "type": "string",
+        "format": "uuid",
+        "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+      },
+      "record": {
+        "type": "object",
+        "properties": {
+          "horseId": {
+            "type": "string",
+            "pattern": "^[0-9a-fA-F]{24}$"
+          },
+          "examinationDate": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["routine_checkup", "pre_race", "post_race", "emergency", "follow_up"]
+          },
+          "weight": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 2000
+          },
+          "height": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 30
+          },
+          "temperature": {
+            "type": "number",
+            "minimum": 30,
+            "maximum": 45
+          },
+          "heartRate": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 250
+          },
+          "respiratoryRate": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 120
+          },
+          "diagnosis": {
+            "type": "string"
+          },
+          "symptoms": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "treatment": {
+            "type": "string"
+          },
+          "medications": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "dosage": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "frequency": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "durationDays": {
+                  "type": "integer",
+                  "exclusiveMinimum": 0,
+                  "maximum": 9007199254740991
+                }
+              },
+              "required": ["name", "dosage", "frequency", "durationDays"]
+            }
+          },
+          "notes": {
+            "type": "string"
+          }
+        },
+        "required": ["horseId", "examinationDate", "type"],
+        "additionalProperties": false
+      },
+      "injury": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "mode": {
+                "type": "string",
+                "const": "new"
+              },
+              "observation": {
+                "type": "string",
+                "maxLength": 2000
+              },
+              "data": {
+                "type": "object",
+                "properties": {
+                  "injuryDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+                  },
+                  "injuryType": {
+                    "type": "string",
+                    "enum": [
+                      "muscle",
+                      "bone",
+                      "tendon",
+                      "hoof",
+                      "respiratory",
+                      "neurological",
+                      "other"
+                    ]
+                  },
+                  "severity": {
+                    "type": "string",
+                    "enum": ["minor", "moderate", "severe", "critical"]
+                  },
+                  "affectedArea": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "description": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "treatmentPlan": {
+                    "type": "string"
+                  },
+                  "estimatedRecoveryDays": {
+                    "type": "integer",
+                    "exclusiveMinimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "surfaceLocation": {
+                    "anyOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "modelId": {
+                            "type": "string",
+                            "const": "horse-orelvys"
+                          },
+                          "modelVersion": {
+                            "type": "string",
+                            "const": "1"
+                          },
+                          "layer": {
+                            "type": "string",
+                            "const": "surface"
+                          },
+                          "regionId": {
+                            "type": "string",
+                            "enum": [
+                              "head",
+                              "neck",
+                              "shoulder",
+                              "chest",
+                              "back",
+                              "abdomen",
+                              "hindquarters",
+                              "foreleg",
+                              "hindleg",
+                              "hoof",
+                              "other"
+                            ]
+                          },
+                          "side": {
+                            "type": "string",
+                            "enum": ["left", "right", "midline"]
+                          },
+                          "point": {
+                            "type": "array",
+                            "prefixItems": [
+                              {
+                                "type": "number",
+                                "minimum": -20,
+                                "maximum": 20
+                              },
+                              {
+                                "type": "number",
+                                "minimum": -20,
+                                "maximum": 20
+                              },
+                              {
+                                "type": "number",
+                                "minimum": -20,
+                                "maximum": 20
+                              }
+                            ],
+                            "items": false,
+                            "minItems": 3,
+                            "maxItems": 3
+                          },
+                          "normal": {
+                            "type": "array",
+                            "prefixItems": [
+                              {
+                                "type": "number",
+                                "minimum": -20,
+                                "maximum": 20
+                              },
+                              {
+                                "type": "number",
+                                "minimum": -20,
+                                "maximum": 20
+                              },
+                              {
+                                "type": "number",
+                                "minimum": -20,
+                                "maximum": 20
+                              }
+                            ],
+                            "items": false,
+                            "minItems": 3,
+                            "maxItems": 3
+                          }
+                        },
+                        "required": [
+                          "modelId",
+                          "modelVersion",
+                          "layer",
+                          "regionId",
+                          "side",
+                          "point",
+                          "normal"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": ["injuryDate", "injuryType", "severity", "affectedArea", "description"],
+                "additionalProperties": false
+              }
+            },
+            "required": ["mode", "data"],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "mode": {
+                "type": "string",
+                "const": "existing"
+              },
+              "id": {
+                "type": "string",
+                "pattern": "^[0-9a-fA-F]{24}$"
+              },
+              "expectedVersion": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "observation": {
+                "type": "string",
+                "maxLength": 2000
+              },
+              "data": {
+                "type": "object",
+                "properties": {
+                  "treatmentPlan": {
+                    "type": "string"
+                  },
+                  "estimatedRecoveryDays": {
+                    "type": "integer",
+                    "exclusiveMinimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "affectedArea": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "surfaceLocation": {
+                    "anyOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "modelId": {
+                            "type": "string",
+                            "const": "horse-orelvys"
+                          },
+                          "modelVersion": {
+                            "type": "string",
+                            "const": "1"
+                          },
+                          "layer": {
+                            "type": "string",
+                            "const": "surface"
+                          },
+                          "regionId": {
+                            "type": "string",
+                            "enum": [
+                              "head",
+                              "neck",
+                              "shoulder",
+                              "chest",
+                              "back",
+                              "abdomen",
+                              "hindquarters",
+                              "foreleg",
+                              "hindleg",
+                              "hoof",
+                              "other"
+                            ]
+                          },
+                          "side": {
+                            "type": "string",
+                            "enum": ["left", "right", "midline"]
+                          },
+                          "point": {
+                            "type": "array",
+                            "prefixItems": [
+                              {
+                                "type": "number",
+                                "minimum": -20,
+                                "maximum": 20
+                              },
+                              {
+                                "type": "number",
+                                "minimum": -20,
+                                "maximum": 20
+                              },
+                              {
+                                "type": "number",
+                                "minimum": -20,
+                                "maximum": 20
+                              }
+                            ],
+                            "items": false,
+                            "minItems": 3,
+                            "maxItems": 3
+                          },
+                          "normal": {
+                            "type": "array",
+                            "prefixItems": [
+                              {
+                                "type": "number",
+                                "minimum": -20,
+                                "maximum": 20
+                              },
+                              {
+                                "type": "number",
+                                "minimum": -20,
+                                "maximum": 20
+                              },
+                              {
+                                "type": "number",
+                                "minimum": -20,
+                                "maximum": 20
+                              }
+                            ],
+                            "items": false,
+                            "minItems": 3,
+                            "maxItems": 3
+                          }
+                        },
+                        "required": [
+                          "modelId",
+                          "modelVersion",
+                          "layer",
+                          "regionId",
+                          "side",
+                          "point",
+                          "normal"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "required": ["mode", "id"],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "injuries": {
+        "maxItems": 20,
+        "type": "array",
+        "items": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "mode": {
+                  "type": "string",
+                  "const": "new"
+                },
+                "observation": {
+                  "type": "string",
+                  "maxLength": 2000
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "injuryDate": {
+                      "type": "string",
+                      "format": "date-time",
+                      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+                    },
+                    "injuryType": {
+                      "type": "string",
+                      "enum": [
+                        "muscle",
+                        "bone",
+                        "tendon",
+                        "hoof",
+                        "respiratory",
+                        "neurological",
+                        "other"
+                      ]
+                    },
+                    "severity": {
+                      "type": "string",
+                      "enum": ["minor", "moderate", "severe", "critical"]
+                    },
+                    "affectedArea": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "description": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "treatmentPlan": {
+                      "type": "string"
+                    },
+                    "estimatedRecoveryDays": {
+                      "type": "integer",
+                      "exclusiveMinimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "surfaceLocation": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "modelId": {
+                              "type": "string",
+                              "const": "horse-orelvys"
+                            },
+                            "modelVersion": {
+                              "type": "string",
+                              "const": "1"
+                            },
+                            "layer": {
+                              "type": "string",
+                              "const": "surface"
+                            },
+                            "regionId": {
+                              "type": "string",
+                              "enum": [
+                                "head",
+                                "neck",
+                                "shoulder",
+                                "chest",
+                                "back",
+                                "abdomen",
+                                "hindquarters",
+                                "foreleg",
+                                "hindleg",
+                                "hoof",
+                                "other"
+                              ]
+                            },
+                            "side": {
+                              "type": "string",
+                              "enum": ["left", "right", "midline"]
+                            },
+                            "point": {
+                              "type": "array",
+                              "prefixItems": [
+                                {
+                                  "type": "number",
+                                  "minimum": -20,
+                                  "maximum": 20
+                                },
+                                {
+                                  "type": "number",
+                                  "minimum": -20,
+                                  "maximum": 20
+                                },
+                                {
+                                  "type": "number",
+                                  "minimum": -20,
+                                  "maximum": 20
+                                }
+                              ],
+                              "items": false,
+                              "minItems": 3,
+                              "maxItems": 3
+                            },
+                            "normal": {
+                              "type": "array",
+                              "prefixItems": [
+                                {
+                                  "type": "number",
+                                  "minimum": -20,
+                                  "maximum": 20
+                                },
+                                {
+                                  "type": "number",
+                                  "minimum": -20,
+                                  "maximum": 20
+                                },
+                                {
+                                  "type": "number",
+                                  "minimum": -20,
+                                  "maximum": 20
+                                }
+                              ],
+                              "items": false,
+                              "minItems": 3,
+                              "maxItems": 3
+                            }
+                          },
+                          "required": [
+                            "modelId",
+                            "modelVersion",
+                            "layer",
+                            "regionId",
+                            "side",
+                            "point",
+                            "normal"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "injuryDate",
+                    "injuryType",
+                    "severity",
+                    "affectedArea",
+                    "description"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": ["mode", "data"],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "mode": {
+                  "type": "string",
+                  "const": "existing"
+                },
+                "id": {
+                  "type": "string",
+                  "pattern": "^[0-9a-fA-F]{24}$"
+                },
+                "expectedVersion": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "observation": {
+                  "type": "string",
+                  "maxLength": 2000
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "treatmentPlan": {
+                      "type": "string"
+                    },
+                    "estimatedRecoveryDays": {
+                      "type": "integer",
+                      "exclusiveMinimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "affectedArea": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "surfaceLocation": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "modelId": {
+                              "type": "string",
+                              "const": "horse-orelvys"
+                            },
+                            "modelVersion": {
+                              "type": "string",
+                              "const": "1"
+                            },
+                            "layer": {
+                              "type": "string",
+                              "const": "surface"
+                            },
+                            "regionId": {
+                              "type": "string",
+                              "enum": [
+                                "head",
+                                "neck",
+                                "shoulder",
+                                "chest",
+                                "back",
+                                "abdomen",
+                                "hindquarters",
+                                "foreleg",
+                                "hindleg",
+                                "hoof",
+                                "other"
+                              ]
+                            },
+                            "side": {
+                              "type": "string",
+                              "enum": ["left", "right", "midline"]
+                            },
+                            "point": {
+                              "type": "array",
+                              "prefixItems": [
+                                {
+                                  "type": "number",
+                                  "minimum": -20,
+                                  "maximum": 20
+                                },
+                                {
+                                  "type": "number",
+                                  "minimum": -20,
+                                  "maximum": 20
+                                },
+                                {
+                                  "type": "number",
+                                  "minimum": -20,
+                                  "maximum": 20
+                                }
+                              ],
+                              "items": false,
+                              "minItems": 3,
+                              "maxItems": 3
+                            },
+                            "normal": {
+                              "type": "array",
+                              "prefixItems": [
+                                {
+                                  "type": "number",
+                                  "minimum": -20,
+                                  "maximum": 20
+                                },
+                                {
+                                  "type": "number",
+                                  "minimum": -20,
+                                  "maximum": 20
+                                },
+                                {
+                                  "type": "number",
+                                  "minimum": -20,
+                                  "maximum": 20
+                                }
+                              ],
+                              "items": false,
+                              "minItems": 3,
+                              "maxItems": 3
+                            }
+                          },
+                          "required": [
+                            "modelId",
+                            "modelVersion",
+                            "layer",
+                            "regionId",
+                            "side",
+                            "point",
+                            "normal"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  }
+                }
+              },
+              "required": ["mode", "id"],
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "appointment": {
+        "type": "object",
+        "properties": {
+          "startTime": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+              },
+              {
+                "type": "string",
+                "const": ""
+              }
+            ]
+          },
+          "endTime": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+              },
+              {
+                "type": "string",
+                "const": ""
+              }
+            ]
+          },
+          "location": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "prepareMinutes": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 120
+          },
+          "returnMinutes": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 120
+          },
+          "type": {
+            "type": "string",
+            "enum": ["follow_up", "vaccination", "deworming", "farrier"]
+          },
+          "title": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 150
+          },
+          "dueDate": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "repeatDays": {
+            "default": 0,
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 730
+          },
+          "notes": {
+            "default": "",
+            "type": "string",
+            "maxLength": 2000
+          },
+          "autoCoordinate": {
+            "type": "boolean"
+          },
+          "groomId": {
+            "type": "string",
+            "pattern": "^[0-9a-fA-F]{24}$"
+          }
+        },
+        "required": ["type", "title", "dueDate"],
+        "additionalProperties": false
+      },
+      "completeSchedule": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[0-9a-fA-F]{24}$"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": ["id", "revision"],
+        "additionalProperties": false
+      }
+    },
+    "required": ["requestKey", "record"],
+    "additionalProperties": false
+  },
+  "injury.createInjurySchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "horseId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "injuryDate": {
+        "type": "string",
+        "format": "date-time",
+        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+      },
+      "injuryType": {
+        "type": "string",
+        "enum": ["muscle", "bone", "tendon", "hoof", "respiratory", "neurological", "other"]
+      },
+      "severity": {
+        "type": "string",
+        "enum": ["minor", "moderate", "severe", "critical"]
+      },
+      "affectedArea": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": {
+        "type": "string",
+        "minLength": 1
+      },
+      "treatmentPlan": {
+        "type": "string"
+      },
+      "estimatedRecoveryDays": {
+        "type": "integer",
+        "exclusiveMinimum": 0,
+        "maximum": 9007199254740991
+      },
+      "relatedMedicalRecordId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "surfaceLocation": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "modelId": {
+                "type": "string",
+                "const": "horse-orelvys"
+              },
+              "modelVersion": {
+                "type": "string",
+                "const": "1"
+              },
+              "layer": {
+                "type": "string",
+                "const": "surface"
+              },
+              "regionId": {
+                "type": "string",
+                "enum": [
+                  "head",
+                  "neck",
+                  "shoulder",
+                  "chest",
+                  "back",
+                  "abdomen",
+                  "hindquarters",
+                  "foreleg",
+                  "hindleg",
+                  "hoof",
+                  "other"
+                ]
+              },
+              "side": {
+                "type": "string",
+                "enum": ["left", "right", "midline"]
+              },
+              "point": {
+                "type": "array",
+                "prefixItems": [
+                  {
+                    "type": "number",
+                    "minimum": -20,
+                    "maximum": 20
+                  },
+                  {
+                    "type": "number",
+                    "minimum": -20,
+                    "maximum": 20
+                  },
+                  {
+                    "type": "number",
+                    "minimum": -20,
+                    "maximum": 20
+                  }
+                ],
+                "items": false,
+                "minItems": 3,
+                "maxItems": 3
+              },
+              "normal": {
+                "type": "array",
+                "prefixItems": [
+                  {
+                    "type": "number",
+                    "minimum": -20,
+                    "maximum": 20
+                  },
+                  {
+                    "type": "number",
+                    "minimum": -20,
+                    "maximum": 20
+                  },
+                  {
+                    "type": "number",
+                    "minimum": -20,
+                    "maximum": 20
+                  }
+                ],
+                "items": false,
+                "minItems": 3,
+                "maxItems": 3
+              }
+            },
+            "required": ["modelId", "modelVersion", "layer", "regionId", "side", "point", "normal"],
+            "additionalProperties": false
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "required": ["horseId", "injuryDate", "injuryType", "severity", "affectedArea", "description"]
+  },
+  "injury.updateInjurySchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "treatmentPlan": {
+        "type": "string"
+      },
+      "estimatedRecoveryDays": {
+        "type": "integer",
+        "exclusiveMinimum": 0,
+        "maximum": 9007199254740991
+      },
+      "affectedArea": {
+        "type": "string",
+        "minLength": 1
+      },
+      "surfaceLocation": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "modelId": {
+                "type": "string",
+                "const": "horse-orelvys"
+              },
+              "modelVersion": {
+                "type": "string",
+                "const": "1"
+              },
+              "layer": {
+                "type": "string",
+                "const": "surface"
+              },
+              "regionId": {
+                "type": "string",
+                "enum": [
+                  "head",
+                  "neck",
+                  "shoulder",
+                  "chest",
+                  "back",
+                  "abdomen",
+                  "hindquarters",
+                  "foreleg",
+                  "hindleg",
+                  "hoof",
+                  "other"
+                ]
+              },
+              "side": {
+                "type": "string",
+                "enum": ["left", "right", "midline"]
+              },
+              "point": {
+                "type": "array",
+                "prefixItems": [
+                  {
+                    "type": "number",
+                    "minimum": -20,
+                    "maximum": 20
+                  },
+                  {
+                    "type": "number",
+                    "minimum": -20,
+                    "maximum": 20
+                  },
+                  {
+                    "type": "number",
+                    "minimum": -20,
+                    "maximum": 20
+                  }
+                ],
+                "items": false,
+                "minItems": 3,
+                "maxItems": 3
+              },
+              "normal": {
+                "type": "array",
+                "prefixItems": [
+                  {
+                    "type": "number",
+                    "minimum": -20,
+                    "maximum": 20
+                  },
+                  {
+                    "type": "number",
+                    "minimum": -20,
+                    "maximum": 20
+                  },
+                  {
+                    "type": "number",
+                    "minimum": -20,
+                    "maximum": 20
+                  }
+                ],
+                "items": false,
+                "minItems": 3,
+                "maxItems": 3
+              }
+            },
+            "required": ["modelId", "modelVersion", "layer", "regionId", "side", "point", "normal"],
+            "additionalProperties": false
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    }
+  },
+  "injury.updateInjuryStatusSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "status": {
+        "type": "string",
+        "enum": ["recovering"]
+      }
+    },
+    "required": ["status"]
+  },
+  "injury.resolveInjurySchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "resolvedNotes": {
+        "type": "string"
+      }
+    }
+  },
+  "injury.injuryListQuerySchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "page": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 9007199254740991
+      },
+      "limit": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 100
+      },
+      "horseId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "status": {
+        "type": "string",
+        "enum": ["active", "recovering", "resolved"]
+      }
+    },
+    "required": ["page", "limit"]
+  },
+  "injuryLocation.surfaceLocationSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "modelId": {
+        "type": "string",
+        "const": "horse-orelvys"
+      },
+      "modelVersion": {
+        "type": "string",
+        "const": "1"
+      },
+      "layer": {
+        "type": "string",
+        "const": "surface"
+      },
+      "regionId": {
+        "type": "string",
+        "enum": [
+          "head",
+          "neck",
+          "shoulder",
+          "chest",
+          "back",
+          "abdomen",
+          "hindquarters",
+          "foreleg",
+          "hindleg",
+          "hoof",
+          "other"
+        ]
+      },
+      "side": {
+        "type": "string",
+        "enum": ["left", "right", "midline"]
+      },
+      "point": {
+        "type": "array",
+        "prefixItems": [
+          {
+            "type": "number",
+            "minimum": -20,
+            "maximum": 20
+          },
+          {
+            "type": "number",
+            "minimum": -20,
+            "maximum": 20
+          },
+          {
+            "type": "number",
+            "minimum": -20,
+            "maximum": 20
+          }
+        ],
+        "items": false,
+        "minItems": 3,
+        "maxItems": 3
+      },
+      "normal": {
+        "type": "array",
+        "prefixItems": [
+          {
+            "type": "number",
+            "minimum": -20,
+            "maximum": 20
+          },
+          {
+            "type": "number",
+            "minimum": -20,
+            "maximum": 20
+          },
+          {
+            "type": "number",
+            "minimum": -20,
+            "maximum": 20
+          }
+        ],
+        "items": false,
+        "minItems": 3,
+        "maxItems": 3
+      }
+    },
+    "required": ["modelId", "modelVersion", "layer", "regionId", "side", "point", "normal"],
+    "additionalProperties": false
+  },
+  "medicalSchedule.coordinateSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "groomId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      }
+    },
+    "required": ["revision", "groomId"],
+    "additionalProperties": false
+  },
+  "medicalSchedule.linkSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "medicalRecordId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      }
+    },
+    "required": ["revision", "medicalRecordId"],
+    "additionalProperties": false
+  },
+  "medicalSchedule.recordSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "record": {
+        "type": "object",
+        "properties": {
+          "horseId": {
+            "type": "string",
+            "pattern": "^[0-9a-fA-F]{24}$"
+          },
+          "examinationDate": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["routine_checkup", "pre_race", "post_race", "emergency", "follow_up"]
+          },
+          "weight": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 2000
+          },
+          "height": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 30
+          },
+          "temperature": {
+            "type": "number",
+            "minimum": 30,
+            "maximum": 45
+          },
+          "heartRate": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 250
+          },
+          "respiratoryRate": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 120
+          },
+          "diagnosis": {
+            "type": "string"
+          },
+          "symptoms": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "treatment": {
+            "type": "string"
+          },
+          "medications": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "dosage": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "frequency": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "durationDays": {
+                  "type": "integer",
+                  "exclusiveMinimum": 0,
+                  "maximum": 9007199254740991
+                }
+              },
+              "required": ["name", "dosage", "frequency", "durationDays"]
+            }
+          },
+          "nextCheckupDate": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "injuryId": {
+            "type": "string",
+            "pattern": "^[0-9a-fA-F]{24}$"
+          }
+        },
+        "required": ["horseId", "examinationDate", "type"]
+      }
+    },
+    "required": ["revision", "record"],
+    "additionalProperties": false
+  },
+  "medicalSchedule.createSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "horseId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "startTime": {
+        "anyOf": [
+          {
+            "type": "string",
+            "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+          },
+          {
+            "type": "string",
+            "const": ""
+          }
+        ]
+      },
+      "endTime": {
+        "anyOf": [
+          {
+            "type": "string",
+            "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+          },
+          {
+            "type": "string",
+            "const": ""
+          }
+        ]
+      },
+      "location": {
+        "type": "string",
+        "maxLength": 200
+      },
+      "prepareMinutes": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 120
+      },
+      "returnMinutes": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 120
+      },
+      "type": {
+        "type": "string",
+        "enum": ["follow_up", "vaccination", "deworming", "farrier"]
+      },
+      "title": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 150
+      },
+      "dueDate": {
+        "type": "string",
+        "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+      },
+      "repeatDays": {
+        "default": 0,
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 730
+      },
+      "notes": {
+        "default": "",
+        "type": "string",
+        "maxLength": 2000
+      },
+      "autoCoordinate": {
+        "type": "boolean"
+      },
+      "groomId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      }
+    },
+    "required": ["horseId", "type", "title", "dueDate"],
+    "additionalProperties": false
+  },
+  "medicalSchedule.updateSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "startTime": {
+        "anyOf": [
+          {
+            "type": "string",
+            "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+          },
+          {
+            "type": "string",
+            "const": ""
+          }
+        ]
+      },
+      "endTime": {
+        "anyOf": [
+          {
+            "type": "string",
+            "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+          },
+          {
+            "type": "string",
+            "const": ""
+          }
+        ]
+      },
+      "location": {
+        "type": "string",
+        "maxLength": 200
+      },
+      "prepareMinutes": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 120
+      },
+      "returnMinutes": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 120
+      },
+      "type": {
+        "type": "string",
+        "enum": ["follow_up", "vaccination", "deworming", "farrier"]
+      },
+      "title": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 150
+      },
+      "dueDate": {
+        "type": "string",
+        "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+      },
+      "repeatDays": {
+        "default": 0,
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 730
+      },
+      "notes": {
+        "default": "",
+        "type": "string",
+        "maxLength": 2000
+      },
+      "autoCoordinate": {
+        "type": "boolean"
+      },
+      "groomId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      }
+    },
+    "required": ["type", "title", "dueDate", "revision"],
+    "additionalProperties": false
+  },
+  "medicalSchedule.completeSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "result": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 2000
+      },
+      "administration": {
+        "type": "object",
+        "properties": {
+          "performedOn": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "productName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "dose": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "lotNumber": {
+            "default": "",
+            "type": "string",
+            "maxLength": 100
+          },
+          "reaction": {
+            "default": "",
+            "type": "string",
+            "maxLength": 1000
+          }
+        },
+        "required": ["performedOn", "productName", "dose"],
+        "additionalProperties": false
+      },
+      "stockIssue": {
+        "type": "object",
+        "properties": {
+          "warehouseId": {
+            "type": "string",
+            "pattern": "^[0-9a-fA-F]{24}$"
+          },
+          "stockVersion": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "itemId": {
+            "type": "string",
+            "pattern": "^[0-9a-fA-F]{24}$"
+          },
+          "quantity": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 1000000
+          }
+        },
+        "required": ["warehouseId", "stockVersion", "itemId", "quantity"],
+        "additionalProperties": false
+      },
+      "nextDueDate": {
+        "anyOf": [
+          {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "required": ["revision", "result"],
+    "additionalProperties": false
+  },
+  "medicalSchedule.cancelSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "reason": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 500
+      }
+    },
+    "required": ["revision", "reason"],
+    "additionalProperties": false
+  },
+  "medicalSchedule.listSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "page": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 9007199254740991
+      },
+      "limit": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 100
+      },
+      "horseId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "medicalRecordId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "type": {
+        "type": "string",
+        "enum": ["follow_up", "vaccination", "deworming", "farrier"]
+      },
+      "status": {
+        "type": "string",
+        "enum": ["scheduled", "upcoming", "due", "overdue", "completed", "cancelled"]
+      }
+    },
+    "required": ["page", "limit"],
+    "additionalProperties": false
+  },
+  "ration.create": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "title": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 150
+      },
+      "objective": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 1000
+      },
+      "instructions": {
+        "default": "",
+        "type": "string",
+        "maxLength": 2000
+      },
+      "validFrom": {
+        "type": "string",
+        "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+      },
+      "validTo": {
+        "type": "string",
+        "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+      },
+      "meals": {
+        "minItems": 1,
+        "maxItems": 6,
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "key": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_-]{0,29}$"
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80
+            },
+            "time": {
+              "type": "string",
+              "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+            },
+            "instructions": {
+              "default": "",
+              "type": "string",
+              "maxLength": 1000
+            },
+            "lines": {
+              "minItems": 1,
+              "maxItems": 20,
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "itemId": {
+                    "type": "string",
+                    "pattern": "^[0-9a-fA-F]{24}$"
+                  },
+                  "quantity": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 10000
+                  }
+                },
+                "required": ["itemId", "quantity"],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": ["key", "name", "time", "lines"],
+          "additionalProperties": false
+        }
+      },
+      "horseId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "requestKey": {
+        "type": "string",
+        "format": "uuid",
+        "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+      }
+    },
+    "required": ["title", "objective", "validFrom", "validTo", "meals", "horseId", "requestKey"],
+    "additionalProperties": false
+  },
+  "ration.update": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "title": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 150
+      },
+      "objective": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 1000
+      },
+      "instructions": {
+        "default": "",
+        "type": "string",
+        "maxLength": 2000
+      },
+      "validFrom": {
+        "type": "string",
+        "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+      },
+      "validTo": {
+        "type": "string",
+        "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+      },
+      "meals": {
+        "minItems": 1,
+        "maxItems": 6,
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "key": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_-]{0,29}$"
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80
+            },
+            "time": {
+              "type": "string",
+              "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+            },
+            "instructions": {
+              "default": "",
+              "type": "string",
+              "maxLength": 1000
+            },
+            "lines": {
+              "minItems": 1,
+              "maxItems": 20,
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "itemId": {
+                    "type": "string",
+                    "pattern": "^[0-9a-fA-F]{24}$"
+                  },
+                  "quantity": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 10000
+                  }
+                },
+                "required": ["itemId", "quantity"],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": ["key", "name", "time", "lines"],
+          "additionalProperties": false
+        }
+      },
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      }
+    },
+    "required": ["title", "objective", "validFrom", "validTo", "meals", "revision"],
+    "additionalProperties": false
+  },
+  "ration.submit": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      }
+    },
+    "required": ["revision"],
+    "additionalProperties": false
+  },
+  "ration.decision": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "decision": {
+        "type": "string",
+        "enum": ["approve", "request_changes"]
+      },
+      "note": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 1000
+      }
+    },
+    "required": ["revision", "decision", "note"],
+    "additionalProperties": false
+  },
+  "ration.direct": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "note": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 1000
+      }
+    },
+    "required": ["revision", "note"],
+    "additionalProperties": false
+  },
+  "ration.withdraw": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "reason": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 1000
+      }
+    },
+    "required": ["revision", "reason"],
+    "additionalProperties": false
+  },
+  "ration.list": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "page": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 9007199254740991
+      },
+      "limit": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 100
+      },
+      "horseId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "status": {
+        "type": "string",
+        "enum": ["draft", "pending_review", "changes_requested", "approved", "withdrawn", "expired"]
+      }
+    },
+    "required": ["page", "limit"],
+    "additionalProperties": false
+  },
+  "prescription.list": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "page": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 9007199254740991
+      },
+      "limit": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 100
+      },
+      "status": {
+        "type": "string",
+        "enum": ["waiting", "partial", "fulfilled", "stopped"]
+      }
+    },
+    "required": ["page", "limit"],
+    "additionalProperties": false
+  },
+  "prescription.create": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "requestKey": {
+        "type": "string",
+        "format": "uuid",
+        "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+      },
+      "recipientId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "lines": {
+        "minItems": 1,
+        "maxItems": 20,
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "itemId": {
+              "type": "string",
+              "pattern": "^[0-9a-fA-F]{24}$"
+            },
+            "quantity": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "maximum": 1000000
+            },
+            "dosage": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1000
+            },
+            "route": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1000
+            },
+            "frequency": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1000
+            },
+            "durationDays": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 365
+            },
+            "instructions": {
+              "default": "",
+              "type": "string",
+              "maxLength": 2000
+            }
+          },
+          "required": ["itemId", "quantity", "dosage", "route", "frequency", "durationDays"],
+          "additionalProperties": false
+        }
+      }
+    },
+    "required": ["requestKey", "recipientId", "lines"],
+    "additionalProperties": false
+  },
+  "prescription.stop": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "reason": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 1000
+      }
+    },
+    "required": ["revision", "reason"],
+    "additionalProperties": false
+  },
+  "prescription.issue": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "previewHash": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{64}$"
+      },
+      "warehouseId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "stockVersion": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "requestKey": {
+        "type": "string",
+        "format": "uuid",
+        "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+      },
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "physicallyHandedOver": {
+        "type": "boolean",
+        "const": true
+      },
+      "note": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 1000
+      },
+      "lines": {
+        "minItems": 1,
+        "maxItems": 20,
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "lineId": {
+              "type": "string",
+              "pattern": "^[0-9a-fA-F]{24}$"
+            },
+            "quantity": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "maximum": 1000000
+            }
+          },
+          "required": ["lineId", "quantity"],
+          "additionalProperties": false
+        }
+      }
+    },
+    "required": [
+      "previewHash",
+      "warehouseId",
+      "stockVersion",
+      "requestKey",
+      "revision",
+      "physicallyHandedOver",
+      "note",
+      "lines"
+    ],
+    "additionalProperties": false
+  },
+  "inventory.itemCreate": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "code": {
+        "type": "string",
+        "pattern": "^[A-Z0-9][A-Z0-9_-]{1,29}$"
+      },
+      "name": {
+        "type": "string",
+        "minLength": 2,
+        "maxLength": 120
+      },
+      "category": {
+        "type": "string",
+        "enum": ["feed", "care", "cleaning", "medicine"]
+      },
+      "unit": {
+        "type": "string",
+        "enum": ["kg", "g", "l", "ml", "piece"]
+      },
+      "notes": {
+        "default": "",
+        "type": "string",
+        "maxLength": 1000
+      },
+      "strength": {
+        "default": "",
+        "type": "string",
+        "maxLength": 200
+      },
+      "dosageForm": {
+        "default": "",
+        "type": "string",
+        "maxLength": 100
+      },
+      "storage": {
+        "default": "",
+        "type": "string",
+        "maxLength": 500
+      }
+    },
+    "required": ["code", "name", "category", "unit"],
+    "additionalProperties": false
+  },
+  "inventory.itemUpdate": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string",
+        "minLength": 2,
+        "maxLength": 120
+      },
+      "notes": {
+        "default": "",
+        "type": "string",
+        "maxLength": 1000
+      },
+      "isActive": {
+        "type": "boolean"
+      },
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "reason": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 1000
+      }
+    },
+    "required": ["name", "isActive", "revision", "reason"],
+    "additionalProperties": false
+  },
+  "inventory.warehouseCreate": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "code": {
+        "type": "string",
+        "pattern": "^[A-Z0-9][A-Z0-9_-]{1,29}$"
+      },
+      "name": {
+        "type": "string",
+        "minLength": 2,
+        "maxLength": 120
+      },
+      "type": {
+        "type": "string",
+        "enum": ["central", "stable", "medicine_cabinet"]
+      },
+      "stableId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "responsibleVetId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "notes": {
+        "default": "",
+        "type": "string",
+        "maxLength": 1000
+      }
+    },
+    "required": ["code", "name", "type"],
+    "additionalProperties": false
+  },
+  "inventory.warehouseUpdate": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string",
+        "minLength": 2,
+        "maxLength": 120
+      },
+      "notes": {
+        "default": "",
+        "type": "string",
+        "maxLength": 1000
+      },
+      "isActive": {
+        "type": "boolean"
+      },
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "reason": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 1000
+      }
+    },
+    "required": ["name", "isActive", "revision", "reason"],
+    "additionalProperties": false
+  },
+  "inventory.receiptCreate": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "warehouseId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "supplier": {
+        "type": "string",
+        "minLength": 2,
+        "maxLength": 150
+      },
+      "receivedAt": {
+        "type": "string",
+        "format": "date-time",
+        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+      },
+      "notes": {
+        "default": "",
+        "type": "string",
+        "maxLength": 1000
+      },
+      "lines": {
+        "minItems": 1,
+        "maxItems": 30,
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "itemId": {
+              "type": "string",
+              "pattern": "^[0-9a-fA-F]{24}$"
+            },
+            "quantity": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "maximum": 1000000
+            },
+            "lotCode": {
+              "default": "",
+              "type": "string",
+              "maxLength": 80
+            },
+            "expiresOn": {
+              "default": null,
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": ["itemId", "quantity"],
+          "additionalProperties": false
+        }
+      },
+      "requestKey": {
+        "type": "string",
+        "format": "uuid",
+        "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+      }
+    },
+    "required": ["warehouseId", "supplier", "receivedAt", "lines", "requestKey"],
+    "additionalProperties": false
+  },
+  "inventory.receiptUpdate": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "warehouseId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "supplier": {
+        "type": "string",
+        "minLength": 2,
+        "maxLength": 150
+      },
+      "receivedAt": {
+        "type": "string",
+        "format": "date-time",
+        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+      },
+      "notes": {
+        "default": "",
+        "type": "string",
+        "maxLength": 1000
+      },
+      "lines": {
+        "minItems": 1,
+        "maxItems": 30,
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "itemId": {
+              "type": "string",
+              "pattern": "^[0-9a-fA-F]{24}$"
+            },
+            "quantity": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "maximum": 1000000
+            },
+            "lotCode": {
+              "default": "",
+              "type": "string",
+              "maxLength": 80
+            },
+            "expiresOn": {
+              "default": null,
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": ["itemId", "quantity"],
+          "additionalProperties": false
+        }
+      },
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      }
+    },
+    "required": ["warehouseId", "supplier", "receivedAt", "lines", "revision"],
+    "additionalProperties": false
+  },
+  "inventory.confirm": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      }
+    },
+    "required": ["revision"],
+    "additionalProperties": false
+  },
+  "inventory.cancel": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "reason": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 1000
+      }
+    },
+    "required": ["revision", "reason"],
+    "additionalProperties": false
+  },
+  "inventory.itemList": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "page": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 9007199254740991
+      },
+      "limit": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 100
+      },
+      "search": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "active": {
+        "type": "string",
+        "enum": ["true", "false"]
+      },
+      "category": {
+        "type": "string",
+        "enum": ["feed", "care", "cleaning", "medicine"]
+      }
+    },
+    "required": ["page", "limit"],
+    "additionalProperties": false
+  },
+  "inventory.warehouseList": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "page": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 9007199254740991
+      },
+      "limit": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 100
+      },
+      "search": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "active": {
+        "type": "string",
+        "enum": ["true", "false"]
+      },
+      "type": {
+        "type": "string",
+        "enum": ["central", "stable", "medicine_cabinet"]
+      }
+    },
+    "required": ["page", "limit"],
+    "additionalProperties": false
+  },
+  "inventory.stockList": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "page": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 9007199254740991
+      },
+      "limit": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 100
+      },
+      "warehouseId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "search": {
+        "type": "string",
+        "maxLength": 100
+      }
+    },
+    "required": ["page", "limit", "warehouseId"],
+    "additionalProperties": false
+  },
+  "inventory.receiptList": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "page": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 9007199254740991
+      },
+      "limit": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 100
+      },
+      "warehouseId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "status": {
+        "type": "string",
+        "enum": ["draft", "confirmed", "cancelled"]
+      },
+      "search": {
+        "type": "string",
+        "maxLength": 100
+      }
+    },
+    "required": ["page", "limit"],
+    "additionalProperties": false
+  },
+  "inventory.transferCreate": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "sourceWarehouseId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "destinationWarehouseId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "replenishmentRequestId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "notes": {
+        "default": "",
+        "type": "string",
+        "maxLength": 1000
+      },
+      "lines": {
+        "minItems": 1,
+        "maxItems": 30,
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "balanceId": {
+              "type": "string",
+              "pattern": "^[0-9a-fA-F]{24}$"
+            },
+            "quantity": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "maximum": 1000000
+            }
+          },
+          "required": ["balanceId", "quantity"],
+          "additionalProperties": false
+        }
+      },
+      "requestKey": {
+        "type": "string",
+        "format": "uuid",
+        "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+      }
+    },
+    "required": ["sourceWarehouseId", "destinationWarehouseId", "lines", "requestKey"],
+    "additionalProperties": false
+  },
+  "inventory.transferUpdate": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "sourceWarehouseId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "destinationWarehouseId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "replenishmentRequestId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "notes": {
+        "default": "",
+        "type": "string",
+        "maxLength": 1000
+      },
+      "lines": {
+        "minItems": 1,
+        "maxItems": 30,
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "balanceId": {
+              "type": "string",
+              "pattern": "^[0-9a-fA-F]{24}$"
+            },
+            "quantity": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "maximum": 1000000
+            }
+          },
+          "required": ["balanceId", "quantity"],
+          "additionalProperties": false
+        }
+      },
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      }
+    },
+    "required": ["sourceWarehouseId", "destinationWarehouseId", "lines", "revision"],
+    "additionalProperties": false
+  },
+  "inventory.transferList": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "page": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 9007199254740991
+      },
+      "limit": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 100
+      },
+      "destinationWarehouseId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "status": {
+        "type": "string",
+        "enum": ["draft", "confirmed", "cancelled"]
+      },
+      "search": {
+        "type": "string",
+        "maxLength": 100
+      }
+    },
+    "required": ["page", "limit"],
+    "additionalProperties": false
+  },
+  "stocktake.options": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "warehouseId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      }
+    },
+    "additionalProperties": false
+  },
+  "stocktake.list": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "page": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 9007199254740991
+      },
+      "limit": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 100
+      },
+      "warehouseId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "status": {
+        "type": "string",
+        "enum": ["draft", "counting", "submitted", "confirmed", "cancelled"]
+      }
+    },
+    "required": ["page", "limit"],
+    "additionalProperties": false
+  },
+  "stocktake.create": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "warehouseId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "counterId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "notes": {
+        "default": "",
+        "type": "string",
+        "maxLength": 2000
+      },
+      "requestKey": {
+        "type": "string",
+        "format": "uuid",
+        "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+      }
+    },
+    "required": ["warehouseId", "counterId", "requestKey"],
+    "additionalProperties": false
+  },
+  "stocktake.start": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "acknowledgePhysicalFreeze": {
+        "type": "boolean",
+        "const": true
+      }
+    },
+    "required": ["revision", "acknowledgePhysicalFreeze"],
+    "additionalProperties": false
+  },
+  "stocktake.save": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "countNotes": {
+        "default": "",
+        "type": "string",
+        "maxLength": 2000
+      },
+      "lines": {
+        "minItems": 1,
+        "maxItems": 100,
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "lineId": {
+              "type": "string",
+              "pattern": "^[0-9a-fA-F]{24}$"
+            },
+            "quantity": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1000000000
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "note": {
+              "default": "",
+              "type": "string",
+              "maxLength": 1000
+            }
+          },
+          "required": ["lineId", "quantity"],
+          "additionalProperties": false
+        }
+      }
+    },
+    "required": ["revision", "lines"],
+    "additionalProperties": false
+  },
+  "stocktake.submit": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      }
+    },
+    "required": ["revision"],
+    "additionalProperties": false
+  },
+  "stocktake.confirm": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "reason": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 2000
+      },
+      "acknowledgeReview": {
+        "type": "boolean",
+        "const": true
+      }
+    },
+    "required": ["revision", "reason", "acknowledgeReview"],
+    "additionalProperties": false
+  },
+  "stocktake.recount": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "reason": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 2000
+      }
+    },
+    "required": ["revision", "reason"],
+    "additionalProperties": false
+  },
+  "stocktake.cancel": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "reason": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 2000
+      }
+    },
+    "required": ["revision", "reason"],
+    "additionalProperties": false
+  },
+  "stockLedger.list": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "page": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 9007199254740991
+      },
+      "limit": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 100
+      },
+      "warehouseId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "itemId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "lotId": {
+        "anyOf": [
+          {
+            "type": "string",
+            "pattern": "^[0-9a-fA-F]{24}$"
+          },
+          {
+            "type": "string",
+            "const": "none"
+          }
+        ]
+      },
+      "startDate": {
+        "type": "string",
+        "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+      },
+      "endDate": {
+        "type": "string",
+        "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+      },
+      "type": {
+        "type": "string",
+        "enum": [
+          "medicine_issue",
+          "receipt",
+          "transfer_in",
+          "transfer_out",
+          "feed_issue",
+          "adjustment",
+          "disposal"
+        ]
+      }
+    },
+    "required": ["page", "limit", "warehouseId", "itemId", "startDate", "endDate"],
+    "additionalProperties": false
+  },
+  "stockLedger.options": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "warehouseId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "itemId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      }
+    },
+    "required": ["warehouseId", "itemId"],
+    "additionalProperties": false
+  },
+  "stockLedger.document": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "type": {
+        "type": "string",
+        "enum": ["medicine_issue", "receipt", "transfer", "feed_issue", "adjustment", "disposal"]
+      },
+      "id": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      }
+    },
+    "required": ["type", "id"],
+    "additionalProperties": false
+  },
+  "replenishment.preview": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "warehouseId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "taskId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "itemId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      }
+    },
+    "required": ["itemId"],
+    "additionalProperties": false
+  },
+  "replenishment.create": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "warehouseId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "taskId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "itemId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "quantity": {
+        "type": "number",
+        "exclusiveMinimum": 0,
+        "maximum": 1000000
+      },
+      "neededAt": {
+        "type": "string",
+        "format": "date-time",
+        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+      },
+      "note": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 1000
+      },
+      "requestKey": {
+        "type": "string",
+        "format": "uuid",
+        "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+      }
+    },
+    "required": ["itemId", "quantity", "neededAt", "note", "requestKey"],
+    "additionalProperties": false
+  },
+  "replenishment.decision": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "status": {
+        "type": "string",
+        "enum": ["approved", "rejected", "cancelled"]
+      },
+      "quantity": {
+        "type": "number",
+        "exclusiveMinimum": 0,
+        "maximum": 1000000
+      },
+      "reason": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 1000
+      }
+    },
+    "required": ["revision", "status", "reason"],
+    "additionalProperties": false
+  },
+  "replenishment.list": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "page": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 9007199254740991
+      },
+      "limit": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 100
+      },
+      "warehouseId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "status": {
+        "type": "string",
+        "enum": ["pending", "approved", "partially_supplied", "fulfilled", "rejected", "cancelled"]
+      }
+    },
+    "required": ["page", "limit"],
+    "additionalProperties": false
+  },
+  "replenishment.supply": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "quantity": {
+        "type": "number",
+        "exclusiveMinimum": 0,
+        "maximum": 1000000
+      },
+      "requestKey": {
+        "type": "string",
+        "format": "uuid",
+        "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+      },
+      "acknowledgeUnknownExpiry": {
+        "default": false,
+        "type": "boolean"
+      }
+    },
+    "required": ["revision", "quantity", "requestKey"],
+    "additionalProperties": false
+  },
+  "dailyTask.createTaskSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "title": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 150
+      },
+      "groomId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "scheduledStartAt": {
+        "type": "string",
+        "format": "date-time",
+        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+      },
+      "scheduledEndAt": {
+        "type": "string",
+        "format": "date-time",
+        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+      },
+      "graceMinutes": {
+        "default": 5,
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 60
+      },
+      "instructions": {
+        "default": "",
+        "type": "string",
+        "maxLength": 2000
+      },
+      "type": {
+        "type": "string",
+        "enum": ["feeding", "bathing", "stall_cleaning", "hoof_care", "training"]
+      },
+      "horseId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "stallId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "trainingPlanId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "trainingExerciseKey": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+      },
+      "trainingPlanRevision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "rationPlanId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "rationMealKey": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_-]{0,29}$"
+      },
+      "requestKey": {
+        "type": "string",
+        "format": "uuid",
+        "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+      }
+    },
+    "required": ["title", "groomId", "scheduledStartAt", "scheduledEndAt", "type", "requestKey"],
+    "additionalProperties": false
+  },
+  "dailyTask.bulkCreateTaskSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "tasks": {
+        "minItems": 1,
+        "maxItems": 100,
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 150
+            },
+            "groomId": {
+              "type": "string",
+              "pattern": "^[0-9a-fA-F]{24}$"
+            },
+            "scheduledStartAt": {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+            },
+            "scheduledEndAt": {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+            },
+            "graceMinutes": {
+              "default": 5,
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 60
+            },
+            "instructions": {
+              "default": "",
+              "type": "string",
+              "maxLength": 2000
+            },
+            "type": {
+              "type": "string",
+              "enum": ["feeding", "bathing", "stall_cleaning", "hoof_care", "training"]
+            },
+            "horseId": {
+              "type": "string",
+              "pattern": "^[0-9a-fA-F]{24}$"
+            },
+            "stallId": {
+              "type": "string",
+              "pattern": "^[0-9a-fA-F]{24}$"
+            },
+            "trainingPlanId": {
+              "type": "string",
+              "pattern": "^[0-9a-fA-F]{24}$"
+            },
+            "trainingExerciseKey": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+            },
+            "trainingPlanRevision": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "rationPlanId": {
+              "type": "string",
+              "pattern": "^[0-9a-fA-F]{24}$"
+            },
+            "rationMealKey": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_-]{0,29}$"
+            },
+            "requestKey": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            }
+          },
+          "required": [
+            "title",
+            "groomId",
+            "scheduledStartAt",
+            "scheduledEndAt",
+            "type",
+            "requestKey"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "requestKey": {
+        "type": "string",
+        "format": "uuid",
+        "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+      }
+    },
+    "required": ["tasks", "requestKey"],
+    "additionalProperties": false
+  },
+  "dailyTask.updateTaskSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "title": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 150
+      },
+      "groomId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "scheduledStartAt": {
+        "type": "string",
+        "format": "date-time",
+        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+      },
+      "scheduledEndAt": {
+        "type": "string",
+        "format": "date-time",
+        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+      },
+      "graceMinutes": {
+        "default": 5,
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 60
+      },
+      "instructions": {
+        "default": "",
+        "type": "string",
+        "maxLength": 2000
+      },
+      "trainingExerciseKey": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+      },
+      "trainingPlanRevision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "rationPlanId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "rationMealKey": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_-]{0,29}$"
+      },
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "reason": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 1000
+      }
+    },
+    "required": ["title", "groomId", "scheduledStartAt", "scheduledEndAt", "revision", "reason"],
+    "additionalProperties": false
+  },
+  "dailyTask.finishTaskSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "notes": {
+        "default": "",
+        "type": "string",
+        "maxLength": 1000
+      },
+      "measurements": {
+        "type": "object",
+        "properties": {
+          "distanceCompleted": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "durationMinutes": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "maxSpeed": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "avgHeartRate": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 250
+          },
+          "maxHeartRate": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 250
+          }
+        },
+        "required": [
+          "distanceCompleted",
+          "durationMinutes",
+          "maxSpeed",
+          "avgHeartRate",
+          "maxHeartRate"
+        ],
+        "additionalProperties": false
+      },
+      "feedingOutcome": {
+        "type": "string",
+        "enum": ["normal", "partial", "refused", "not_fed"]
+      },
+      "acknowledgeRationChange": {
+        "type": "boolean"
+      },
+      "feedingLeftovers": {
+        "minItems": 1,
+        "maxItems": 20,
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "itemId": {
+              "type": "string",
+              "pattern": "^[0-9a-fA-F]{24}$"
+            },
+            "quantity": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1000000
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "measurement": {
+              "type": "string",
+              "enum": ["weighed", "estimated", "unknown"]
+            },
+            "disposition": {
+              "type": "string",
+              "enum": ["none", "discarded", "pending_review"]
+            }
+          },
+          "required": ["itemId", "quantity", "measurement", "disposition"],
+          "additionalProperties": false
+        }
+      },
+      "notIssuedReason": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 1000
+      },
+      "autoCompleteCheckpoints": {
+        "type": "boolean"
+      }
+    },
+    "additionalProperties": false
+  },
+  "dailyTask.cancelTaskSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "reason": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 1000
+      }
+    },
+    "required": ["revision", "reason"],
+    "additionalProperties": false
+  },
+  "dailyTask.startTaskSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "scenario": {
+        "type": "string",
+        "enum": ["normal", "heart_rate", "speed", "both"]
+      }
+    },
+    "additionalProperties": false
+  },
+  "dailyTask.medicalCheckpointSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "checkpoint": {
+        "type": "string",
+        "enum": ["arrived", "returned"]
+      }
+    },
+    "required": ["checkpoint"],
+    "additionalProperties": false
+  },
+  "dailyTask.listTaskSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "page": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 9007199254740991
+      },
+      "limit": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 100
+      },
+      "date": {
+        "type": "string",
+        "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+      },
+      "startDate": {
+        "type": "string",
+        "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+      },
+      "endDate": {
+        "type": "string",
+        "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+      },
+      "type": {
+        "type": "string",
+        "enum": ["feeding", "bathing", "stall_cleaning", "hoof_care", "training", "medical_support"]
+      },
+      "status": {
+        "type": "string",
+        "enum": ["scheduled", "in_progress", "completed", "cancelled"]
+      },
+      "groomId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "horseId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      }
+    },
+    "required": ["page", "limit"]
+  },
+  "taskAlert.list": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "page": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 9007199254740991
+      },
+      "limit": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 100
+      },
+      "taskId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "status": {
+        "default": "open",
+        "type": "string",
+        "enum": ["open", "resolved"]
+      }
+    },
+    "required": ["page", "limit"],
+    "additionalProperties": false
+  },
+  "taskAlert.report": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "code": {
+        "type": "string",
+        "enum": [
+          "ration_unavailable",
+          "feed_shortage",
+          "feed_source",
+          "stocktake",
+          "feed_item",
+          "resource_unavailable",
+          "training_unavailable",
+          "other"
+        ]
+      },
+      "note": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 1000
+      }
+    },
+    "required": ["code", "note"],
+    "additionalProperties": false
+  },
+  "taskAlert.action": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "operation": {
+        "type": "string",
+        "enum": ["acknowledge", "recheck", "resolve_manual"]
+      },
+      "reason": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 1000
+      }
+    },
+    "required": ["revision", "operation", "reason"],
+    "additionalProperties": false
+  },
+  "incident.assign": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "vetId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "note": {
+        "default": "",
+        "type": "string",
+        "maxLength": 1000
+      }
+    },
+    "required": ["revision", "vetId"],
+    "additionalProperties": false
+  },
+  "incident.claim": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      }
+    },
+    "required": ["revision"],
+    "additionalProperties": false
+  },
+  "incident.link": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "medicalRecordId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      }
+    },
+    "required": ["revision", "medicalRecordId"],
+    "additionalProperties": false
+  },
+  "incident.create": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "taskImpact": {
+        "default": "none",
+        "type": "string",
+        "enum": ["none", "cannot_start", "cannot_continue"]
+      },
+      "title": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 150
+      },
+      "category": {
+        "type": "string",
+        "enum": [
+          "not_eating",
+          "unusual_behavior",
+          "hoof_issue",
+          "stall_damage",
+          "horse_health",
+          "supplies",
+          "equipment",
+          "work",
+          "other"
+        ]
+      },
+      "priority": {
+        "type": "string",
+        "enum": ["normal", "urgent"]
+      },
+      "observedAt": {
+        "type": "string",
+        "format": "date-time",
+        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+      },
+      "description": {
+        "type": "string",
+        "minLength": 5,
+        "maxLength": 2000
+      },
+      "taskId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "horseId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "stallId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "stableId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "warehouseId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "itemId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "lotId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "equipmentName": {
+        "default": "",
+        "type": "string",
+        "maxLength": 150
+      },
+      "requestKey": {
+        "type": "string",
+        "format": "uuid",
+        "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+      }
+    },
+    "required": ["title", "category", "priority", "observedAt", "description", "requestKey"],
+    "additionalProperties": false
+  },
+  "incident.edit": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "taskImpact": {
+        "default": "none",
+        "type": "string",
+        "enum": ["none", "cannot_start", "cannot_continue"]
+      },
+      "title": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 150
+      },
+      "category": {
+        "type": "string",
+        "enum": [
+          "not_eating",
+          "unusual_behavior",
+          "hoof_issue",
+          "stall_damage",
+          "horse_health",
+          "supplies",
+          "equipment",
+          "work",
+          "other"
+        ]
+      },
+      "priority": {
+        "type": "string",
+        "enum": ["normal", "urgent"]
+      },
+      "observedAt": {
+        "type": "string",
+        "format": "date-time",
+        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+      },
+      "description": {
+        "type": "string",
+        "minLength": 5,
+        "maxLength": 2000
+      },
+      "equipmentName": {
+        "type": "string",
+        "maxLength": 150
+      },
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      }
+    },
+    "required": ["title", "category", "priority", "observedAt", "description", "revision"],
+    "additionalProperties": false
+  },
+  "incident.submit": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      }
+    },
+    "required": ["revision"],
+    "additionalProperties": false
+  },
+  "incident.transition": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "status": {
+        "type": "string",
+        "enum": ["acknowledged", "closed"]
+      },
+      "note": {
+        "default": "",
+        "type": "string",
+        "maxLength": 1000
+      }
+    },
+    "required": ["revision", "status"],
+    "additionalProperties": false
+  },
+  "incident.photoQuery": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "uploadKey": {
+        "type": "string",
+        "format": "uuid",
+        "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+      },
+      "fileName": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 180
+      }
+    },
+    "required": ["revision", "uploadKey", "fileName"],
+    "additionalProperties": false
+  },
+  "incident.photoParams": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "photoId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      }
+    },
+    "required": ["id", "photoId"],
+    "additionalProperties": false
+  },
+  "incident.list": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "page": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 9007199254740991
+      },
+      "limit": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 100
+      },
+      "status": {
+        "type": "string",
+        "enum": ["draft", "open", "acknowledged", "in_progress", "pending_review", "closed"]
+      },
+      "priority": {
+        "type": "string",
+        "enum": ["normal", "urgent"]
+      },
+      "category": {
+        "type": "string",
+        "enum": [
+          "not_eating",
+          "unusual_behavior",
+          "hoof_issue",
+          "stall_damage",
+          "horse_health",
+          "supplies",
+          "equipment",
+          "work",
+          "other"
+        ]
+      },
+      "horseId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "stallId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "taskId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "search": {
+        "type": "string",
+        "maxLength": 100
+      }
+    },
+    "required": ["page", "limit"],
+    "additionalProperties": false
+  },
+  "user.createUserSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "fullName": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 100
+      },
+      "email": {
+        "type": "string",
+        "format": "email",
+        "pattern": "^(?:[A-Za-z0-9_'+\\-]+\\.)*[A-Za-z0-9_'+\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+      },
+      "password": {
+        "type": "string",
+        "minLength": 6
+      },
+      "role": {
+        "type": "string",
+        "enum": [
+          "club_manager",
+          "warehouse_keeper",
+          "head_trainer",
+          "veterinarian",
+          "groom",
+          "horse_owner"
+        ]
+      },
+      "phone": {
+        "type": "string"
+      }
+    },
+    "required": ["fullName", "email", "password", "role"]
+  },
+  "user.loginSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "email": {
+        "type": "string",
+        "format": "email",
+        "pattern": "^(?:[A-Za-z0-9_'+\\-]+\\.)*[A-Za-z0-9_'+\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+      },
+      "password": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "required": ["email", "password"]
+  },
+  "user.updateUserSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "fullName": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 100
+      },
+      "phone": {
+        "type": "string"
+      },
+      "avatar": {
+        "type": "string"
+      }
+    }
+  },
+  "user.userListQuerySchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "page": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 9007199254740991
+      },
+      "limit": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 100
+      },
+      "role": {
+        "type": "string",
+        "enum": [
+          "club_manager",
+          "warehouse_keeper",
+          "head_trainer",
+          "veterinarian",
+          "groom",
+          "horse_owner"
+        ]
+      }
+    },
+    "required": ["page", "limit"]
+  },
+  "trainingSession.updateTrainingSessionSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "distanceCompleted": {
+        "type": "number",
+        "exclusiveMinimum": 0
+      },
+      "durationMinutes": {
+        "type": "number",
+        "exclusiveMinimum": 0
+      },
+      "maxSpeed": {
+        "type": "number",
+        "exclusiveMinimum": 0
+      },
+      "avgHeartRate": {
+        "type": "number",
+        "exclusiveMinimum": 0,
+        "maximum": 250
+      },
+      "maxHeartRate": {
+        "type": "number",
+        "exclusiveMinimum": 0,
+        "maximum": 250
+      },
+      "performanceRating": {
+        "type": "number",
+        "minimum": 1,
+        "maximum": 5
+      },
+      "trainerNotes": {
+        "type": "string"
+      },
+      "groomNotes": {
+        "type": "string"
+      },
+      "status": {
+        "type": "string",
+        "enum": ["completed", "cancelled"]
+      },
+      "fitnessScore": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 100
+      },
+      "overrideReason": {
+        "type": "string",
+        "minLength": 5,
+        "maxLength": 1000
+      }
+    }
+  },
+  "trainingSession.trainingSessionListQuerySchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "page": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 9007199254740991
+      },
+      "limit": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 100
+      },
+      "horseId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "planId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "status": {
+        "type": "string",
+        "enum": ["completed", "cancelled"]
+      },
+      "alertTriggered": {
+        "type": "string",
+        "enum": ["true", "false"]
+      }
+    },
+    "required": ["page", "limit"]
+  },
+  "trainingPlan.createTrainingPlanSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "title": {
+        "type": "string",
+        "minLength": 1
+      },
+      "horseId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "phase": {
+        "type": "string",
+        "enum": ["build_up", "sprint", "endurance", "recovery", "pre_race"]
+      },
+      "startDate": {
+        "type": "string"
+      },
+      "endDate": {
+        "type": "string"
+      },
+      "distance": {
+        "type": "number",
+        "minimum": 100
+      },
+      "surface": {
+        "type": "string",
+        "enum": ["dirt", "turf", "synthetic"]
+      },
+      "workloadLevel": {
+        "type": "string",
+        "enum": ["light", "moderate", "intense", "maximum"]
+      },
+      "targetHeartRateMax": {
+        "type": "number",
+        "minimum": 60,
+        "maximum": 250
+      },
+      "targetSpeedMax": {
+        "type": "number",
+        "minimum": 5,
+        "maximum": 30
+      },
+      "exercises": {
+        "minItems": 1,
+        "maxItems": 20,
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "key": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+            },
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 150
+            },
+            "distance": {
+              "type": "number",
+              "minimum": 100
+            },
+            "surface": {
+              "type": "string",
+              "enum": ["dirt", "turf", "synthetic"]
+            },
+            "workloadLevel": {
+              "type": "string",
+              "enum": ["light", "moderate", "intense", "maximum"]
+            },
+            "targetHeartRateMax": {
+              "type": "number",
+              "minimum": 60,
+              "maximum": 250
+            },
+            "targetSpeedMax": {
+              "type": "number",
+              "minimum": 5,
+              "maximum": 30
+            },
+            "instructions": {
+              "default": "",
+              "type": "string",
+              "maxLength": 2000
+            }
+          },
+          "required": [
+            "key",
+            "title",
+            "distance",
+            "surface",
+            "workloadLevel",
+            "targetHeartRateMax",
+            "targetSpeedMax"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "description": {
+        "type": "string"
+      },
+      "instructions": {
+        "type": "string"
+      }
+    },
+    "required": ["title", "horseId", "phase", "startDate", "endDate"]
+  },
+  "trainingPlan.updateTrainingPlanSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "title": {
+        "type": "string",
+        "minLength": 1
+      },
+      "phase": {
+        "type": "string",
+        "enum": ["build_up", "sprint", "endurance", "recovery", "pre_race"]
+      },
+      "endDate": {
+        "type": "string"
+      },
+      "distance": {
+        "type": "number",
+        "minimum": 100
+      },
+      "workloadLevel": {
+        "type": "string",
+        "enum": ["light", "moderate", "intense", "maximum"]
+      },
+      "targetHeartRateMax": {
+        "type": "number",
+        "minimum": 60,
+        "maximum": 250
+      },
+      "targetSpeedMax": {
+        "type": "number",
+        "minimum": 5,
+        "maximum": 30
+      },
+      "description": {
+        "type": "string"
+      },
+      "instructions": {
+        "type": "string"
+      },
+      "exercises": {
+        "minItems": 1,
+        "maxItems": 20,
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "key": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+            },
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 150
+            },
+            "distance": {
+              "type": "number",
+              "minimum": 100
+            },
+            "surface": {
+              "type": "string",
+              "enum": ["dirt", "turf", "synthetic"]
+            },
+            "workloadLevel": {
+              "type": "string",
+              "enum": ["light", "moderate", "intense", "maximum"]
+            },
+            "targetHeartRateMax": {
+              "type": "number",
+              "minimum": 60,
+              "maximum": 250
+            },
+            "targetSpeedMax": {
+              "type": "number",
+              "minimum": 5,
+              "maximum": 30
+            },
+            "instructions": {
+              "default": "",
+              "type": "string",
+              "maxLength": 2000
+            }
+          },
+          "required": [
+            "key",
+            "title",
+            "distance",
+            "surface",
+            "workloadLevel",
+            "targetHeartRateMax",
+            "targetSpeedMax"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      }
+    }
+  },
+  "trainingPlan.trainingPlanListQuerySchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "page": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 9007199254740991
+      },
+      "limit": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 100
+      },
+      "horseId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "isActive": {
+        "type": "string",
+        "enum": ["true", "false"]
+      }
+    },
+    "required": ["page", "limit"]
+  },
+  "feedingStock.confirm": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "requestKey": {
+        "type": "string",
+        "format": "uuid",
+        "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+      },
+      "previewHash": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{64}$"
+      },
+      "acknowledgeUnknownExpiry": {
+        "default": false,
+        "type": "boolean"
+      }
+    },
+    "required": ["revision", "requestKey", "previewHash"],
+    "additionalProperties": false
+  },
+  "feedingStock.leftovers": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "minItems": 1,
+    "maxItems": 20,
+    "type": "array",
+    "items": {
+      "type": "object",
+      "properties": {
+        "itemId": {
+          "type": "string",
+          "pattern": "^[0-9a-fA-F]{24}$"
+        },
+        "quantity": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1000000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "measurement": {
+          "type": "string",
+          "enum": ["weighed", "estimated", "unknown"]
+        },
+        "disposition": {
+          "type": "string",
+          "enum": ["none", "discarded", "pending_review"]
+        }
+      },
+      "required": ["itemId", "quantity", "measurement", "disposition"],
+      "additionalProperties": false
+    }
+  },
+  "feedingStock.list": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "page": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 9007199254740991
+      },
+      "limit": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 100
+      },
+      "warehouseId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "horseId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      }
+    },
+    "required": ["page", "limit"],
+    "additionalProperties": false
+  },
+  "password.changePasswordSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "currentPassword": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 256
+      },
+      "newPassword": {
+        "type": "string",
+        "minLength": 12
+      },
+      "confirmPassword": {
+        "type": "string"
+      }
+    },
+    "required": ["currentPassword", "newPassword", "confirmPassword"],
+    "additionalProperties": false
+  },
+  "password.resetPasswordSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "newPassword": {
+        "type": "string",
+        "minLength": 12
+      },
+      "confirmPassword": {
+        "type": "string"
+      }
+    },
+    "required": ["newPassword", "confirmPassword"],
+    "additionalProperties": false
+  },
+  "auditLog.auditLogListQuerySchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "page": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 9007199254740991
+      },
+      "limit": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 100
+      },
+      "action": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 120
+      },
+      "targetType": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 80
+      },
+      "actorId": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "startDate": {
+        "type": "string",
+        "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+      },
+      "endDate": {
+        "type": "string",
+        "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+      }
+    },
+    "required": ["page", "limit"]
+  }
+}

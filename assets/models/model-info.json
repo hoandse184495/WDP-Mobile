@@ -1,0 +1,10 @@
+{
+  "modelId": "horse-orelvys",
+  "modelVersion": "1",
+  "layer": "surface",
+  "bytes": 6861936,
+  "sha256": "d65d5b6d1fa3b493584677046a5a3afabe203559ff3cf5b1946f3a4da8af9816",
+  "source": "https://gchgjgwjpqgxfncnivgl.supabase.co/storage/v1/object/public/models/horse-v1/horse.glb",
+  "author": "OrelvysRodriguez",
+  "license": "CC-BY-4.0"
+}
