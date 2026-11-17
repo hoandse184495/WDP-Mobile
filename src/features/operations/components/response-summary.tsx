@@ -15,12 +15,10 @@ export function ResponseSummary({ data, depth = 0 }: { data: unknown; depth?: nu
               key={i}
               style={{
                 gap: 8,
-                borderLeftWidth: 2,
-                borderLeftColor: '#BED7C6',
                 paddingLeft: 12,
                 paddingVertical: 10,
                 backgroundColor: colors.surfaceMuted,
-                borderRadius: 8,
+                borderRadius: 12,
                 paddingRight: 10,
               }}
             >
@@ -49,7 +47,7 @@ export function ResponseSummary({ data, depth = 0 }: { data: unknown; depth?: nu
             value !== null,
         )
         .map(([key, value]) => (
-          <View key={key} style={{ gap: 3 }}>
+          <View key={key} style={{ gap: 4, paddingVertical: 4 }}>
             <Text style={[ui.muted, { fontSize: 11 }]}>{fieldLabel(key)}</Text>
             <ResponseSummary data={value} depth={depth + 1} />
           </View>

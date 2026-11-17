@@ -113,7 +113,7 @@ function TaskList() {
         renderItem={(task) => (
           <Pressable
             accessibilityRole="button"
-            style={({ pressed }) => [ui.card, { gap: 13, opacity: pressed ? 0.75 : 1 }]}
+            style={({ pressed }) => [ui.card, { gap: 12, opacity: pressed ? 0.8 : 1 }]}
             onPress={() => router.push({ pathname: '/tasks/[id]', params: { id: task._id } })}
           >
             <View style={ui.row}>
@@ -142,18 +142,17 @@ function TaskList() {
                 {formatTime(task.scheduledStartAt)}
               </Text>
             </View>
-            <View
-              style={[
-                ui.between,
-                { paddingTop: 10, borderTopWidth: 1, borderTopColor: colors.lineSoft },
-              ]}
-            >
+            <View style={[ui.between, { paddingTop: 2 }]}>
               <Badge label={statusLabels[task.status]} />
               <Text style={[ui.muted, { fontSize: 11, flexShrink: 1 }]}>
                 {referenceName(task.groomId)}
               </Text>
             </View>
-            {task.blockedReason && <Text style={ui.error}>{task.blockedReason}</Text>}
+            {task.blockedReason && (
+              <View style={{ backgroundColor: colors.dangerSoft, borderRadius: 10, padding: 10 }}>
+                <Text style={[ui.error, { fontSize: 12 }]}>{task.blockedReason}</Text>
+              </View>
+            )}
           </Pressable>
         )}
       />

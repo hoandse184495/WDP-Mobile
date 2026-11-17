@@ -1,3 +1,4 @@
+import { RecordSummary } from './record-summary';
 import { ClinicalHoldQueue } from '@/features/horses/components/clinical-hold-queue';
 import { AuditChanges } from '@/features/audit/components/audit-changes';
 import { canManageTrainingPlan } from '@/core/constants/roles';
@@ -114,14 +115,21 @@ function WorkspaceList({ module, horseId }: { module: string; horseId?: string }
               style={{ gap: 10 }}
             >
               <View style={ui.between}>
-                <Text style={ui.heading}>{recordTitle(record)}</Text>
+                <View style={[ui.row, ui.grow, { gap: 9 }]}>
+                  <View style={[ui.iconTile, { width: 32, height: 32, borderRadius: 10 }]}>
+                    <Icon name={moduleIcons[module] ?? 'file'} size={16} color={colors.primary} />
+                  </View>
+                  <Text style={[ui.heading, ui.grow, { fontSize: 15, lineHeight: 21 }]}>
+                    {recordTitle(record)}
+                  </Text>
+                </View>
                 <Icon name="chevron" color={colors.muted} size={16} />
               </View>
-              <RecordDetails
-                config={config}
-                record={record}
-                compact={expanded !== recordId(record)}
-              />
+              {expanded === recordId(record) ? (
+                <RecordDetails config={config} record={record} />
+              ) : (
+                <RecordSummary config={config} record={record} />
+              )}
             </Pressable>
             {module === 'audit' && expanded === recordId(record) && (
               <AuditChanges metadata={record.metadata} />

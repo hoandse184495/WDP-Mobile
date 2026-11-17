@@ -39,7 +39,7 @@ export default function MenuScreen() {
               accessibilityState={{ expanded: open }}
               accessibilityLabel={group.title}
               onPress={() => setExpanded(open ? null : group.title)}
-              style={[ui.row, { padding: 16, gap: 12, minHeight: 86 }]}
+              style={[ui.row, { padding: 16, gap: 12, minHeight: 74 }]}
             >
               <View
                 style={[

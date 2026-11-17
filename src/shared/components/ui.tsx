@@ -1,4 +1,4 @@
-import { PropsWithChildren, ReactNode, useState } from 'react';
+import { createContext, useContext, PropsWithChildren, ReactNode, useState } from 'react';
 import {
   ActivityIndicator,
   KeyboardAvoidingView,
@@ -186,8 +186,14 @@ export function Empty({ label = 'Chưa có dữ liệu', detail }: { label?: str
     </View>
   );
 }
+const CardDepth = createContext(0);
 export function Card({ children }: PropsWithChildren) {
-  return <View style={ui.card}>{children}</View>;
+  const depth = useContext(CardDepth);
+  return (
+    <CardDepth.Provider value={depth + 1}>
+      <View style={depth ? ui.inset : ui.card}>{children}</View>
+    </CardDepth.Provider>
+  );
 }
 export function Badge({ label, danger }: { label: string; danger?: boolean }) {
   const text = label.toLocaleLowerCase('vi');
@@ -232,13 +238,19 @@ export function Detail({ label, value }: { label: string; value?: string | numbe
         justifyContent: 'space-between',
         alignItems: long ? 'stretch' : 'flex-start',
         gap: long ? 5 : 16,
-        paddingVertical: 8,
-        borderBottomWidth: StyleSheet.hairlineWidth,
-        borderBottomColor: colors.lineSoft,
+        paddingVertical: 5,
       }}
     >
-      <Text style={[ui.muted, !long && { flex: 1 }]}>{label}</Text>
-      <Text style={[ui.body, { fontWeight: '500' }, !long && { flex: 1.25, textAlign: 'right' }]}>
+      <Text style={[ui.muted, { fontSize: 12, lineHeight: 19 }, !long && { flex: 1 }]}>
+        {label}
+      </Text>
+      <Text
+        style={[
+          ui.body,
+          { fontWeight: '500', fontSize: 13, lineHeight: 20 },
+          !long && { flex: 1.25, textAlign: 'right' },
+        ]}
+      >
         {value ?? '—'}
       </Text>
     </View>
@@ -275,7 +287,7 @@ export function ScreenHeader({
   action?: ReactNode;
 }) {
   return (
-    <View style={{ gap: 8 }}>
+    <View style={{ gap: 6, paddingBottom: 2 }}>
       <View style={ui.between}>
         <View style={[ui.grow, { gap: 5 }]}>
           {eyebrow && <Text style={ui.eyebrow}>{eyebrow}</Text>}
@@ -319,8 +331,8 @@ const styles = StyleSheet.create({
   button: {
     flexDirection: 'row',
     gap: 9,
-    borderRadius: 13,
-    minHeight: 48,
+    borderRadius: 12,
+    minHeight: 46,
     borderWidth: 1,
     paddingHorizontal: 17,
     paddingVertical: 12,
@@ -343,13 +355,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.line,
     borderRadius: 13,
-    backgroundColor: colors.surfaceMuted,
+    backgroundColor: colors.surface,
   },
   input: {
     fontFamily,
     flex: 1,
     minWidth: 0,
-    minHeight: 50,
+    minHeight: 48,
     paddingVertical: 12,
     paddingHorizontal: 0,
     color: colors.ink,
@@ -380,7 +392,7 @@ const styles = StyleSheet.create({
     gap: 6,
     paddingHorizontal: 9,
     paddingVertical: 5,
-    borderRadius: 7,
+    borderRadius: 20,
     alignSelf: 'flex-start',
     maxWidth: '100%',
   },

@@ -1,3 +1,5 @@
+import { useQueryClient } from '@tanstack/react-query';
+import { HorseThumbnail } from './horse-thumbnail';
 import { useEffect, useState } from 'react';
 import { Pressable, Text, View } from 'react-native';
 import { router } from 'expo-router';
@@ -19,6 +21,7 @@ function HorseList() {
     return () => clearTimeout(timer);
   }, [text]);
   const query = useHorses(search);
+  const client = useQueryClient();
   const user = useSession((state) => state.user);
   return (
     <Screen scroll={false}>
@@ -28,7 +31,10 @@ function HorseList() {
         pending={query.isPending}
         error={query.error}
         refreshing={query.isRefetching}
-        refresh={() => void query.refetch()}
+        refresh={() => {
+          void query.refetch();
+          void client.invalidateQueries({ queryKey: ['horse-avatar'] });
+        }}
         more={query.hasNextPage}
         loadingMore={query.isFetchingNextPage}
         loadMore={() => void query.fetchNextPage()}
@@ -66,15 +72,13 @@ function HorseList() {
           <Pressable
             accessibilityRole="button"
             accessibilityLabel={`Xem ${horse.name}`}
-            style={({ pressed }) => [ui.card, { gap: 14, opacity: pressed ? 0.75 : 1 }]}
+            style={({ pressed }) => [ui.card, { gap: 12, opacity: pressed ? 0.8 : 1 }]}
             onPress={() => router.push({ pathname: '/horses/[id]', params: { id: horse._id } })}
           >
             <View style={ui.row}>
-              <View style={[ui.iconTile, { width: 52, height: 56, borderRadius: 16 }]}>
-                <Icon name="horse" size={32} color={colors.primary} />
-              </View>
+              <HorseThumbnail horse={horse} />
               <View style={[ui.grow, { gap: 4 }]}>
-                <Text style={ui.heading}>{horse.name}</Text>
+                <Text style={[ui.heading, { fontSize: 16 }]}>{horse.name}</Text>
                 <Text style={[ui.muted, { fontSize: 11 }]}>
                   {horse.registrationCode} · {horse.breed}
                 </Text>
@@ -93,10 +97,10 @@ function HorseList() {
                 </Text>
               </Text>
             </View>
-            <View style={{ height: 4, backgroundColor: colors.primarySoft, borderRadius: 2 }}>
+            <View style={{ height: 3, backgroundColor: colors.primarySoft, borderRadius: 2 }}>
               <View
                 style={{
-                  height: 4,
+                  height: 3,
                   backgroundColor: horse.isTrainingLocked ? colors.gold : colors.primary,
                   borderRadius: 2,
                   width: `${Math.max(0, Math.min(100, horse.fitnessScore))}%`,

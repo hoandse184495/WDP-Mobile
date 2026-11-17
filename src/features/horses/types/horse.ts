@@ -8,6 +8,8 @@ export const horseSchema = z.object({
   gender: z.string(),
   dateOfBirth: z.string(),
   color: z.string().nullable().optional(),
+  profileImage: z.string().nullish(),
+  avatar: z.object({ path: z.string().optional() }).nullish(),
   ownerId: referenceSchema,
   trainerId: referenceSchema,
   groom: referenceSchema,
