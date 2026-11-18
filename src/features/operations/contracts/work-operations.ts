@@ -69,16 +69,6 @@ export const workOperations = [
   ),
   op(
     'incidents',
-    'link',
-    'Liên kết kết quả khám',
-    '/incidents/:id/link-record',
-    'incident.link',
-    vet,
-    'record',
-    { statuses: ['acknowledged', 'in_progress'] },
-  ),
-  op(
-    'incidents',
     'status',
     'Tiếp nhận / đóng báo cáo',
     '/incidents/:id/status',
@@ -97,8 +87,6 @@ export const workOperations = [
     'record',
     {
       statuses: ['acknowledged', 'in_progress'],
-      contextPath: '/incidents/:id/exam-context',
-      contextKey: 'report',
     },
   ),
   op(
@@ -114,16 +102,6 @@ export const workOperations = [
       statuses: ['scheduled'],
       references: { groomId: { path: '/daily-tasks/options', key: 'grooms' } },
     },
-  ),
-  op(
-    'tasks',
-    'checkpoint',
-    'Xác nhận bước hỗ trợ y tế',
-    '/daily-tasks/:id/medical-checkpoint',
-    'dailyTask.medicalCheckpointSchema',
-    groom,
-    'record',
-    { statuses: ['scheduled', 'in_progress'] },
   ),
   op(
     'tasks',
@@ -144,7 +122,7 @@ export const workOperations = [
     'Dừng và chốt mô phỏng',
     '/daily-tasks/:id/telemetry/stop',
     'empty',
-    groom,
+    ['club_manager', 'head_trainer', 'groom'],
     'record',
     { statuses: ['in_progress'] },
   ),

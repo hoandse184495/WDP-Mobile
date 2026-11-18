@@ -122,7 +122,7 @@ const baseModules = {
     description: 'Theo dõi hồ sơ tiếp nhận và các bước đánh giá.',
     path: '/admissions',
     key: 'applications',
-    roles: allRoles,
+    roles: allRoles.filter((role) => role !== 'horse_owner'),
     detailKey: 'application',
     fields: fields([
       ['horse', 'Ngựa đăng ký'],
@@ -200,14 +200,16 @@ const baseModules = {
   },
   warehouses: {
     title: 'Kho vật tư',
-    description: 'Kho chung và kho khu vực trong phạm vi của bạn.',
+    description: 'Kho chung, kho phụ và tủ thuốc được phân công trực tiếp.',
     path: '/inventory/warehouses',
     key: 'warehouses',
-    roles: stock,
+    roles: [...stock, 'veterinarian'],
     fields: fields([
       ['code', 'Mã kho'],
       ['type', 'Loại kho'],
-      ['stableId', 'Khu chuồng'],
+      ['assignedGroomIds', 'Groom phụ trách / kiểm kê'],
+      ['responsibleVetName', 'Vet phụ trách'],
+      ['stocktakeNumber', 'Phiên kiểm kê đang khóa kho'],
       ['isActive', 'Đang hoạt động'],
       ['notes', 'Ghi chú'],
     ]),
@@ -276,7 +278,7 @@ const baseModules = {
     description: 'Nhu cầu thức ăn và tình trạng cấp bổ sung.',
     path: '/inventory/replenishments',
     key: 'requests',
-    roles: stock,
+    roles: [...stock, 'veterinarian'],
     fields: fields([
       ['itemName', 'Vật tư'],
       ['status', 'Trạng thái'],
@@ -308,7 +310,7 @@ const baseModules = {
     description: 'Vật tư hỏng, hết hạn và quyết định xử lý.',
     path: '/stock-disposals',
     key: 'disposals',
-    roles: stock,
+    roles: [...stock, 'veterinarian'],
     detailKey: 'disposal',
     fields: fields([
       ['warehouse', 'Kho'],
@@ -373,6 +375,7 @@ export const modules: Record<string, WorkspaceModule> = {
 };
 export type ModuleKey = keyof typeof modules;
 export function getModule(key: string): WorkspaceModule | undefined {
+  if (key === 'areaAssignments') return undefined;
   return Object.hasOwn(modules, key) ? modules[key as ModuleKey] : undefined;
 }
 export const recordSchema = z

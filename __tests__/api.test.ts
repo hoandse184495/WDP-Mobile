@@ -90,6 +90,14 @@ test('warehouse dashboard loads warehouse and pending queue totals', async () =>
     '/inventory/replenishments': 4,
   };
   apiClient.defaults.adapter = async (config) => {
+    if (config.url === '/inventory/feed-forecast')
+      return {
+        config,
+        status: 200,
+        statusText: 'OK',
+        headers: {},
+        data: { success: true, data: { day: '2026-11-19', days: 7, areas: [], summaryItems: [] } },
+      };
     expect(Object.keys(totals)).toContain(config.url);
     expect(config.params).toEqual({
       page: 1,
@@ -108,6 +116,7 @@ test('warehouse dashboard loads warehouse and pending queue totals', async () =>
   const dashboard = await loadDashboard('warehouse_keeper');
   expect(dashboard.metrics.map((metric) => metric.value)).toEqual([2, 3, 4]);
   expect(dashboard.alerts).toEqual([]);
+  expect(dashboard).toMatchObject({ feedForecast: { days: 7, summaryItems: [] } });
 });
 test('horses passes search and pagination and unwraps the backend envelope', async () => {
   apiClient.defaults.adapter = async (config) => {

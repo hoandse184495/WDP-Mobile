@@ -3,7 +3,7 @@ import { Controller, useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { router, useLocalSearchParams } from 'expo-router';
-import { Text, View } from 'react-native';
+import { Alert, Text, View } from 'react-native';
 import { trainingPlanRoles } from '@/core/constants/roles';
 import { ui } from '@/core/theme/theme';
 import { clubDate } from '@/core/utils/date';
@@ -71,6 +71,27 @@ function Editor({ id, record }: { id?: string; record?: WorkspaceRecord }) {
   });
   const array = useFieldArray({ control: form.control, name: 'exercises' });
   const values = useWatch({ control: form.control });
+  const activePlan = useQuery({
+    queryKey: ['training-active', values.horseId],
+    enabled: !id && Boolean(values.horseId),
+    queryFn: ({ signal }) =>
+      workspaceApi.list('training', 1, values.horseId, signal, { isActive: 'true' }),
+  });
+  const submitPlan = (input: TrainingInput) => {
+    const current = activePlan.data?.items[0];
+    if (!id && current)
+      Alert.alert(
+        'Thay thế giáo án đang áp dụng?',
+        'Giáo án ' +
+          String(current.title ?? '') +
+          ' sẽ ngừng áp dụng. Lịch tập chưa thực hiện của bản cũ sẽ được đồng bộ theo giáo án mới.',
+        [
+          { text: 'Quay lại', style: 'cancel' },
+          { text: 'Thay thế', onPress: () => mutation.mutate(input) },
+        ],
+      );
+    else mutation.mutate(input);
+  };
   const mutation = useMutation({
     mutationFn: (input: TrainingInput) =>
       trainingApi.save(input, id, typeof record?.revision === 'number' ? record.revision : 0),
@@ -105,6 +126,10 @@ function Editor({ id, record }: { id?: string; record?: WorkspaceRecord }) {
             options={
               horses.data?.pages
                 .flatMap((p) => p.items)
+                .filter(
+                  (h) =>
+                    !h.isTrainingLocked && (!h.admissionStatus || h.admissionStatus === 'active'),
+                )
                 .map((h) => ({ value: h._id, label: `${h.name} · ${h.registrationCode}` })) ?? []
             }
           />
@@ -198,12 +223,16 @@ function Editor({ id, record }: { id?: string; record?: WorkspaceRecord }) {
       {form.formState.errors.exercises?.root?.message && (
         <Text style={ui.error}>{form.formState.errors.exercises.root.message}</Text>
       )}
+      {activePlan.error && (
+        <Failure error={activePlan.error} retry={() => void activePlan.refetch()} />
+      )}
       {mutation.error && <Failure error={mutation.error} />}
       <View>
         <Button
           title="Lưu giáo án"
           busy={mutation.isPending}
-          onPress={form.handleSubmit((value) => mutation.mutate(value))}
+          disabled={!id && Boolean(values.horseId) && (activePlan.isPending || activePlan.isError)}
+          onPress={form.handleSubmit(submitPlan)}
         />
       </View>
     </Screen>

@@ -16,6 +16,7 @@ export const extraSchemas: Record<string, InputSchema> = {
     },
     required: ['balanceId', 'quantity', 'reasonType', 'reason', 'requestKey'],
   },
+  'disposal.cancel': { type: 'object', properties: { revision, reason }, required: ['revision'] },
   'disposal.decision': {
     type: 'object',
     properties: {

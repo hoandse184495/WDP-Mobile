@@ -67,7 +67,7 @@ function RecordContent({ module, id }: { module: string; id: string }) {
           )}
           <OperationPanel module={module} record={query.data} />
           {module === 'sessions' &&
-            user?.role === 'head_trainer' &&
+            ['club_manager', 'head_trainer'].includes(user?.role ?? '') &&
             query.data.status === 'completed' && (
               <Button
                 title="Đánh giá buổi tập"
@@ -77,12 +77,15 @@ function RecordContent({ module, id }: { module: string; id: string }) {
           {module === 'incidents' && (
             <IncidentActions record={query.data} refresh={() => void query.refetch()} />
           )}
-          {module === 'training' && user && canManageTrainingPlan(user.role) && (
-            <Button
-              title="Sửa giáo án"
-              onPress={() => router.push({ pathname: '/training-editor', params: { id } })}
-            />
-          )}
+          {module === 'training' &&
+            query.data.isActive !== false &&
+            user &&
+            canManageTrainingPlan(user.role) && (
+              <Button
+                title="Sửa giáo án"
+                onPress={() => router.push({ pathname: '/training-editor', params: { id } })}
+              />
+            )}
           <Button title="Làm mới" secondary onPress={() => void query.refetch()} />
         </>
       )}

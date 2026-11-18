@@ -69,7 +69,9 @@ export function listFilterSchema(module: string, horseScoped = false): InputSche
       : module === 'disposals'
         ? {
             type: 'object',
-            properties: { status: { type: 'string', enum: ['pending', 'confirmed', 'rejected'] } },
+            properties: {
+              status: { type: 'string', enum: ['pending', 'confirmed', 'rejected', 'cancelled'] },
+            },
           }
         : contracts[listing[module]];
   if (!original) return undefined;

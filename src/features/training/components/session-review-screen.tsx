@@ -1,3 +1,5 @@
+import { AppError } from '@/core/errors/app-error';
+import { useSession } from '@/features/auth/stores/session-store';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -24,6 +26,7 @@ import { reviewSchema, type ReviewInput } from '../schemas/training-schema';
 import { trainingApi } from '../api/training-api';
 export function ReviewForm({ id, record }: { id: string; record: WorkspaceRecord }) {
   const client = useQueryClient();
+  const role = useSession((state) => state.user?.role);
   const form = useForm<ReviewInput>({
     resolver: zodResolver(reviewSchema),
     defaultValues: {
@@ -35,7 +38,14 @@ export function ReviewForm({ id, record }: { id: string; record: WorkspaceRecord
   });
   const values = useWatch({ control: form.control });
   const mutation = useMutation({
-    mutationFn: (input: ReviewInput) => trainingApi.review(id, input),
+    mutationFn: (input: ReviewInput) => {
+      if (
+        role === 'club_manager' &&
+        (!input.overrideReason || input.overrideReason.trim().length < 5)
+      )
+        throw new AppError('Quản lý cần nhập lý do điều chỉnh tối thiểu 5 ký tự.');
+      return trainingApi.review(id, input);
+    },
     onSuccess: async () => {
       await Promise.all(
         ['workspace', 'record', 'dashboard', 'horse', 'horses', 'notifications'].map((key) =>
@@ -75,21 +85,31 @@ export function ReviewForm({ id, record }: { id: string; record: WorkspaceRecord
         label="Nhận xét huấn luyện viên"
         multiline
       />
-      <Controller
-        control={form.control}
-        name="fitnessScore"
-        render={({ field, fieldState }) => (
-          <Field
-            label="Điểm thể lực (0–100, tùy chọn)"
-            keyboardType="decimal-pad"
-            value={field.value === undefined ? '' : String(field.value)}
-            onChangeText={(value) =>
-              field.onChange(value.trim() === '' ? undefined : Number(value))
-            }
-            error={fieldState.error?.message}
-          />
-        )}
-      />
+      {role !== 'club_manager' && (
+        <Controller
+          control={form.control}
+          name="fitnessScore"
+          render={({ field, fieldState }) => (
+            <Field
+              label="Điểm thể lực (0–100, tùy chọn)"
+              keyboardType="decimal-pad"
+              value={field.value === undefined ? '' : String(field.value)}
+              onChangeText={(value) =>
+                field.onChange(value.trim() === '' ? undefined : Number(value))
+              }
+              error={fieldState.error?.message}
+            />
+          )}
+        />
+      )}
+      {role === 'club_manager' && (
+        <FormField
+          control={form.control}
+          name="overrideReason"
+          label="Lý do điều chỉnh của quản lý"
+          multiline
+        />
+      )}
       {mutation.error && <Failure error={mutation.error} />}
       <Button
         title="Lưu đánh giá"
@@ -125,7 +145,7 @@ function LoadReview({ id }: { id: string }) {
 export default function SessionReviewScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   return (
-    <RoleGuard roles={['head_trainer']}>
+    <RoleGuard roles={['club_manager', 'head_trainer']}>
       <LoadReview id={id} />
     </RoleGuard>
   );

@@ -2,7 +2,6 @@ import {
   operation as op,
   keeper,
   manager,
-  stockRoles,
   stock,
   items,
   warehouses,
@@ -37,7 +36,7 @@ export const inventoryOperations = [
     'collection',
     {
       references: {
-        stableId: { path: '/inventory/options', key: 'stables' },
+        assignedGroomIds: { path: '/inventory/options', key: 'grooms' },
         responsibleVetId: { path: '/inventory/options', key: 'vets' },
       },
     },
@@ -50,7 +49,10 @@ export const inventoryOperations = [
     'inventory.warehouseUpdate',
     keeper,
     'record',
-    { method: 'put' },
+    {
+      method: 'put',
+      references: { assignedGroomIds: { path: '/inventory/options', key: 'grooms' } },
+    },
   ),
   op(
     'receipts',
@@ -80,7 +82,11 @@ export const inventoryOperations = [
     'inventory.confirm',
     keeper,
     'record',
-    { statuses: ['draft'] },
+    {
+      statuses: ['draft'],
+      confirmation:
+        'Xác nhận đã đối chiếu vật tư, số lượng, lô và hàng thực nhận. Thao tác sẽ ghi tăng tồn kho.',
+    },
   ),
   op(
     'receipts',
@@ -126,7 +132,11 @@ export const inventoryOperations = [
     'inventory.confirm',
     keeper,
     'record',
-    { statuses: ['draft'] },
+    {
+      statuses: ['draft'],
+      confirmation:
+        'Xác nhận đã bàn giao đủ vật tư đúng kho nhận và đúng lô. Thao tác trừ kho nguồn, cộng kho nhận một lần.',
+    },
   ),
   op(
     'transfers',
@@ -141,10 +151,10 @@ export const inventoryOperations = [
   op(
     'replenishments',
     'create',
-    'Đề nghị bổ sung thức ăn',
+    'Đề nghị bổ sung thức ăn / thuốc',
     '/inventory/replenishments',
     'replenishment.create',
-    stockRoles,
+    ['warehouse_keeper', 'groom', 'veterinarian'],
     'collection',
     {
       references: {
@@ -161,7 +171,7 @@ export const inventoryOperations = [
     'replenishment.decision',
     keeper,
     'record',
-    { statuses: ['pending'] },
+    { statuses: ['pending', 'approved', 'partially_supplied'] },
   ),
   op(
     'replenishments',
@@ -183,7 +193,7 @@ export const inventoryOperations = [
     'Giao kiểm kê kho',
     '/inventory/stocktakes',
     'stocktake.create',
-    manager,
+    ['club_manager', 'warehouse_keeper'],
     'collection',
     {
       references: {
@@ -243,7 +253,7 @@ export const inventoryOperations = [
     'Yêu cầu kiểm đếm lại',
     '/inventory/stocktakes/:id/recount',
     'stocktake.recount',
-    manager,
+    ['club_manager', 'warehouse_keeper'],
     'record',
     { statuses: ['submitted'] },
   ),
@@ -253,7 +263,7 @@ export const inventoryOperations = [
     'Hủy phiếu kiểm kê',
     '/inventory/stocktakes/:id/cancel',
     'stocktake.cancel',
-    manager,
+    ['club_manager', 'warehouse_keeper'],
     'record',
     { statuses: ['draft', 'counting', 'submitted'], destructive: true },
   ),
@@ -263,9 +273,19 @@ export const inventoryOperations = [
     'Đề nghị xử lý vật tư',
     '/stock-disposals',
     'disposal.create',
-    stockRoles,
+    ['warehouse_keeper', 'groom', 'veterinarian'],
     'collection',
     { references: { balanceId: { ...stock, dependsOn: 'warehouseId', parameter: 'warehouseId' } } },
+  ),
+  op(
+    'disposals',
+    'cancel',
+    'Hủy đề nghị của tôi',
+    '/stock-disposals/:id/cancel',
+    'disposal.cancel',
+    ['warehouse_keeper', 'groom', 'veterinarian'],
+    'record',
+    { statuses: ['pending'], destructive: true },
   ),
   op(
     'disposals',

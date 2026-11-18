@@ -34,11 +34,13 @@ export function SchemaField(props: Props) {
   if (schema.not !== undefined || metadata.has(key) || operation.hidden?.includes(key)) return null;
   if (operation.module === 'rations' && key === 'key' && path.startsWith('meals.')) return null;
   if (
-    operation.id === 'warehouses.create' &&
-    ((key === 'stableId' && props.payload.type !== 'stable') ||
+    operation.module === 'warehouses' &&
+    (key === 'stableId' ||
+      (key === 'assignedGroomIds' && props.payload.type === 'medicine_cabinet') ||
       (key === 'responsibleVetId' && props.payload.type !== 'medicine_cabinet'))
   )
     return null;
+  if (key === 'assignedGroomIds') return <ReferenceField {...props} />;
   if (key === 'surfaceLocation') {
     const horseId = entityId(
       props.payload.horseId ??
@@ -131,6 +133,21 @@ export function SchemaField(props: Props) {
                 if (child === 'id' && rule.properties?.revision)
                   updated.revision = selected.revision ?? 0;
               }
+              if (operation.module === 'warehouses' && child === 'type') {
+                delete updated.stableId;
+                if (next === 'medicine_cabinet') updated.assignedGroomIds = [];
+                else updated.responsibleVetId = null;
+              }
+              if (
+                operation.module === 'transfers' &&
+                ['sourceWarehouseId', 'destinationWarehouseId'].includes(child)
+              ) {
+                updated.lines = [{ balanceId: undefined, quantity: undefined }];
+                if (child === 'sourceWarehouseId' && next === updated.destinationWarehouseId)
+                  updated.destinationWarehouseId = undefined;
+              }
+              if (operation.id === 'replenishments.create' && child === 'warehouseId')
+                updated.itemId = undefined;
               onChange(resetLocationsForHorseChange(value, updated));
             }}
           />

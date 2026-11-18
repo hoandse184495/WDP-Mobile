@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { Alert, Text } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { ui } from '@/core/theme/theme';
 import { taskRoles } from '@/core/constants/roles';
 import { formatDate, formatTime } from '@/core/utils/date';
@@ -23,14 +23,12 @@ import { useTask, useRefreshTask } from '../hooks/use-tasks';
 import { taskApi } from '../api/task-api';
 import { statusLabels, typeLabels, feedingOutcomeLabels } from '../types/task';
 import { TaskEvidence } from './task-evidence';
-import { TaskFeeding } from './task-feeding';
 import { TaskFinishForm } from './task-finish-form';
 import type { StartInput } from '../schemas/task-schema';
 import { cancelSchema } from '../schemas/task-schema';
 import { AppError } from '@/core/errors/app-error';
 import { OperationPanel } from '@/features/operations/components/operation-panel';
 import { TaskTelemetry } from './task-telemetry';
-import { ResponseSummary } from '@/features/operations/components/response-summary';
 export function TaskDetail({ id }: { id: string }) {
   const query = useTask(id);
   const user = useSession((state) => state.user);
@@ -50,13 +48,6 @@ export function TaskDetail({ id }: { id: string }) {
     },
     onSuccess: refresh,
     onError: refresh,
-  });
-  const blockage = useMutation({
-    mutationFn: () => {
-      if (reason.trim().length < 3) throw new AppError('Nhập lý do ít nhất 3 ký tự.');
-      return taskApi.blockage(id, reason.trim());
-    },
-    onSuccess: refresh,
   });
   if (!query.data)
     return (
@@ -78,17 +69,18 @@ export function TaskDetail({ id }: { id: string }) {
     <Screen>
       <OperationPanel module="tasks" record={task} />
       {task.type === 'training' &&
+        (user?.role !== 'groom' || (own && task.status !== 'completed')) &&
         ['club_manager', 'head_trainer', 'groom'].includes(user?.role ?? '') && (
           <TaskTelemetry id={id} />
         )}
-      {task.type === 'medical_support' && (
-        <Card>
-          <Text style={ui.heading}>Các mốc hỗ trợ y tế</Text>
-          <ResponseSummary data={task.medicalSupport} />
-        </Card>
-      )}
       <Text style={ui.title}>{task.title}</Text>
       <Badge label={statusLabels[task.status]} />
+      {user?.role === 'groom' && task.status === 'completed' && (
+        <Text style={ui.muted}>
+          Lịch sử đã hoàn thành · Người thực hiện: {referenceName(task.groomId)}. Kết quả và ảnh
+          bằng chứng chỉ đọc.
+        </Text>
+      )}
       <Card>
         <Detail label="Loại công việc" value={typeLabels[task.type]} />
         <Detail label="Ngựa / ô chuồng" value={referenceName(task.horseId ?? task.stallId)} />
@@ -165,9 +157,6 @@ export function TaskDetail({ id }: { id: string }) {
       {['club_manager', 'head_trainer', 'groom'].includes(user?.role ?? '') && (
         <TaskEvidence id={id} editable={editable} />
       )}
-      {task.type === 'feeding' && ['club_manager', 'groom'].includes(user?.role ?? '') && (
-        <TaskFeeding task={task} editable={editable} />
-      )}
       {editable && <TaskFinishForm task={task} />}
       {task.status === 'completed' && (
         <Card>
@@ -182,7 +171,7 @@ export function TaskDetail({ id }: { id: string }) {
           <Detail label="Ghi chú hoàn thành" value={task.completionNotes} />
         </Card>
       )}
-      {['scheduled', 'in_progress'].includes(task.status) && (manage || own) && (
+      {['scheduled', 'in_progress'].includes(task.status) && manage && (
         <Card>
           <Field
             label="Lý do / trở ngại"
@@ -191,14 +180,6 @@ export function TaskDetail({ id }: { id: string }) {
             multiline
             maxLength={1000}
           />
-          {own && (
-            <Button
-              secondary
-              title="Báo trở ngại cho quản lý"
-              busy={blockage.isPending}
-              onPress={() => blockage.mutate()}
-            />
-          )}
           {manage && (
             <Button
               danger
@@ -212,9 +193,25 @@ export function TaskDetail({ id }: { id: string }) {
               }
             />
           )}
-          {(cancel.error || blockage.error) && <Failure error={cancel.error || blockage.error} />}
-          {blockage.isSuccess && <Text style={ui.body}>Đã gửi báo cáo trở ngại.</Text>}
+          {cancel.error && <Failure error={cancel.error} />}
         </Card>
+      )}
+      {own && ['scheduled', 'in_progress'].includes(task.status) && (
+        <Button
+          secondary
+          title="Báo sự cố ảnh hưởng công việc"
+          onPress={() =>
+            router.push({
+              pathname: '/incident-editor',
+              params: {
+                taskId: id,
+                ...(referenceId(task.horseId)
+                  ? { horseId: referenceId(task.horseId) }
+                  : { stallId: referenceId(task.stallId) }),
+              },
+            })
+          }
+        />
       )}
       <Button secondary title="Làm mới công việc" onPress={() => void refresh()} />
     </Screen>

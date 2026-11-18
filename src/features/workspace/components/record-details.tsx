@@ -1,3 +1,4 @@
+import { choiceLabel } from '@/features/operations/contracts/labels';
 import { Text, View } from 'react-native';
 import { ui } from '@/core/theme/theme';
 import { formatDate } from '@/core/utils/date';
@@ -6,6 +7,18 @@ import { roleLabels } from '@/core/constants/roles';
 import { WorkspaceModule, WorkspaceRecord } from '../types/catalog';
 import { atPath } from '@/features/operations/types/operation';
 const labels: Record<string, string> = {
+  build_up: 'Xây nền',
+  sprint: 'Nước rút',
+  endurance: 'Sức bền',
+  recovery: 'Phục hồi',
+  pre_race: 'Tiền thi đấu',
+  dirt: 'Đường đất',
+  turf: 'Đường cỏ',
+  synthetic: 'Đường tổng hợp',
+  light: 'Nhẹ',
+  moderate: 'Vừa',
+  intense: 'Cao',
+  maximum: 'Tối đa',
   scheduled: 'Đã lên lịch',
   in_progress: 'Đang thực hiện',
   completed: 'Hoàn thành',
@@ -26,7 +39,7 @@ const labels: Record<string, string> = {
 export function displayValue(value: unknown): string {
   if (value === null || value === undefined) return '—';
   if (typeof value === 'boolean') return value ? 'Có' : 'Không';
-  if (typeof value === 'string') return labels[value] ?? value;
+  if (typeof value === 'string') return labels[value] ?? choiceLabel(value);
   if (typeof value === 'number') return value.toLocaleString('vi-VN');
   if (Array.isArray(value)) return value.map(displayValue).join(', ');
   if (typeof value === 'object') {
@@ -52,7 +65,9 @@ export function RecordDetails({
   const visible = config.fields.filter((field) => atPath(record, field.key) !== undefined);
   const exercises = Array.isArray(record.exercises)
     ? (record.exercises as Record<string, unknown>[])
-    : [];
+    : config.path === '/training-plans' && record.distance !== undefined
+      ? [record]
+      : [];
   const meals = Array.isArray(record.meals) ? (record.meals as Record<string, unknown>[]) : [];
   const lines = Array.isArray(record.lines) ? (record.lines as Record<string, unknown>[]) : [];
   return (
@@ -90,10 +105,14 @@ export function RecordDetails({
           {meals.map((meal, i) => (
             <View style={ui.card} key={i}>
               <Text style={ui.heading}>{displayValue(meal.name)}</Text>
+              <Detail label="Giờ bữa ăn" value={displayValue(meal.time)} />
+              {Boolean(meal.instructions) && (
+                <Detail label="Hướng dẫn bữa ăn" value={displayValue(meal.instructions)} />
+              )}
               {Array.isArray(meal.lines) &&
                 (meal.lines as Record<string, unknown>[]).map((line, j) => (
                   <Text key={j} style={ui.body}>
-                    {displayValue(line.name)} · {displayValue(line.quantity)}{' '}
+                    {displayValue(line.name ?? line.itemId)} · {displayValue(line.quantity)}{' '}
                     {displayValue(line.unit)}
                   </Text>
                 ))}

@@ -1,3 +1,4 @@
+import { useSession } from '@/features/auth/stores/session-store';
 import { useNotificationStream } from '../hooks/use-notification-stream';
 import { notificationDestination } from '../utils/notification-destination';
 import { useState } from 'react';
@@ -11,6 +12,7 @@ import { Icon } from '@/shared/components/icon';
 import { PagedList } from '@/shared/components/paged-list';
 import { notificationApi } from '../api/notification-api';
 export default function NotificationsScreen() {
+  const role = useSession((state) => state.user?.role);
   const [filter, setFilter] = useState('all');
   const liveStatus = useNotificationStream();
   const client = useQueryClient();
@@ -38,7 +40,7 @@ export default function NotificationsScreen() {
         Alert.alert(data.receipt.title, data.receipt.message);
         return;
       }
-      const destination = notificationDestination(data.path);
+      const destination = notificationDestination(data.path, role);
       if (destination) router.push(destination);
       else
         Alert.alert(

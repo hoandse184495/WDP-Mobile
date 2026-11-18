@@ -1,6 +1,18 @@
 import { z } from 'zod';
 import { apiClient, requestData } from '@/core/network/api-client';
 import { parsePage } from '@/shared/types/api';
+export const warehouseSchema = z
+  .object({
+    _id: z.string(),
+    name: z.string(),
+    type: z.enum(['central', 'stable', 'medicine_cabinet']),
+    isActive: z.boolean(),
+    assignedGroomIds: z.array(z.object({ _id: z.string(), fullName: z.string() })).optional(),
+    responsibleVetName: z.string().optional(),
+    stocktakeNumber: z.string().optional(),
+    revision: z.number().optional(),
+  })
+  .passthrough();
 const balanceSchema = z.object({
   _id: z.string(),
   item: z.object({ _id: z.string(), name: z.string(), unit: z.string() }),
@@ -19,6 +31,21 @@ const ledgerRowSchema = z
   })
   .passthrough();
 export const inventoryApi = {
+  warehouse: async (id: string, signal?: AbortSignal) => {
+    for (let page = 1; ; page++) {
+      const data = parsePage(
+        await requestData(
+          apiClient.get('/inventory/warehouses', { params: { page, limit: 100 }, signal }),
+        ),
+        'warehouses',
+        warehouseSchema,
+      );
+      const warehouse = data.items.find((row) => row._id === id);
+      if (warehouse) return warehouse;
+      if (page >= data.pagination.totalPages)
+        throw new Error('Không tìm thấy kho trong phạm vi được xem.');
+    }
+  },
   ledgerOptions: async (warehouseId: string, itemId: string) =>
     z
       .object({

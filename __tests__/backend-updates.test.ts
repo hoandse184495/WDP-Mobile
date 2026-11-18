@@ -21,7 +21,7 @@ jest.mock('@/core/network/photo-upload', () => ({ pickAndUploadPhoto: jest.fn() 
 const id = 'a'.repeat(24);
 const op = (name: string) => findOperation(name)!;
 
-test('start forwards an explicitly chosen scenario and finish preserves confirmed medical checkpoints', async () => {
+test('start forwards a scenario and finish uses the current contract without retired checkpoints', async () => {
   const requests: { url?: string; body: unknown }[] = [];
   apiClient.defaults.adapter = async (config) => {
     requests.push({
@@ -37,12 +37,12 @@ test('start forwards an explicitly chosen scenario and finish preserves confirme
     };
   };
   await taskApi.start(id, { scenario: 'heart_rate' });
-  await taskApi.finish(id, { notes: 'Đã bàn giao và đưa ngựa về', autoCompleteCheckpoints: true });
+  await taskApi.finish(id, { notes: 'Đã bàn giao và đưa ngựa về' });
   expect(requests).toEqual([
     { url: `/daily-tasks/${id}/start`, body: { scenario: 'heart_rate' } },
     {
       url: `/daily-tasks/${id}/finish`,
-      body: { notes: 'Đã bàn giao và đưa ngựa về', autoCompleteCheckpoints: true },
+      body: { notes: 'Đã bàn giao và đưa ngựa về' },
     },
   ]);
   expect(startSchema.safeParse({ scenario: 'device' }).success).toBe(false);
@@ -139,15 +139,7 @@ test('height, soft coordination and fitness score match the updated contracts wi
       .success,
   ).toBe(false);
   expect(operationSchema(op('sessions.notes')).properties).not.toHaveProperty('fitnessScore');
-  expect(operationSchema(op('tasks.checkpoint'))).toBeDefined();
-  expect(
-    allowedOperation(
-      op('tasks.checkpoint'),
-      'groom',
-      { _id: id, type: 'medical_support', status: 'scheduled', groomId: id },
-      id,
-    ),
-  ).toBe(true);
+  expect(findOperation('tasks.checkpoint')).toBeUndefined();
 });
 import { prepareOperation } from '@/features/operations/contracts/business-rules';
 import { referencePayload } from '@/features/operations/hooks/use-reference-options';

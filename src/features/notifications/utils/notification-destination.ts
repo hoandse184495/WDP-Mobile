@@ -1,5 +1,6 @@
+import type { Role } from '@/core/constants/roles';
 import type { Href } from 'expo-router';
-export function notificationDestination(value: string): Href | null {
+export function notificationDestination(value: string, role?: Role): Href | null {
   let path: URL;
   try {
     path = new URL(value, 'https://mobile.invalid');
@@ -16,11 +17,14 @@ export function notificationDestination(value: string): Href | null {
     ['session', 'sessions'],
   ] as const) {
     const id = path.searchParams.get(key);
+    if (id && module === 'admissions' && role) return '/(tabs)/horses';
     if (id) return { pathname: '/records/[module]/[id]', params: { module, id } };
   }
   const task = path.searchParams.get('task');
   if (task) return { pathname: '/tasks/[id]', params: { id: task } };
   const review = path.searchParams.get('review');
+  if (review && role === 'horse_owner')
+    return { pathname: '/records/[module]/[id]', params: { module: 'sessions', id: review } };
   if (review) return { pathname: '/session-review/[id]', params: { id: review } };
   const module = (
     {

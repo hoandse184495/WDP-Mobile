@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { TaskDetail } from '@/features/tasks/components/task-detail-screen';
 import { taskApi } from '@/features/tasks/api/task-api';
 import { useTask, useRefreshTask } from '@/features/tasks/hooks/use-tasks';
+import { TaskTelemetry } from '@/features/tasks/components/task-telemetry';
 import { TaskEvidence } from '@/features/tasks/components/task-evidence';
 import { TaskFinishForm } from '@/features/tasks/components/task-finish-form';
 import type { Task } from '@/features/tasks/types/task';
@@ -25,7 +26,9 @@ jest.mock('@/features/tasks/components/task-finish-form', () => ({
   TaskFinishForm: jest.fn(() => null),
 }));
 jest.mock('@/features/tasks/components/task-feeding', () => ({ TaskFeeding: () => null }));
-jest.mock('@/features/tasks/components/task-telemetry', () => ({ TaskTelemetry: () => null }));
+jest.mock('@/features/tasks/components/task-telemetry', () => ({
+  TaskTelemetry: jest.fn(() => null),
+}));
 jest.mock('@/features/operations/components/operation-panel', () => ({
   OperationPanel: () => null,
 }));
@@ -100,3 +103,22 @@ test('completed feeding displays the saved outcome and notes after reopening', a
   expect(screen.getByText('Bỏ ăn')).toBeTruthy();
   expect(screen.getByText('Đã báo bác sĩ')).toBeTruthy();
 });
+
+test.each(['groom-1', 'previous-groom'])(
+  'completed training by %s stays read-only after handover without requesting forbidden telemetry',
+  async (groomId) => {
+    await open({
+      ...base,
+      type: 'training',
+      status: 'completed',
+      groomId: { _id: groomId, fullName: 'Người thực hiện trước' },
+      completionNotes: 'Hoàn tất trước bàn giao',
+    });
+    expect(screen.getByText('Hoàn tất trước bàn giao')).toBeTruthy();
+    expect(screen.getByText(/Lịch sử đã hoàn thành/)).toBeTruthy();
+    expect(jest.mocked(TaskEvidence).mock.calls[0][0]).toMatchObject({ editable: false });
+    expect(TaskFinishForm).not.toHaveBeenCalled();
+    expect(TaskTelemetry).not.toHaveBeenCalled();
+    expect(taskApi.start).not.toHaveBeenCalled();
+  },
+);

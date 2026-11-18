@@ -24,6 +24,7 @@ export function allowedOperation(
   record?: JsonRecord,
   userId?: string,
 ) {
+  if (role === 'horse_owner' && operation.module === 'admissions') return false;
   if (!operation.roles.includes(role) || (operation.scope === 'record' && !record)) return false;
   const status = String(
     asRecord(record?.prescription).status ?? record?.displayStatus ?? record?.status ?? '',
@@ -40,6 +41,7 @@ export function allowedOperation(
     (operation.id === 'team.reactivate' && record?.isActive !== false)
   )
     return false;
+  if (operation.id === 'training.delete' && record?.isActive === false) return false;
   if (operation.id === 'prescriptions.create' && record?.prescription) return false;
   if (operation.id === 'horses.emergency-lock' && record?.isTrainingLocked) return false;
   if (operation.id === 'horses.emergency-unlock' && !record?.isTrainingLocked) return false;
@@ -60,7 +62,6 @@ export function allowedOperation(
   }
   if (operation.id === 'sessions.notes' && entityId(record?.groomId) !== userId) return false;
   if (operation.id.startsWith('tasks.telemetry') && record?.type !== 'training') return false;
-  if (operation.id === 'tasks.checkpoint' && record?.type !== 'medical_support') return false;
   if (operation.id === 'tasks.edit' && record?.medicalScheduleId) return false;
   if (operation.id === 'schedules.encounter' && record?.type !== 'follow_up') return false;
   if (['schedules.complete', 'schedules.encounter'].includes(operation.id)) {
@@ -75,7 +76,7 @@ export function allowedOperation(
   }
   if (
     operation.module === 'incidents' &&
-    ['incidents.encounter', 'incidents.link'].includes(operation.id) &&
+    operation.id === 'incidents.encounter' &&
     entityId(record?.assignedVet) !== userId
   )
     return false;
@@ -117,6 +118,14 @@ export function allowedOperation(
   ) {
     const counter = record?.counter ?? record?.counterId;
     if (counter && entityId(counter) !== userId) return false;
+  }
+  if (operation.id === 'disposals.cancel' && entityId(record?.createdBy) !== userId) return false;
+  if (
+    role === 'warehouse_keeper' &&
+    ['stocktakes.recount', 'stocktakes.cancel'].includes(operation.id)
+  ) {
+    if (entityId(record?.counter ?? record?.counterId) === userId) return false;
+    if (operation.id === 'stocktakes.cancel' && status !== 'draft') return false;
   }
   return true;
 }

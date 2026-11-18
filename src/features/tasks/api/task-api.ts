@@ -40,15 +40,4 @@ export const taskApi = {
     feedingPreviewSchema.parse(
       await requestData(apiClient.get(`/daily-tasks/${id}/feeding-stock`, { signal })),
     ),
-  issueFeed: (
-    id: string,
-    input: {
-      revision: number;
-      requestKey: string;
-      previewHash: string;
-      acknowledgeUnknownExpiry: boolean;
-    },
-  ) => requestData(apiClient.post(`/daily-tasks/${id}/issue-feed`, input)),
-  blockage: (id: string, note: string) =>
-    requestData(apiClient.post(`/daily-tasks/${id}/blockage`, { code: 'other', note })),
 };

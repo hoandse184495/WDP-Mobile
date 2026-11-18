@@ -1,11 +1,25 @@
+import { useMutation } from '@tanstack/react-query';
+import { apiClient, requestData } from '@/core/network/api-client';
+import { useSession } from '@/features/auth/stores/session-store';
+import { useRefreshTask } from '../hooks/use-tasks';
 import { useState } from 'react';
 import { Pressable, Text, View } from 'react-native';
 import { ui, colors } from '@/core/theme/theme';
-import { Card, Choice, Empty, Failure, Loading } from '@/shared/components/ui';
+import { Button, Card, Choice, Empty, Failure, Loading } from '@/shared/components/ui';
 import { useTelemetry } from '../hooks/use-telemetry';
 import { ResponseSummary } from '@/features/operations/components/response-summary';
 export function TaskTelemetry({ id }: { id: string }) {
   const query = useTelemetry(id);
+  const role = useSession((state) => state.user?.role);
+  const refresh = useRefreshTask(id);
+  const stop = useMutation({
+    mutationFn: () =>
+      requestData(apiClient.post('/daily-tasks/' + encodeURIComponent(id) + '/telemetry/stop', {})),
+    onSuccess: async () => {
+      await query.refetch();
+      await refresh();
+    },
+  });
   const [metric, setMetric] = useState('heartRate');
   const [selected, setSelected] = useState<number | null>(null);
   const run = query.data?.run;
@@ -30,6 +44,16 @@ export function TaskTelemetry({ id }: { id: string }) {
         Dữ liệu mô phỏng phần mềm, không phải thiết bị đo. Kết quả được hệ thống ghi nhận và chốt
         theo lượt mô phỏng.
       </Text>
+      {query.data?.run?.status === 'running' &&
+        ['club_manager', 'head_trainer', 'groom'].includes(role ?? '') && (
+          <Button
+            danger
+            title="Dừng khẩn cấp và chốt số liệu"
+            busy={stop.isPending}
+            onPress={() => stop.mutate()}
+          />
+        )}
+      {stop.error && <Failure error={stop.error} />}
       {query.isPending ? (
         <Loading />
       ) : query.error ? (

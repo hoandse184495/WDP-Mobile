@@ -23,7 +23,13 @@
           },
           "gender": {
             "type": "string",
-            "enum": ["colt", "filly", "stallion", "mare", "gelding"]
+            "enum": [
+              "colt",
+              "filly",
+              "stallion",
+              "mare",
+              "gelding"
+            ]
           },
           "dateOfBirth": {
             "type": "string"
@@ -70,11 +76,19 @@
             "additionalProperties": false
           }
         },
-        "required": ["name", "registrationCode", "breed", "gender", "dateOfBirth"],
+        "required": [
+          "name",
+          "registrationCode",
+          "breed",
+          "gender",
+          "dateOfBirth"
+        ],
         "additionalProperties": false
       }
     },
-    "required": ["horse"],
+    "required": [
+      "horse"
+    ],
     "additionalProperties": false
   },
   "admission.admissionListSchema": {
@@ -105,7 +119,10 @@
         ]
       }
     },
-    "required": ["page", "limit"],
+    "required": [
+      "page",
+      "limit"
+    ],
     "additionalProperties": false
   },
   "admission.attachmentQuerySchema": {
@@ -131,7 +148,10 @@
         "maxLength": 180
       }
     },
-    "required": ["kind", "fileName"],
+    "required": [
+      "kind",
+      "fileName"
+    ],
     "additionalProperties": false
   },
   "admission.groomReviewSchema": {
@@ -140,7 +160,11 @@
     "properties": {
       "decision": {
         "type": "string",
-        "enum": ["approve", "reject", "request_documents"]
+        "enum": [
+          "approve",
+          "reject",
+          "request_documents"
+        ]
       },
       "note": {
         "type": "string",
@@ -155,7 +179,10 @@
         "type": "boolean"
       }
     },
-    "required": ["decision", "note"],
+    "required": [
+      "decision",
+      "note"
+    ],
     "additionalProperties": false
   },
   "admission.vetReviewSchema": {
@@ -164,7 +191,10 @@
     "properties": {
       "decision": {
         "type": "string",
-        "enum": ["approve", "reject"]
+        "enum": [
+          "approve",
+          "reject"
+        ]
       },
       "note": {
         "type": "string",
@@ -224,7 +254,10 @@
         "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
       }
     },
-    "required": ["decision", "note"],
+    "required": [
+      "decision",
+      "note"
+    ],
     "additionalProperties": false
   },
   "admission.trainerReviewSchema": {
@@ -233,7 +266,10 @@
     "properties": {
       "decision": {
         "type": "string",
-        "enum": ["approve", "reject"]
+        "enum": [
+          "approve",
+          "reject"
+        ]
       },
       "note": {
         "type": "string",
@@ -247,10 +283,17 @@
       },
       "readiness": {
         "type": "string",
-        "enum": ["ready", "conditional", "not_ready"]
+        "enum": [
+          "ready",
+          "conditional",
+          "not_ready"
+        ]
       }
     },
-    "required": ["decision", "note"],
+    "required": [
+      "decision",
+      "note"
+    ],
     "additionalProperties": false
   },
   "admission.managerDecisionSchema": {
@@ -259,7 +302,10 @@
     "properties": {
       "decision": {
         "type": "string",
-        "enum": ["approve", "reject"]
+        "enum": [
+          "approve",
+          "reject"
+        ]
       },
       "note": {
         "type": "string",
@@ -275,7 +321,10 @@
         "pattern": "^[0-9a-fA-F]{24}$"
       }
     },
-    "required": ["decision", "note"],
+    "required": [
+      "decision",
+      "note"
+    ],
     "additionalProperties": false
   },
   "admission.departureClearanceSchema": {
@@ -288,7 +337,9 @@
         "maxLength": 2000
       }
     },
-    "required": ["note"],
+    "required": [
+      "note"
+    ],
     "additionalProperties": false
   },
   "admission.assignReviewersSchema": {
@@ -318,7 +369,13 @@
         "maxLength": 1000
       }
     },
-    "required": ["groomId", "trainerId", "vetId", "revision", "reason"],
+    "required": [
+      "groomId",
+      "trainerId",
+      "vetId",
+      "revision",
+      "reason"
+    ],
     "additionalProperties": false
   },
   "admission.departurePlanSchema": {
@@ -346,7 +403,12 @@
         "maxLength": 1000
       }
     },
-    "required": ["revision", "plannedAt", "contactNote", "note"],
+    "required": [
+      "revision",
+      "plannedAt",
+      "contactNote",
+      "note"
+    ],
     "additionalProperties": false
   },
   "admission.departureConfirmSchema": {
@@ -368,7 +430,11 @@
         "maxLength": 1000
       }
     },
-    "required": ["revision", "physicallyDeparted", "note"],
+    "required": [
+      "revision",
+      "physicallyDeparted",
+      "note"
+    ],
     "additionalProperties": false
   },
   "horse.createHorseSchema": {
@@ -389,7 +455,13 @@
       },
       "gender": {
         "type": "string",
-        "enum": ["colt", "filly", "stallion", "mare", "gelding"]
+        "enum": [
+          "colt",
+          "filly",
+          "stallion",
+          "mare",
+          "gelding"
+        ]
       },
       "dateOfBirth": {
         "type": "string"
@@ -433,7 +505,14 @@
         "not": {}
       }
     },
-    "required": ["name", "registrationCode", "breed", "gender", "dateOfBirth", "ownerId"]
+    "required": [
+      "name",
+      "registrationCode",
+      "breed",
+      "gender",
+      "dateOfBirth",
+      "ownerId"
+    ]
   },
   "horse.updateHorseSchema": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -495,10 +574,17 @@
       },
       "admissionStatus": {
         "type": "string",
-        "enum": ["active", "candidate", "rejected"]
+        "enum": [
+          "active",
+          "candidate",
+          "rejected"
+        ]
       }
     },
-    "required": ["page", "limit"]
+    "required": [
+      "page",
+      "limit"
+    ]
   },
   "horse.emergencyLockSchema": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -512,10 +598,16 @@
       "healthStatus": {
         "default": "monitoring",
         "type": "string",
-        "enum": ["monitoring", "injured", "isolated"]
+        "enum": [
+          "monitoring",
+          "injured",
+          "isolated"
+        ]
       }
     },
-    "required": ["reason"]
+    "required": [
+      "reason"
+    ]
   },
   "horse.emergencyUnlockSchema": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -527,7 +619,9 @@
         "maxLength": 500
       }
     },
-    "required": ["resolutionReason"]
+    "required": [
+      "resolutionReason"
+    ]
   },
   "pedigree.pedigreeInput": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -556,7 +650,9 @@
                     "const": "unknown"
                   }
                 },
-                "required": ["kind"],
+                "required": [
+                  "kind"
+                ],
                 "additionalProperties": false
               },
               {
@@ -567,7 +663,9 @@
                     "const": "keep"
                   }
                 },
-                "required": ["kind"],
+                "required": [
+                  "kind"
+                ],
                 "additionalProperties": false
               },
               {
@@ -582,7 +680,10 @@
                     "pattern": "^[0-9a-fA-F]{24}$"
                   }
                 },
-                "required": ["kind", "horseId"],
+                "required": [
+                  "kind",
+                  "horseId"
+                ],
                 "additionalProperties": false
               },
               {
@@ -625,7 +726,10 @@
                     ]
                   }
                 },
-                "required": ["kind", "name"],
+                "required": [
+                  "kind",
+                  "name"
+                ],
                 "additionalProperties": false
               }
             ]
@@ -640,7 +744,9 @@
                     "const": "unknown"
                   }
                 },
-                "required": ["kind"],
+                "required": [
+                  "kind"
+                ],
                 "additionalProperties": false
               },
               {
@@ -651,7 +757,9 @@
                     "const": "keep"
                   }
                 },
-                "required": ["kind"],
+                "required": [
+                  "kind"
+                ],
                 "additionalProperties": false
               },
               {
@@ -666,7 +774,10 @@
                     "pattern": "^[0-9a-fA-F]{24}$"
                   }
                 },
-                "required": ["kind", "horseId"],
+                "required": [
+                  "kind",
+                  "horseId"
+                ],
                 "additionalProperties": false
               },
               {
@@ -709,7 +820,10 @@
                     ]
                   }
                 },
-                "required": ["kind", "name"],
+                "required": [
+                  "kind",
+                  "name"
+                ],
                 "additionalProperties": false
               }
             ]
@@ -724,7 +838,9 @@
                     "const": "unknown"
                   }
                 },
-                "required": ["kind"],
+                "required": [
+                  "kind"
+                ],
                 "additionalProperties": false
               },
               {
@@ -735,7 +851,9 @@
                     "const": "keep"
                   }
                 },
-                "required": ["kind"],
+                "required": [
+                  "kind"
+                ],
                 "additionalProperties": false
               },
               {
@@ -750,7 +868,10 @@
                     "pattern": "^[0-9a-fA-F]{24}$"
                   }
                 },
-                "required": ["kind", "horseId"],
+                "required": [
+                  "kind",
+                  "horseId"
+                ],
                 "additionalProperties": false
               },
               {
@@ -793,7 +914,10 @@
                     ]
                   }
                 },
-                "required": ["kind", "name"],
+                "required": [
+                  "kind",
+                  "name"
+                ],
                 "additionalProperties": false
               }
             ]
@@ -808,7 +932,9 @@
                     "const": "unknown"
                   }
                 },
-                "required": ["kind"],
+                "required": [
+                  "kind"
+                ],
                 "additionalProperties": false
               },
               {
@@ -819,7 +945,9 @@
                     "const": "keep"
                   }
                 },
-                "required": ["kind"],
+                "required": [
+                  "kind"
+                ],
                 "additionalProperties": false
               },
               {
@@ -834,7 +962,10 @@
                     "pattern": "^[0-9a-fA-F]{24}$"
                   }
                 },
-                "required": ["kind", "horseId"],
+                "required": [
+                  "kind",
+                  "horseId"
+                ],
                 "additionalProperties": false
               },
               {
@@ -877,7 +1008,10 @@
                     ]
                   }
                 },
-                "required": ["kind", "name"],
+                "required": [
+                  "kind",
+                  "name"
+                ],
                 "additionalProperties": false
               }
             ]
@@ -892,7 +1026,9 @@
                     "const": "unknown"
                   }
                 },
-                "required": ["kind"],
+                "required": [
+                  "kind"
+                ],
                 "additionalProperties": false
               },
               {
@@ -903,7 +1039,9 @@
                     "const": "keep"
                   }
                 },
-                "required": ["kind"],
+                "required": [
+                  "kind"
+                ],
                 "additionalProperties": false
               },
               {
@@ -918,7 +1056,10 @@
                     "pattern": "^[0-9a-fA-F]{24}$"
                   }
                 },
-                "required": ["kind", "horseId"],
+                "required": [
+                  "kind",
+                  "horseId"
+                ],
                 "additionalProperties": false
               },
               {
@@ -961,7 +1102,10 @@
                     ]
                   }
                 },
-                "required": ["kind", "name"],
+                "required": [
+                  "kind",
+                  "name"
+                ],
                 "additionalProperties": false
               }
             ]
@@ -976,7 +1120,9 @@
                     "const": "unknown"
                   }
                 },
-                "required": ["kind"],
+                "required": [
+                  "kind"
+                ],
                 "additionalProperties": false
               },
               {
@@ -987,7 +1133,9 @@
                     "const": "keep"
                   }
                 },
-                "required": ["kind"],
+                "required": [
+                  "kind"
+                ],
                 "additionalProperties": false
               },
               {
@@ -1002,7 +1150,10 @@
                     "pattern": "^[0-9a-fA-F]{24}$"
                   }
                 },
-                "required": ["kind", "horseId"],
+                "required": [
+                  "kind",
+                  "horseId"
+                ],
                 "additionalProperties": false
               },
               {
@@ -1045,13 +1196,23 @@
                     ]
                   }
                 },
-                "required": ["kind", "name"],
+                "required": [
+                  "kind",
+                  "name"
+                ],
                 "additionalProperties": false
               }
             ]
           }
         },
-        "required": ["sire", "dam", "sireSire", "sireDam", "damSire", "damDam"],
+        "required": [
+          "sire",
+          "dam",
+          "sireSire",
+          "sireDam",
+          "damSire",
+          "damDam"
+        ],
         "additionalProperties": false
       },
       "sourceNote": {
@@ -1060,7 +1221,12 @@
         "maxLength": 1000
       }
     },
-    "required": ["revision", "reason", "links", "sourceNote"],
+    "required": [
+      "revision",
+      "reason",
+      "links",
+      "sourceNote"
+    ],
     "additionalProperties": false
   },
   "pedigree.reviewInput": {
@@ -1074,7 +1240,10 @@
       },
       "decision": {
         "type": "string",
-        "enum": ["approve", "reject"]
+        "enum": [
+          "approve",
+          "reject"
+        ]
       },
       "note": {
         "type": "string",
@@ -1082,7 +1251,11 @@
         "maxLength": 1000
       }
     },
-    "required": ["revision", "decision", "note"],
+    "required": [
+      "revision",
+      "decision",
+      "note"
+    ],
     "additionalProperties": false
   },
   "pedigree.verifyInput": {
@@ -1100,7 +1273,10 @@
         "maxLength": 1000
       }
     },
-    "required": ["revision", "note"],
+    "required": [
+      "revision",
+      "note"
+    ],
     "additionalProperties": false
   },
   "pedigree.identityInput": {
@@ -1169,10 +1345,16 @@
       },
       "sex": {
         "type": "string",
-        "enum": ["sire", "dam"]
+        "enum": [
+          "sire",
+          "dam"
+        ]
       }
     },
-    "required": ["page", "limit"],
+    "required": [
+      "page",
+      "limit"
+    ],
     "additionalProperties": false
   },
   "stable.stableSchema": {
@@ -1220,7 +1402,10 @@
                 }
               }
             },
-            "required": ["rows", "columns"],
+            "required": [
+              "rows",
+              "columns"
+            ],
             "additionalProperties": false
           },
           {
@@ -1229,7 +1414,9 @@
         ]
       }
     },
-    "required": ["name"],
+    "required": [
+      "name"
+    ],
     "additionalProperties": false
   },
   "stable.stallSchema": {
@@ -1247,7 +1434,11 @@
       },
       "type": {
         "type": "string",
-        "enum": ["normal", "admission_quarantine", "medical_isolation"]
+        "enum": [
+          "normal",
+          "admission_quarantine",
+          "medical_isolation"
+        ]
       },
       "position": {
         "anyOf": [
@@ -1265,7 +1456,10 @@
                 "maximum": 20
               }
             },
-            "required": ["row", "column"],
+            "required": [
+              "row",
+              "column"
+            ],
             "additionalProperties": false
           },
           {
@@ -1274,7 +1468,11 @@
         ]
       }
     },
-    "required": ["stableId", "code", "type"],
+    "required": [
+      "stableId",
+      "code",
+      "type"
+    ],
     "additionalProperties": false
   },
   "stable.occupancySchema": {
@@ -1295,7 +1493,11 @@
         "maxLength": 1000
       }
     },
-    "required": ["horseId", "stallId", "reason"],
+    "required": [
+      "horseId",
+      "stallId",
+      "reason"
+    ],
     "additionalProperties": false
   },
   "stable.assignmentSchema": {
@@ -1316,7 +1518,11 @@
         "maxLength": 1000
       }
     },
-    "required": ["horseId", "groomId", "reason"],
+    "required": [
+      "horseId",
+      "groomId",
+      "reason"
+    ],
     "additionalProperties": false
   },
   "stable.endSchema": {
@@ -1329,7 +1535,9 @@
         "maxLength": 1000
       }
     },
-    "required": ["reason"],
+    "required": [
+      "reason"
+    ],
     "additionalProperties": false
   },
   "stable.capacitySchema": {
@@ -1342,7 +1550,9 @@
         "maximum": 100
       }
     },
-    "required": ["maxAssignedHorses"],
+    "required": [
+      "maxAssignedHorses"
+    ],
     "additionalProperties": false
   },
   "stable.trainerAssignmentSchema": {
@@ -1370,7 +1580,11 @@
         "maxLength": 1000
       }
     },
-    "required": ["horseId", "trainerId", "reason"],
+    "required": [
+      "horseId",
+      "trainerId",
+      "reason"
+    ],
     "additionalProperties": false
   },
   "stable.updateStableSchema": {
@@ -1418,7 +1632,10 @@
                 }
               }
             },
-            "required": ["rows", "columns"],
+            "required": [
+              "rows",
+              "columns"
+            ],
             "additionalProperties": false
           },
           {
@@ -1440,7 +1657,13 @@
         "maxLength": 1000
       }
     },
-    "required": ["name", "layout", "isActive", "revision", "reason"],
+    "required": [
+      "name",
+      "layout",
+      "isActive",
+      "revision",
+      "reason"
+    ],
     "additionalProperties": false
   },
   "stable.updateStallSchema": {
@@ -1454,7 +1677,11 @@
       },
       "type": {
         "type": "string",
-        "enum": ["normal", "admission_quarantine", "medical_isolation"]
+        "enum": [
+          "normal",
+          "admission_quarantine",
+          "medical_isolation"
+        ]
       },
       "position": {
         "anyOf": [
@@ -1472,7 +1699,10 @@
                 "maximum": 20
               }
             },
-            "required": ["row", "column"],
+            "required": [
+              "row",
+              "column"
+            ],
             "additionalProperties": false
           },
           {
@@ -1497,7 +1727,15 @@
         "maxLength": 1000
       }
     },
-    "required": ["code", "type", "position", "isActive", "maintenance", "revision", "reason"],
+    "required": [
+      "code",
+      "type",
+      "position",
+      "isActive",
+      "maintenance",
+      "revision",
+      "reason"
+    ],
     "additionalProperties": false
   },
   "stable.stableAssignmentSchema": {
@@ -1518,7 +1756,11 @@
         "maxLength": 1000
       }
     },
-    "required": ["stableId", "groomId", "reason"],
+    "required": [
+      "stableId",
+      "groomId",
+      "reason"
+    ],
     "additionalProperties": false
   },
   "stable.detailQuerySchema": {
@@ -1567,7 +1809,10 @@
         }
       }
     },
-    "required": ["rows", "columns"],
+    "required": [
+      "rows",
+      "columns"
+    ],
     "additionalProperties": false
   },
   "floorPlan.floorPlanSchema": {
@@ -1596,7 +1841,14 @@
             },
             "type": {
               "type": "string",
-              "enum": ["stall", "aisle", "yard", "obstacle", "gate", "label"]
+              "enum": [
+                "stall",
+                "aisle",
+                "yard",
+                "obstacle",
+                "gate",
+                "label"
+              ]
             },
             "x": {
               "type": "integer",
@@ -1628,12 +1880,23 @@
               "pattern": "^[0-9a-fA-F]{24}$"
             }
           },
-          "required": ["id", "type", "x", "y", "width", "height"],
+          "required": [
+            "id",
+            "type",
+            "x",
+            "y",
+            "width",
+            "height"
+          ],
           "additionalProperties": false
         }
       }
     },
-    "required": ["width", "height", "items"],
+    "required": [
+      "width",
+      "height",
+      "items"
+    ],
     "additionalProperties": false
   },
   "floorPlan.floorPlanInput": {
@@ -1667,7 +1930,14 @@
                     },
                     "type": {
                       "type": "string",
-                      "enum": ["stall", "aisle", "yard", "obstacle", "gate", "label"]
+                      "enum": [
+                        "stall",
+                        "aisle",
+                        "yard",
+                        "obstacle",
+                        "gate",
+                        "label"
+                      ]
                     },
                     "x": {
                       "type": "integer",
@@ -1699,12 +1969,23 @@
                       "pattern": "^[0-9a-fA-F]{24}$"
                     }
                   },
-                  "required": ["id", "type", "x", "y", "width", "height"],
+                  "required": [
+                    "id",
+                    "type",
+                    "x",
+                    "y",
+                    "width",
+                    "height"
+                  ],
                   "additionalProperties": false
                 }
               }
             },
-            "required": ["width", "height", "items"],
+            "required": [
+              "width",
+              "height",
+              "items"
+            ],
             "additionalProperties": false
           },
           {
@@ -1723,7 +2004,11 @@
         "maxLength": 1000
       }
     },
-    "required": ["floorPlan", "revision", "reason"],
+    "required": [
+      "floorPlan",
+      "revision",
+      "reason"
+    ],
     "additionalProperties": false
   },
   "medicalRecord.createMedicalRecordSchema": {
@@ -1741,7 +2026,13 @@
       },
       "type": {
         "type": "string",
-        "enum": ["routine_checkup", "pre_race", "post_race", "emergency", "follow_up"]
+        "enum": [
+          "routine_checkup",
+          "pre_race",
+          "post_race",
+          "emergency",
+          "follow_up"
+        ]
       },
       "weight": {
         "type": "number",
@@ -1803,7 +2094,12 @@
               "maximum": 9007199254740991
             }
           },
-          "required": ["name", "dosage", "frequency", "durationDays"]
+          "required": [
+            "name",
+            "dosage",
+            "frequency",
+            "durationDays"
+          ]
         }
       },
       "nextCheckupDate": {
@@ -1819,7 +2115,11 @@
         "pattern": "^[0-9a-fA-F]{24}$"
       }
     },
-    "required": ["horseId", "examinationDate", "type"]
+    "required": [
+      "horseId",
+      "examinationDate",
+      "type"
+    ]
   },
   "medicalRecord.updateMedicalRecordSchema": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -1890,7 +2190,12 @@
               "maximum": 9007199254740991
             }
           },
-          "required": ["name", "dosage", "frequency", "durationDays"]
+          "required": [
+            "name",
+            "dosage",
+            "frequency",
+            "durationDays"
+          ]
         }
       },
       "nextCheckupDate": {
@@ -1927,10 +2232,19 @@
       },
       "type": {
         "type": "string",
-        "enum": ["routine_checkup", "pre_race", "post_race", "emergency", "follow_up"]
+        "enum": [
+          "routine_checkup",
+          "pre_race",
+          "post_race",
+          "emergency",
+          "follow_up"
+        ]
       }
     },
-    "required": ["page", "limit"]
+    "required": [
+      "page",
+      "limit"
+    ]
   },
   "medicalEncounter.encounterSchema": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -1949,7 +2263,10 @@
             "maximum": 9007199254740991
           }
         },
-        "required": ["id", "revision"],
+        "required": [
+          "id",
+          "revision"
+        ],
         "additionalProperties": false
       },
       "requestKey": {
@@ -1971,7 +2288,13 @@
           },
           "type": {
             "type": "string",
-            "enum": ["routine_checkup", "pre_race", "post_race", "emergency", "follow_up"]
+            "enum": [
+              "routine_checkup",
+              "pre_race",
+              "post_race",
+              "emergency",
+              "follow_up"
+            ]
           },
           "weight": {
             "type": "number",
@@ -2033,14 +2356,23 @@
                   "maximum": 9007199254740991
                 }
               },
-              "required": ["name", "dosage", "frequency", "durationDays"]
+              "required": [
+                "name",
+                "dosage",
+                "frequency",
+                "durationDays"
+              ]
             }
           },
           "notes": {
             "type": "string"
           }
         },
-        "required": ["horseId", "examinationDate", "type"],
+        "required": [
+          "horseId",
+          "examinationDate",
+          "type"
+        ],
         "additionalProperties": false
       },
       "injury": {
@@ -2078,7 +2410,12 @@
                   },
                   "severity": {
                     "type": "string",
-                    "enum": ["minor", "moderate", "severe", "critical"]
+                    "enum": [
+                      "minor",
+                      "moderate",
+                      "severe",
+                      "critical"
+                    ]
                   },
                   "affectedArea": {
                     "type": "string",
@@ -2131,7 +2468,11 @@
                           },
                           "side": {
                             "type": "string",
-                            "enum": ["left", "right", "midline"]
+                            "enum": [
+                              "left",
+                              "right",
+                              "midline"
+                            ]
                           },
                           "point": {
                             "type": "array",
@@ -2197,11 +2538,20 @@
                     ]
                   }
                 },
-                "required": ["injuryDate", "injuryType", "severity", "affectedArea", "description"],
+                "required": [
+                  "injuryDate",
+                  "injuryType",
+                  "severity",
+                  "affectedArea",
+                  "description"
+                ],
                 "additionalProperties": false
               }
             },
-            "required": ["mode", "data"],
+            "required": [
+              "mode",
+              "data"
+            ],
             "additionalProperties": false
           },
           {
@@ -2274,7 +2624,11 @@
                           },
                           "side": {
                             "type": "string",
-                            "enum": ["left", "right", "midline"]
+                            "enum": [
+                              "left",
+                              "right",
+                              "midline"
+                            ]
                           },
                           "point": {
                             "type": "array",
@@ -2342,7 +2696,10 @@
                 }
               }
             },
-            "required": ["mode", "id"],
+            "required": [
+              "mode",
+              "id"
+            ],
             "additionalProperties": false
           }
         ]
@@ -2385,7 +2742,12 @@
                     },
                     "severity": {
                       "type": "string",
-                      "enum": ["minor", "moderate", "severe", "critical"]
+                      "enum": [
+                        "minor",
+                        "moderate",
+                        "severe",
+                        "critical"
+                      ]
                     },
                     "affectedArea": {
                       "type": "string",
@@ -2438,7 +2800,11 @@
                             },
                             "side": {
                               "type": "string",
-                              "enum": ["left", "right", "midline"]
+                              "enum": [
+                                "left",
+                                "right",
+                                "midline"
+                              ]
                             },
                             "point": {
                               "type": "array",
@@ -2514,7 +2880,10 @@
                   "additionalProperties": false
                 }
               },
-              "required": ["mode", "data"],
+              "required": [
+                "mode",
+                "data"
+              ],
               "additionalProperties": false
             },
             {
@@ -2587,7 +2956,11 @@
                             },
                             "side": {
                               "type": "string",
-                              "enum": ["left", "right", "midline"]
+                              "enum": [
+                                "left",
+                                "right",
+                                "midline"
+                              ]
                             },
                             "point": {
                               "type": "array",
@@ -2655,7 +3028,10 @@
                   }
                 }
               },
-              "required": ["mode", "id"],
+              "required": [
+                "mode",
+                "id"
+              ],
               "additionalProperties": false
             }
           ]
@@ -2704,7 +3080,12 @@
           },
           "type": {
             "type": "string",
-            "enum": ["follow_up", "vaccination", "deworming", "farrier"]
+            "enum": [
+              "follow_up",
+              "vaccination",
+              "deworming",
+              "farrier"
+            ]
           },
           "title": {
             "type": "string",
@@ -2734,7 +3115,11 @@
             "pattern": "^[0-9a-fA-F]{24}$"
           }
         },
-        "required": ["type", "title", "dueDate"],
+        "required": [
+          "type",
+          "title",
+          "dueDate"
+        ],
         "additionalProperties": false
       },
       "completeSchedule": {
@@ -2750,11 +3135,17 @@
             "maximum": 9007199254740991
           }
         },
-        "required": ["id", "revision"],
+        "required": [
+          "id",
+          "revision"
+        ],
         "additionalProperties": false
       }
     },
-    "required": ["requestKey", "record"],
+    "required": [
+      "requestKey",
+      "record"
+    ],
     "additionalProperties": false
   },
   "injury.createInjurySchema": {
@@ -2772,11 +3163,24 @@
       },
       "injuryType": {
         "type": "string",
-        "enum": ["muscle", "bone", "tendon", "hoof", "respiratory", "neurological", "other"]
+        "enum": [
+          "muscle",
+          "bone",
+          "tendon",
+          "hoof",
+          "respiratory",
+          "neurological",
+          "other"
+        ]
       },
       "severity": {
         "type": "string",
-        "enum": ["minor", "moderate", "severe", "critical"]
+        "enum": [
+          "minor",
+          "moderate",
+          "severe",
+          "critical"
+        ]
       },
       "affectedArea": {
         "type": "string",
@@ -2833,7 +3237,11 @@
               },
               "side": {
                 "type": "string",
-                "enum": ["left", "right", "midline"]
+                "enum": [
+                  "left",
+                  "right",
+                  "midline"
+                ]
               },
               "point": {
                 "type": "array",
@@ -2882,7 +3290,15 @@
                 "maxItems": 3
               }
             },
-            "required": ["modelId", "modelVersion", "layer", "regionId", "side", "point", "normal"],
+            "required": [
+              "modelId",
+              "modelVersion",
+              "layer",
+              "regionId",
+              "side",
+              "point",
+              "normal"
+            ],
             "additionalProperties": false
           },
           {
@@ -2891,7 +3307,14 @@
         ]
       }
     },
-    "required": ["horseId", "injuryDate", "injuryType", "severity", "affectedArea", "description"]
+    "required": [
+      "horseId",
+      "injuryDate",
+      "injuryType",
+      "severity",
+      "affectedArea",
+      "description"
+    ]
   },
   "injury.updateInjurySchema": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -2944,7 +3367,11 @@
               },
               "side": {
                 "type": "string",
-                "enum": ["left", "right", "midline"]
+                "enum": [
+                  "left",
+                  "right",
+                  "midline"
+                ]
               },
               "point": {
                 "type": "array",
@@ -2993,7 +3420,15 @@
                 "maxItems": 3
               }
             },
-            "required": ["modelId", "modelVersion", "layer", "regionId", "side", "point", "normal"],
+            "required": [
+              "modelId",
+              "modelVersion",
+              "layer",
+              "regionId",
+              "side",
+              "point",
+              "normal"
+            ],
             "additionalProperties": false
           },
           {
@@ -3009,10 +3444,14 @@
     "properties": {
       "status": {
         "type": "string",
-        "enum": ["recovering"]
+        "enum": [
+          "recovering"
+        ]
       }
     },
-    "required": ["status"]
+    "required": [
+      "status"
+    ]
   },
   "injury.resolveInjurySchema": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -3043,10 +3482,17 @@
       },
       "status": {
         "type": "string",
-        "enum": ["active", "recovering", "resolved"]
+        "enum": [
+          "active",
+          "recovering",
+          "resolved"
+        ]
       }
     },
-    "required": ["page", "limit"]
+    "required": [
+      "page",
+      "limit"
+    ]
   },
   "injuryLocation.surfaceLocationSchema": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -3082,7 +3528,11 @@
       },
       "side": {
         "type": "string",
-        "enum": ["left", "right", "midline"]
+        "enum": [
+          "left",
+          "right",
+          "midline"
+        ]
       },
       "point": {
         "type": "array",
@@ -3131,7 +3581,15 @@
         "maxItems": 3
       }
     },
-    "required": ["modelId", "modelVersion", "layer", "regionId", "side", "point", "normal"],
+    "required": [
+      "modelId",
+      "modelVersion",
+      "layer",
+      "regionId",
+      "side",
+      "point",
+      "normal"
+    ],
     "additionalProperties": false
   },
   "medicalSchedule.coordinateSchema": {
@@ -3148,24 +3606,10 @@
         "pattern": "^[0-9a-fA-F]{24}$"
       }
     },
-    "required": ["revision", "groomId"],
-    "additionalProperties": false
-  },
-  "medicalSchedule.linkSchema": {
-    "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "type": "object",
-    "properties": {
-      "revision": {
-        "type": "integer",
-        "minimum": 0,
-        "maximum": 9007199254740991
-      },
-      "medicalRecordId": {
-        "type": "string",
-        "pattern": "^[0-9a-fA-F]{24}$"
-      }
-    },
-    "required": ["revision", "medicalRecordId"],
+    "required": [
+      "revision",
+      "groomId"
+    ],
     "additionalProperties": false
   },
   "medicalSchedule.recordSchema": {
@@ -3191,7 +3635,13 @@
           },
           "type": {
             "type": "string",
-            "enum": ["routine_checkup", "pre_race", "post_race", "emergency", "follow_up"]
+            "enum": [
+              "routine_checkup",
+              "pre_race",
+              "post_race",
+              "emergency",
+              "follow_up"
+            ]
           },
           "weight": {
             "type": "number",
@@ -3253,7 +3703,12 @@
                   "maximum": 9007199254740991
                 }
               },
-              "required": ["name", "dosage", "frequency", "durationDays"]
+              "required": [
+                "name",
+                "dosage",
+                "frequency",
+                "durationDays"
+              ]
             }
           },
           "nextCheckupDate": {
@@ -3269,10 +3724,17 @@
             "pattern": "^[0-9a-fA-F]{24}$"
           }
         },
-        "required": ["horseId", "examinationDate", "type"]
+        "required": [
+          "horseId",
+          "examinationDate",
+          "type"
+        ]
       }
     },
-    "required": ["revision", "record"],
+    "required": [
+      "revision",
+      "record"
+    ],
     "additionalProperties": false
   },
   "medicalSchedule.createSchema": {
@@ -3323,7 +3785,12 @@
       },
       "type": {
         "type": "string",
-        "enum": ["follow_up", "vaccination", "deworming", "farrier"]
+        "enum": [
+          "follow_up",
+          "vaccination",
+          "deworming",
+          "farrier"
+        ]
       },
       "title": {
         "type": "string",
@@ -3353,7 +3820,12 @@
         "pattern": "^[0-9a-fA-F]{24}$"
       }
     },
-    "required": ["horseId", "type", "title", "dueDate"],
+    "required": [
+      "horseId",
+      "type",
+      "title",
+      "dueDate"
+    ],
     "additionalProperties": false
   },
   "medicalSchedule.updateSchema": {
@@ -3400,7 +3872,12 @@
       },
       "type": {
         "type": "string",
-        "enum": ["follow_up", "vaccination", "deworming", "farrier"]
+        "enum": [
+          "follow_up",
+          "vaccination",
+          "deworming",
+          "farrier"
+        ]
       },
       "title": {
         "type": "string",
@@ -3435,7 +3912,12 @@
         "maximum": 9007199254740991
       }
     },
-    "required": ["type", "title", "dueDate", "revision"],
+    "required": [
+      "type",
+      "title",
+      "dueDate",
+      "revision"
+    ],
     "additionalProperties": false
   },
   "medicalSchedule.completeSchema": {
@@ -3480,7 +3962,11 @@
             "maxLength": 1000
           }
         },
-        "required": ["performedOn", "productName", "dose"],
+        "required": [
+          "performedOn",
+          "productName",
+          "dose"
+        ],
         "additionalProperties": false
       },
       "stockIssue": {
@@ -3505,7 +3991,12 @@
             "maximum": 1000000
           }
         },
-        "required": ["warehouseId", "stockVersion", "itemId", "quantity"],
+        "required": [
+          "warehouseId",
+          "stockVersion",
+          "itemId",
+          "quantity"
+        ],
         "additionalProperties": false
       },
       "nextDueDate": {
@@ -3520,7 +4011,10 @@
         ]
       }
     },
-    "required": ["revision", "result"],
+    "required": [
+      "revision",
+      "result"
+    ],
     "additionalProperties": false
   },
   "medicalSchedule.cancelSchema": {
@@ -3538,7 +4032,10 @@
         "maxLength": 500
       }
     },
-    "required": ["revision", "reason"],
+    "required": [
+      "revision",
+      "reason"
+    ],
     "additionalProperties": false
   },
   "medicalSchedule.listSchema": {
@@ -3565,14 +4062,29 @@
       },
       "type": {
         "type": "string",
-        "enum": ["follow_up", "vaccination", "deworming", "farrier"]
+        "enum": [
+          "follow_up",
+          "vaccination",
+          "deworming",
+          "farrier"
+        ]
       },
       "status": {
         "type": "string",
-        "enum": ["scheduled", "upcoming", "due", "overdue", "completed", "cancelled"]
+        "enum": [
+          "scheduled",
+          "upcoming",
+          "due",
+          "overdue",
+          "completed",
+          "cancelled"
+        ]
       }
     },
-    "required": ["page", "limit"],
+    "required": [
+      "page",
+      "limit"
+    ],
     "additionalProperties": false
   },
   "ration.create": {
@@ -3644,12 +4156,20 @@
                     "maximum": 10000
                   }
                 },
-                "required": ["itemId", "quantity"],
+                "required": [
+                  "itemId",
+                  "quantity"
+                ],
                 "additionalProperties": false
               }
             }
           },
-          "required": ["key", "name", "time", "lines"],
+          "required": [
+            "key",
+            "name",
+            "time",
+            "lines"
+          ],
           "additionalProperties": false
         }
       },
@@ -3663,7 +4183,15 @@
         "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
       }
     },
-    "required": ["title", "objective", "validFrom", "validTo", "meals", "horseId", "requestKey"],
+    "required": [
+      "title",
+      "objective",
+      "validFrom",
+      "validTo",
+      "meals",
+      "horseId",
+      "requestKey"
+    ],
     "additionalProperties": false
   },
   "ration.update": {
@@ -3735,12 +4263,20 @@
                     "maximum": 10000
                   }
                 },
-                "required": ["itemId", "quantity"],
+                "required": [
+                  "itemId",
+                  "quantity"
+                ],
                 "additionalProperties": false
               }
             }
           },
-          "required": ["key", "name", "time", "lines"],
+          "required": [
+            "key",
+            "name",
+            "time",
+            "lines"
+          ],
           "additionalProperties": false
         }
       },
@@ -3750,60 +4286,14 @@
         "maximum": 9007199254740991
       }
     },
-    "required": ["title", "objective", "validFrom", "validTo", "meals", "revision"],
-    "additionalProperties": false
-  },
-  "ration.submit": {
-    "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "type": "object",
-    "properties": {
-      "revision": {
-        "type": "integer",
-        "minimum": 0,
-        "maximum": 9007199254740991
-      }
-    },
-    "required": ["revision"],
-    "additionalProperties": false
-  },
-  "ration.decision": {
-    "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "type": "object",
-    "properties": {
-      "revision": {
-        "type": "integer",
-        "minimum": 0,
-        "maximum": 9007199254740991
-      },
-      "decision": {
-        "type": "string",
-        "enum": ["approve", "request_changes"]
-      },
-      "note": {
-        "type": "string",
-        "minLength": 3,
-        "maxLength": 1000
-      }
-    },
-    "required": ["revision", "decision", "note"],
-    "additionalProperties": false
-  },
-  "ration.direct": {
-    "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "type": "object",
-    "properties": {
-      "revision": {
-        "type": "integer",
-        "minimum": 0,
-        "maximum": 9007199254740991
-      },
-      "note": {
-        "type": "string",
-        "minLength": 3,
-        "maxLength": 1000
-      }
-    },
-    "required": ["revision", "note"],
+    "required": [
+      "title",
+      "objective",
+      "validFrom",
+      "validTo",
+      "meals",
+      "revision"
+    ],
     "additionalProperties": false
   },
   "ration.withdraw": {
@@ -3821,7 +4311,10 @@
         "maxLength": 1000
       }
     },
-    "required": ["revision", "reason"],
+    "required": [
+      "revision",
+      "reason"
+    ],
     "additionalProperties": false
   },
   "ration.list": {
@@ -3844,10 +4337,20 @@
       },
       "status": {
         "type": "string",
-        "enum": ["draft", "pending_review", "changes_requested", "approved", "withdrawn", "expired"]
+        "enum": [
+          "draft",
+          "pending_review",
+          "changes_requested",
+          "approved",
+          "withdrawn",
+          "expired"
+        ]
       }
     },
-    "required": ["page", "limit"],
+    "required": [
+      "page",
+      "limit"
+    ],
     "additionalProperties": false
   },
   "prescription.list": {
@@ -3866,10 +4369,18 @@
       },
       "status": {
         "type": "string",
-        "enum": ["waiting", "partial", "fulfilled", "stopped"]
+        "enum": [
+          "waiting",
+          "partial",
+          "fulfilled",
+          "stopped"
+        ]
       }
     },
-    "required": ["page", "limit"],
+    "required": [
+      "page",
+      "limit"
+    ],
     "additionalProperties": false
   },
   "prescription.create": {
@@ -3927,12 +4438,23 @@
               "maxLength": 2000
             }
           },
-          "required": ["itemId", "quantity", "dosage", "route", "frequency", "durationDays"],
+          "required": [
+            "itemId",
+            "quantity",
+            "dosage",
+            "route",
+            "frequency",
+            "durationDays"
+          ],
           "additionalProperties": false
         }
       }
     },
-    "required": ["requestKey", "recipientId", "lines"],
+    "required": [
+      "requestKey",
+      "recipientId",
+      "lines"
+    ],
     "additionalProperties": false
   },
   "prescription.stop": {
@@ -3950,7 +4472,10 @@
         "maxLength": 1000
       }
     },
-    "required": ["revision", "reason"],
+    "required": [
+      "revision",
+      "reason"
+    ],
     "additionalProperties": false
   },
   "prescription.issue": {
@@ -4006,7 +4531,10 @@
               "maximum": 1000000
             }
           },
-          "required": ["lineId", "quantity"],
+          "required": [
+            "lineId",
+            "quantity"
+          ],
           "additionalProperties": false
         }
       }
@@ -4038,11 +4566,22 @@
       },
       "category": {
         "type": "string",
-        "enum": ["feed", "care", "cleaning", "medicine"]
+        "enum": [
+          "feed",
+          "care",
+          "cleaning",
+          "medicine"
+        ]
       },
       "unit": {
         "type": "string",
-        "enum": ["kg", "g", "l", "ml", "piece"]
+        "enum": [
+          "kg",
+          "g",
+          "l",
+          "ml",
+          "piece"
+        ]
       },
       "notes": {
         "default": "",
@@ -4065,7 +4604,12 @@
         "maxLength": 500
       }
     },
-    "required": ["code", "name", "category", "unit"],
+    "required": [
+      "code",
+      "name",
+      "category",
+      "unit"
+    ],
     "additionalProperties": false
   },
   "inventory.itemUpdate": {
@@ -4096,7 +4640,12 @@
         "maxLength": 1000
       }
     },
-    "required": ["name", "isActive", "revision", "reason"],
+    "required": [
+      "name",
+      "isActive",
+      "revision",
+      "reason"
+    ],
     "additionalProperties": false
   },
   "inventory.warehouseCreate": {
@@ -4114,15 +4663,42 @@
       },
       "type": {
         "type": "string",
-        "enum": ["central", "stable", "medicine_cabinet"]
+        "enum": [
+          "central",
+          "stable",
+          "medicine_cabinet"
+        ]
       },
       "stableId": {
-        "type": "string",
-        "pattern": "^[0-9a-fA-F]{24}$"
+        "anyOf": [
+          {
+            "type": "string",
+            "pattern": "^[0-9a-fA-F]{24}$"
+          },
+          {
+            "type": "null"
+          }
+        ]
       },
       "responsibleVetId": {
-        "type": "string",
-        "pattern": "^[0-9a-fA-F]{24}$"
+        "anyOf": [
+          {
+            "type": "string",
+            "pattern": "^[0-9a-fA-F]{24}$"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "assignedGroomIds": {
+        "default": [],
+        "maxItems": 50,
+        "type": "array",
+        "items": {
+          "type": "string",
+          "pattern": "^[0-9a-fA-F]{24}$"
+        }
       },
       "notes": {
         "default": "",
@@ -4130,7 +4706,11 @@
         "maxLength": 1000
       }
     },
-    "required": ["code", "name", "type"],
+    "required": [
+      "code",
+      "name",
+      "type"
+    ],
     "additionalProperties": false
   },
   "inventory.warehouseUpdate": {
@@ -4150,6 +4730,44 @@
       "isActive": {
         "type": "boolean"
       },
+      "type": {
+        "type": "string",
+        "enum": [
+          "central",
+          "stable",
+          "medicine_cabinet"
+        ]
+      },
+      "stableId": {
+        "anyOf": [
+          {
+            "type": "string",
+            "pattern": "^[0-9a-fA-F]{24}$"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "responsibleVetId": {
+        "anyOf": [
+          {
+            "type": "string",
+            "pattern": "^[0-9a-fA-F]{24}$"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "assignedGroomIds": {
+        "maxItems": 50,
+        "type": "array",
+        "items": {
+          "type": "string",
+          "pattern": "^[0-9a-fA-F]{24}$"
+        }
+      },
       "revision": {
         "type": "integer",
         "minimum": 0,
@@ -4161,7 +4779,12 @@
         "maxLength": 1000
       }
     },
-    "required": ["name", "isActive", "revision", "reason"],
+    "required": [
+      "name",
+      "isActive",
+      "revision",
+      "reason"
+    ],
     "additionalProperties": false
   },
   "inventory.receiptCreate": {
@@ -4221,7 +4844,10 @@
               ]
             }
           },
-          "required": ["itemId", "quantity"],
+          "required": [
+            "itemId",
+            "quantity"
+          ],
           "additionalProperties": false
         }
       },
@@ -4231,7 +4857,13 @@
         "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
       }
     },
-    "required": ["warehouseId", "supplier", "receivedAt", "lines", "requestKey"],
+    "required": [
+      "warehouseId",
+      "supplier",
+      "receivedAt",
+      "lines",
+      "requestKey"
+    ],
     "additionalProperties": false
   },
   "inventory.receiptUpdate": {
@@ -4291,7 +4923,10 @@
               ]
             }
           },
-          "required": ["itemId", "quantity"],
+          "required": [
+            "itemId",
+            "quantity"
+          ],
           "additionalProperties": false
         }
       },
@@ -4301,7 +4936,13 @@
         "maximum": 9007199254740991
       }
     },
-    "required": ["warehouseId", "supplier", "receivedAt", "lines", "revision"],
+    "required": [
+      "warehouseId",
+      "supplier",
+      "receivedAt",
+      "lines",
+      "revision"
+    ],
     "additionalProperties": false
   },
   "inventory.confirm": {
@@ -4314,7 +4955,9 @@
         "maximum": 9007199254740991
       }
     },
-    "required": ["revision"],
+    "required": [
+      "revision"
+    ],
     "additionalProperties": false
   },
   "inventory.cancel": {
@@ -4332,7 +4975,10 @@
         "maxLength": 1000
       }
     },
-    "required": ["revision", "reason"],
+    "required": [
+      "revision",
+      "reason"
+    ],
     "additionalProperties": false
   },
   "inventory.itemList": {
@@ -4355,14 +5001,25 @@
       },
       "active": {
         "type": "string",
-        "enum": ["true", "false"]
+        "enum": [
+          "true",
+          "false"
+        ]
       },
       "category": {
         "type": "string",
-        "enum": ["feed", "care", "cleaning", "medicine"]
+        "enum": [
+          "feed",
+          "care",
+          "cleaning",
+          "medicine"
+        ]
       }
     },
-    "required": ["page", "limit"],
+    "required": [
+      "page",
+      "limit"
+    ],
     "additionalProperties": false
   },
   "inventory.warehouseList": {
@@ -4385,14 +5042,24 @@
       },
       "active": {
         "type": "string",
-        "enum": ["true", "false"]
+        "enum": [
+          "true",
+          "false"
+        ]
       },
       "type": {
         "type": "string",
-        "enum": ["central", "stable", "medicine_cabinet"]
+        "enum": [
+          "central",
+          "stable",
+          "medicine_cabinet"
+        ]
       }
     },
-    "required": ["page", "limit"],
+    "required": [
+      "page",
+      "limit"
+    ],
     "additionalProperties": false
   },
   "inventory.stockList": {
@@ -4418,7 +5085,11 @@
         "maxLength": 100
       }
     },
-    "required": ["page", "limit", "warehouseId"],
+    "required": [
+      "page",
+      "limit",
+      "warehouseId"
+    ],
     "additionalProperties": false
   },
   "inventory.receiptList": {
@@ -4441,14 +5112,21 @@
       },
       "status": {
         "type": "string",
-        "enum": ["draft", "confirmed", "cancelled"]
+        "enum": [
+          "draft",
+          "confirmed",
+          "cancelled"
+        ]
       },
       "search": {
         "type": "string",
         "maxLength": 100
       }
     },
-    "required": ["page", "limit"],
+    "required": [
+      "page",
+      "limit"
+    ],
     "additionalProperties": false
   },
   "inventory.transferCreate": {
@@ -4489,7 +5167,10 @@
               "maximum": 1000000
             }
           },
-          "required": ["balanceId", "quantity"],
+          "required": [
+            "balanceId",
+            "quantity"
+          ],
           "additionalProperties": false
         }
       },
@@ -4499,7 +5180,12 @@
         "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
       }
     },
-    "required": ["sourceWarehouseId", "destinationWarehouseId", "lines", "requestKey"],
+    "required": [
+      "sourceWarehouseId",
+      "destinationWarehouseId",
+      "lines",
+      "requestKey"
+    ],
     "additionalProperties": false
   },
   "inventory.transferUpdate": {
@@ -4540,7 +5226,10 @@
               "maximum": 1000000
             }
           },
-          "required": ["balanceId", "quantity"],
+          "required": [
+            "balanceId",
+            "quantity"
+          ],
           "additionalProperties": false
         }
       },
@@ -4550,7 +5239,12 @@
         "maximum": 9007199254740991
       }
     },
-    "required": ["sourceWarehouseId", "destinationWarehouseId", "lines", "revision"],
+    "required": [
+      "sourceWarehouseId",
+      "destinationWarehouseId",
+      "lines",
+      "revision"
+    ],
     "additionalProperties": false
   },
   "inventory.transferList": {
@@ -4573,14 +5267,21 @@
       },
       "status": {
         "type": "string",
-        "enum": ["draft", "confirmed", "cancelled"]
+        "enum": [
+          "draft",
+          "confirmed",
+          "cancelled"
+        ]
       },
       "search": {
         "type": "string",
         "maxLength": 100
       }
     },
-    "required": ["page", "limit"],
+    "required": [
+      "page",
+      "limit"
+    ],
     "additionalProperties": false
   },
   "stocktake.options": {
@@ -4614,10 +5315,19 @@
       },
       "status": {
         "type": "string",
-        "enum": ["draft", "counting", "submitted", "confirmed", "cancelled"]
+        "enum": [
+          "draft",
+          "counting",
+          "submitted",
+          "confirmed",
+          "cancelled"
+        ]
       }
     },
-    "required": ["page", "limit"],
+    "required": [
+      "page",
+      "limit"
+    ],
     "additionalProperties": false
   },
   "stocktake.create": {
@@ -4643,7 +5353,11 @@
         "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
       }
     },
-    "required": ["warehouseId", "counterId", "requestKey"],
+    "required": [
+      "warehouseId",
+      "counterId",
+      "requestKey"
+    ],
     "additionalProperties": false
   },
   "stocktake.start": {
@@ -4660,7 +5374,10 @@
         "const": true
       }
     },
-    "required": ["revision", "acknowledgePhysicalFreeze"],
+    "required": [
+      "revision",
+      "acknowledgePhysicalFreeze"
+    ],
     "additionalProperties": false
   },
   "stocktake.save": {
@@ -4706,12 +5423,18 @@
               "maxLength": 1000
             }
           },
-          "required": ["lineId", "quantity"],
+          "required": [
+            "lineId",
+            "quantity"
+          ],
           "additionalProperties": false
         }
       }
     },
-    "required": ["revision", "lines"],
+    "required": [
+      "revision",
+      "lines"
+    ],
     "additionalProperties": false
   },
   "stocktake.submit": {
@@ -4724,7 +5447,9 @@
         "maximum": 9007199254740991
       }
     },
-    "required": ["revision"],
+    "required": [
+      "revision"
+    ],
     "additionalProperties": false
   },
   "stocktake.confirm": {
@@ -4746,7 +5471,11 @@
         "const": true
       }
     },
-    "required": ["revision", "reason", "acknowledgeReview"],
+    "required": [
+      "revision",
+      "reason",
+      "acknowledgeReview"
+    ],
     "additionalProperties": false
   },
   "stocktake.recount": {
@@ -4764,7 +5493,10 @@
         "maxLength": 2000
       }
     },
-    "required": ["revision", "reason"],
+    "required": [
+      "revision",
+      "reason"
+    ],
     "additionalProperties": false
   },
   "stocktake.cancel": {
@@ -4782,7 +5514,10 @@
         "maxLength": 2000
       }
     },
-    "required": ["revision", "reason"],
+    "required": [
+      "revision",
+      "reason"
+    ],
     "additionalProperties": false
   },
   "stockLedger.list": {
@@ -4840,7 +5575,14 @@
         ]
       }
     },
-    "required": ["page", "limit", "warehouseId", "itemId", "startDate", "endDate"],
+    "required": [
+      "page",
+      "limit",
+      "warehouseId",
+      "itemId",
+      "startDate",
+      "endDate"
+    ],
     "additionalProperties": false
   },
   "stockLedger.options": {
@@ -4856,7 +5598,10 @@
         "pattern": "^[0-9a-fA-F]{24}$"
       }
     },
-    "required": ["warehouseId", "itemId"],
+    "required": [
+      "warehouseId",
+      "itemId"
+    ],
     "additionalProperties": false
   },
   "stockLedger.document": {
@@ -4865,14 +5610,24 @@
     "properties": {
       "type": {
         "type": "string",
-        "enum": ["medicine_issue", "receipt", "transfer", "feed_issue", "adjustment", "disposal"]
+        "enum": [
+          "medicine_issue",
+          "receipt",
+          "transfer",
+          "feed_issue",
+          "adjustment",
+          "disposal"
+        ]
       },
       "id": {
         "type": "string",
         "pattern": "^[0-9a-fA-F]{24}$"
       }
     },
-    "required": ["type", "id"],
+    "required": [
+      "type",
+      "id"
+    ],
     "additionalProperties": false
   },
   "replenishment.preview": {
@@ -4892,7 +5647,9 @@
         "pattern": "^[0-9a-fA-F]{24}$"
       }
     },
-    "required": ["itemId"],
+    "required": [
+      "itemId"
+    ],
     "additionalProperties": false
   },
   "replenishment.create": {
@@ -4932,7 +5689,13 @@
         "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
       }
     },
-    "required": ["itemId", "quantity", "neededAt", "note", "requestKey"],
+    "required": [
+      "itemId",
+      "quantity",
+      "neededAt",
+      "note",
+      "requestKey"
+    ],
     "additionalProperties": false
   },
   "replenishment.decision": {
@@ -4946,7 +5709,11 @@
       },
       "status": {
         "type": "string",
-        "enum": ["approved", "rejected", "cancelled"]
+        "enum": [
+          "approved",
+          "rejected",
+          "cancelled"
+        ]
       },
       "quantity": {
         "type": "number",
@@ -4959,7 +5726,11 @@
         "maxLength": 1000
       }
     },
-    "required": ["revision", "status", "reason"],
+    "required": [
+      "revision",
+      "status",
+      "reason"
+    ],
     "additionalProperties": false
   },
   "replenishment.list": {
@@ -4982,10 +5753,20 @@
       },
       "status": {
         "type": "string",
-        "enum": ["pending", "approved", "partially_supplied", "fulfilled", "rejected", "cancelled"]
+        "enum": [
+          "pending",
+          "approved",
+          "partially_supplied",
+          "fulfilled",
+          "rejected",
+          "cancelled"
+        ]
       }
     },
-    "required": ["page", "limit"],
+    "required": [
+      "page",
+      "limit"
+    ],
     "additionalProperties": false
   },
   "replenishment.supply": {
@@ -5012,7 +5793,11 @@
         "type": "boolean"
       }
     },
-    "required": ["revision", "quantity", "requestKey"],
+    "required": [
+      "revision",
+      "quantity",
+      "requestKey"
+    ],
     "additionalProperties": false
   },
   "dailyTask.createTaskSchema": {
@@ -5051,7 +5836,13 @@
       },
       "type": {
         "type": "string",
-        "enum": ["feeding", "bathing", "stall_cleaning", "hoof_care", "training"]
+        "enum": [
+          "feeding",
+          "bathing",
+          "stall_cleaning",
+          "hoof_care",
+          "training"
+        ]
       },
       "horseId": {
         "type": "string",
@@ -5088,7 +5879,14 @@
         "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
       }
     },
-    "required": ["title", "groomId", "scheduledStartAt", "scheduledEndAt", "type", "requestKey"],
+    "required": [
+      "title",
+      "groomId",
+      "scheduledStartAt",
+      "scheduledEndAt",
+      "type",
+      "requestKey"
+    ],
     "additionalProperties": false
   },
   "dailyTask.bulkCreateTaskSchema": {
@@ -5134,7 +5932,13 @@
             },
             "type": {
               "type": "string",
-              "enum": ["feeding", "bathing", "stall_cleaning", "hoof_care", "training"]
+              "enum": [
+                "feeding",
+                "bathing",
+                "stall_cleaning",
+                "hoof_care",
+                "training"
+              ]
             },
             "horseId": {
               "type": "string",
@@ -5188,7 +5992,10 @@
         "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
       }
     },
-    "required": ["tasks", "requestKey"],
+    "required": [
+      "tasks",
+      "requestKey"
+    ],
     "additionalProperties": false
   },
   "dailyTask.updateTaskSchema": {
@@ -5253,7 +6060,14 @@
         "maxLength": 1000
       }
     },
-    "required": ["title", "groomId", "scheduledStartAt", "scheduledEndAt", "revision", "reason"],
+    "required": [
+      "title",
+      "groomId",
+      "scheduledStartAt",
+      "scheduledEndAt",
+      "revision",
+      "reason"
+    ],
     "additionalProperties": false
   },
   "dailyTask.finishTaskSchema": {
@@ -5302,7 +6116,12 @@
       },
       "feedingOutcome": {
         "type": "string",
-        "enum": ["normal", "partial", "refused", "not_fed"]
+        "enum": [
+          "normal",
+          "partial",
+          "refused",
+          "not_fed"
+        ]
       },
       "acknowledgeRationChange": {
         "type": "boolean"
@@ -5332,14 +6151,27 @@
             },
             "measurement": {
               "type": "string",
-              "enum": ["weighed", "estimated", "unknown"]
+              "enum": [
+                "weighed",
+                "estimated",
+                "unknown"
+              ]
             },
             "disposition": {
               "type": "string",
-              "enum": ["none", "discarded", "pending_review"]
+              "enum": [
+                "none",
+                "discarded",
+                "pending_review"
+              ]
             }
           },
-          "required": ["itemId", "quantity", "measurement", "disposition"],
+          "required": [
+            "itemId",
+            "quantity",
+            "measurement",
+            "disposition"
+          ],
           "additionalProperties": false
         }
       },
@@ -5347,9 +6179,6 @@
         "type": "string",
         "minLength": 3,
         "maxLength": 1000
-      },
-      "autoCompleteCheckpoints": {
-        "type": "boolean"
       }
     },
     "additionalProperties": false
@@ -5369,7 +6198,10 @@
         "maxLength": 1000
       }
     },
-    "required": ["revision", "reason"],
+    "required": [
+      "revision",
+      "reason"
+    ],
     "additionalProperties": false
   },
   "dailyTask.startTaskSchema": {
@@ -5378,21 +6210,14 @@
     "properties": {
       "scenario": {
         "type": "string",
-        "enum": ["normal", "heart_rate", "speed", "both"]
+        "enum": [
+          "normal",
+          "heart_rate",
+          "speed",
+          "both"
+        ]
       }
     },
-    "additionalProperties": false
-  },
-  "dailyTask.medicalCheckpointSchema": {
-    "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "type": "object",
-    "properties": {
-      "checkpoint": {
-        "type": "string",
-        "enum": ["arrived", "returned"]
-      }
-    },
-    "required": ["checkpoint"],
     "additionalProperties": false
   },
   "dailyTask.listTaskSchema": {
@@ -5423,11 +6248,23 @@
       },
       "type": {
         "type": "string",
-        "enum": ["feeding", "bathing", "stall_cleaning", "hoof_care", "training", "medical_support"]
+        "enum": [
+          "feeding",
+          "bathing",
+          "stall_cleaning",
+          "hoof_care",
+          "training",
+          "medical_support"
+        ]
       },
       "status": {
         "type": "string",
-        "enum": ["scheduled", "in_progress", "completed", "cancelled"]
+        "enum": [
+          "scheduled",
+          "in_progress",
+          "completed",
+          "cancelled"
+        ]
       },
       "groomId": {
         "type": "string",
@@ -5438,7 +6275,10 @@
         "pattern": "^[0-9a-fA-F]{24}$"
       }
     },
-    "required": ["page", "limit"]
+    "required": [
+      "page",
+      "limit"
+    ]
   },
   "taskAlert.list": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -5461,36 +6301,16 @@
       "status": {
         "default": "open",
         "type": "string",
-        "enum": ["open", "resolved"]
-      }
-    },
-    "required": ["page", "limit"],
-    "additionalProperties": false
-  },
-  "taskAlert.report": {
-    "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "type": "object",
-    "properties": {
-      "code": {
-        "type": "string",
         "enum": [
-          "ration_unavailable",
-          "feed_shortage",
-          "feed_source",
-          "stocktake",
-          "feed_item",
-          "resource_unavailable",
-          "training_unavailable",
-          "other"
+          "open",
+          "resolved"
         ]
-      },
-      "note": {
-        "type": "string",
-        "minLength": 3,
-        "maxLength": 1000
       }
     },
-    "required": ["code", "note"],
+    "required": [
+      "page",
+      "limit"
+    ],
     "additionalProperties": false
   },
   "taskAlert.action": {
@@ -5504,7 +6324,11 @@
       },
       "operation": {
         "type": "string",
-        "enum": ["acknowledge", "recheck", "resolve_manual"]
+        "enum": [
+          "acknowledge",
+          "recheck",
+          "resolve_manual"
+        ]
       },
       "reason": {
         "type": "string",
@@ -5512,7 +6336,11 @@
         "maxLength": 1000
       }
     },
-    "required": ["revision", "operation", "reason"],
+    "required": [
+      "revision",
+      "operation",
+      "reason"
+    ],
     "additionalProperties": false
   },
   "incident.assign": {
@@ -5534,7 +6362,10 @@
         "maxLength": 1000
       }
     },
-    "required": ["revision", "vetId"],
+    "required": [
+      "revision",
+      "vetId"
+    ],
     "additionalProperties": false
   },
   "incident.claim": {
@@ -5547,24 +6378,9 @@
         "maximum": 9007199254740991
       }
     },
-    "required": ["revision"],
-    "additionalProperties": false
-  },
-  "incident.link": {
-    "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "type": "object",
-    "properties": {
-      "revision": {
-        "type": "integer",
-        "minimum": 0,
-        "maximum": 9007199254740991
-      },
-      "medicalRecordId": {
-        "type": "string",
-        "pattern": "^[0-9a-fA-F]{24}$"
-      }
-    },
-    "required": ["revision", "medicalRecordId"],
+    "required": [
+      "revision"
+    ],
     "additionalProperties": false
   },
   "incident.create": {
@@ -5574,7 +6390,11 @@
       "taskImpact": {
         "default": "none",
         "type": "string",
-        "enum": ["none", "cannot_start", "cannot_continue"]
+        "enum": [
+          "none",
+          "cannot_start",
+          "cannot_continue"
+        ]
       },
       "title": {
         "type": "string",
@@ -5597,7 +6417,10 @@
       },
       "priority": {
         "type": "string",
-        "enum": ["normal", "urgent"]
+        "enum": [
+          "normal",
+          "urgent"
+        ]
       },
       "observedAt": {
         "type": "string",
@@ -5648,7 +6471,14 @@
         "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
       }
     },
-    "required": ["title", "category", "priority", "observedAt", "description", "requestKey"],
+    "required": [
+      "title",
+      "category",
+      "priority",
+      "observedAt",
+      "description",
+      "requestKey"
+    ],
     "additionalProperties": false
   },
   "incident.edit": {
@@ -5658,7 +6488,11 @@
       "taskImpact": {
         "default": "none",
         "type": "string",
-        "enum": ["none", "cannot_start", "cannot_continue"]
+        "enum": [
+          "none",
+          "cannot_start",
+          "cannot_continue"
+        ]
       },
       "title": {
         "type": "string",
@@ -5681,7 +6515,10 @@
       },
       "priority": {
         "type": "string",
-        "enum": ["normal", "urgent"]
+        "enum": [
+          "normal",
+          "urgent"
+        ]
       },
       "observedAt": {
         "type": "string",
@@ -5703,7 +6540,14 @@
         "maximum": 9007199254740991
       }
     },
-    "required": ["title", "category", "priority", "observedAt", "description", "revision"],
+    "required": [
+      "title",
+      "category",
+      "priority",
+      "observedAt",
+      "description",
+      "revision"
+    ],
     "additionalProperties": false
   },
   "incident.submit": {
@@ -5716,7 +6560,9 @@
         "maximum": 9007199254740991
       }
     },
-    "required": ["revision"],
+    "required": [
+      "revision"
+    ],
     "additionalProperties": false
   },
   "incident.transition": {
@@ -5730,7 +6576,10 @@
       },
       "status": {
         "type": "string",
-        "enum": ["acknowledged", "closed"]
+        "enum": [
+          "acknowledged",
+          "closed"
+        ]
       },
       "note": {
         "default": "",
@@ -5738,7 +6587,10 @@
         "maxLength": 1000
       }
     },
-    "required": ["revision", "status"],
+    "required": [
+      "revision",
+      "status"
+    ],
     "additionalProperties": false
   },
   "incident.photoQuery": {
@@ -5761,7 +6613,11 @@
         "maxLength": 180
       }
     },
-    "required": ["revision", "uploadKey", "fileName"],
+    "required": [
+      "revision",
+      "uploadKey",
+      "fileName"
+    ],
     "additionalProperties": false
   },
   "incident.photoParams": {
@@ -5777,7 +6633,10 @@
         "pattern": "^[0-9a-fA-F]{24}$"
       }
     },
-    "required": ["id", "photoId"],
+    "required": [
+      "id",
+      "photoId"
+    ],
     "additionalProperties": false
   },
   "incident.list": {
@@ -5796,11 +6655,21 @@
       },
       "status": {
         "type": "string",
-        "enum": ["draft", "open", "acknowledged", "in_progress", "pending_review", "closed"]
+        "enum": [
+          "draft",
+          "open",
+          "acknowledged",
+          "in_progress",
+          "pending_review",
+          "closed"
+        ]
       },
       "priority": {
         "type": "string",
-        "enum": ["normal", "urgent"]
+        "enum": [
+          "normal",
+          "urgent"
+        ]
       },
       "category": {
         "type": "string",
@@ -5833,7 +6702,10 @@
         "maxLength": 100
       }
     },
-    "required": ["page", "limit"],
+    "required": [
+      "page",
+      "limit"
+    ],
     "additionalProperties": false
   },
   "user.createUserSchema": {
@@ -5869,7 +6741,12 @@
         "type": "string"
       }
     },
-    "required": ["fullName", "email", "password", "role"]
+    "required": [
+      "fullName",
+      "email",
+      "password",
+      "role"
+    ]
   },
   "user.loginSchema": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -5885,7 +6762,10 @@
         "minLength": 1
       }
     },
-    "required": ["email", "password"]
+    "required": [
+      "email",
+      "password"
+    ]
   },
   "user.updateUserSchema": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -5930,7 +6810,10 @@
         ]
       }
     },
-    "required": ["page", "limit"]
+    "required": [
+      "page",
+      "limit"
+    ]
   },
   "trainingSession.updateTrainingSessionSchema": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -5971,7 +6854,10 @@
       },
       "status": {
         "type": "string",
-        "enum": ["completed", "cancelled"]
+        "enum": [
+          "completed",
+          "cancelled"
+        ]
       },
       "fitnessScore": {
         "type": "number",
@@ -6009,14 +6895,23 @@
       },
       "status": {
         "type": "string",
-        "enum": ["completed", "cancelled"]
+        "enum": [
+          "completed",
+          "cancelled"
+        ]
       },
       "alertTriggered": {
         "type": "string",
-        "enum": ["true", "false"]
+        "enum": [
+          "true",
+          "false"
+        ]
       }
     },
-    "required": ["page", "limit"]
+    "required": [
+      "page",
+      "limit"
+    ]
   },
   "trainingPlan.createTrainingPlanSchema": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -6032,7 +6927,13 @@
       },
       "phase": {
         "type": "string",
-        "enum": ["build_up", "sprint", "endurance", "recovery", "pre_race"]
+        "enum": [
+          "build_up",
+          "sprint",
+          "endurance",
+          "recovery",
+          "pre_race"
+        ]
       },
       "startDate": {
         "type": "string"
@@ -6046,11 +6947,20 @@
       },
       "surface": {
         "type": "string",
-        "enum": ["dirt", "turf", "synthetic"]
+        "enum": [
+          "dirt",
+          "turf",
+          "synthetic"
+        ]
       },
       "workloadLevel": {
         "type": "string",
-        "enum": ["light", "moderate", "intense", "maximum"]
+        "enum": [
+          "light",
+          "moderate",
+          "intense",
+          "maximum"
+        ]
       },
       "targetHeartRateMax": {
         "type": "number",
@@ -6084,11 +6994,20 @@
             },
             "surface": {
               "type": "string",
-              "enum": ["dirt", "turf", "synthetic"]
+              "enum": [
+                "dirt",
+                "turf",
+                "synthetic"
+              ]
             },
             "workloadLevel": {
               "type": "string",
-              "enum": ["light", "moderate", "intense", "maximum"]
+              "enum": [
+                "light",
+                "moderate",
+                "intense",
+                "maximum"
+              ]
             },
             "targetHeartRateMax": {
               "type": "number",
@@ -6125,7 +7044,13 @@
         "type": "string"
       }
     },
-    "required": ["title", "horseId", "phase", "startDate", "endDate"]
+    "required": [
+      "title",
+      "horseId",
+      "phase",
+      "startDate",
+      "endDate"
+    ]
   },
   "trainingPlan.updateTrainingPlanSchema": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -6137,7 +7062,13 @@
       },
       "phase": {
         "type": "string",
-        "enum": ["build_up", "sprint", "endurance", "recovery", "pre_race"]
+        "enum": [
+          "build_up",
+          "sprint",
+          "endurance",
+          "recovery",
+          "pre_race"
+        ]
       },
       "endDate": {
         "type": "string"
@@ -6148,7 +7079,12 @@
       },
       "workloadLevel": {
         "type": "string",
-        "enum": ["light", "moderate", "intense", "maximum"]
+        "enum": [
+          "light",
+          "moderate",
+          "intense",
+          "maximum"
+        ]
       },
       "targetHeartRateMax": {
         "type": "number",
@@ -6188,11 +7124,20 @@
             },
             "surface": {
               "type": "string",
-              "enum": ["dirt", "turf", "synthetic"]
+              "enum": [
+                "dirt",
+                "turf",
+                "synthetic"
+              ]
             },
             "workloadLevel": {
               "type": "string",
-              "enum": ["light", "moderate", "intense", "maximum"]
+              "enum": [
+                "light",
+                "moderate",
+                "intense",
+                "maximum"
+              ]
             },
             "targetHeartRateMax": {
               "type": "number",
@@ -6249,36 +7194,16 @@
       },
       "isActive": {
         "type": "string",
-        "enum": ["true", "false"]
+        "enum": [
+          "true",
+          "false"
+        ]
       }
     },
-    "required": ["page", "limit"]
-  },
-  "feedingStock.confirm": {
-    "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "type": "object",
-    "properties": {
-      "revision": {
-        "type": "integer",
-        "minimum": 0,
-        "maximum": 9007199254740991
-      },
-      "requestKey": {
-        "type": "string",
-        "format": "uuid",
-        "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
-      },
-      "previewHash": {
-        "type": "string",
-        "pattern": "^[a-f0-9]{64}$"
-      },
-      "acknowledgeUnknownExpiry": {
-        "default": false,
-        "type": "boolean"
-      }
-    },
-    "required": ["revision", "requestKey", "previewHash"],
-    "additionalProperties": false
+    "required": [
+      "page",
+      "limit"
+    ]
   },
   "feedingStock.leftovers": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -6306,14 +7231,27 @@
         },
         "measurement": {
           "type": "string",
-          "enum": ["weighed", "estimated", "unknown"]
+          "enum": [
+            "weighed",
+            "estimated",
+            "unknown"
+          ]
         },
         "disposition": {
           "type": "string",
-          "enum": ["none", "discarded", "pending_review"]
+          "enum": [
+            "none",
+            "discarded",
+            "pending_review"
+          ]
         }
       },
-      "required": ["itemId", "quantity", "measurement", "disposition"],
+      "required": [
+        "itemId",
+        "quantity",
+        "measurement",
+        "disposition"
+      ],
       "additionalProperties": false
     }
   },
@@ -6340,7 +7278,10 @@
         "pattern": "^[0-9a-fA-F]{24}$"
       }
     },
-    "required": ["page", "limit"],
+    "required": [
+      "page",
+      "limit"
+    ],
     "additionalProperties": false
   },
   "password.changePasswordSchema": {
@@ -6360,7 +7301,11 @@
         "type": "string"
       }
     },
-    "required": ["currentPassword", "newPassword", "confirmPassword"],
+    "required": [
+      "currentPassword",
+      "newPassword",
+      "confirmPassword"
+    ],
     "additionalProperties": false
   },
   "password.resetPasswordSchema": {
@@ -6375,7 +7320,10 @@
         "type": "string"
       }
     },
-    "required": ["newPassword", "confirmPassword"],
+    "required": [
+      "newPassword",
+      "confirmPassword"
+    ],
     "additionalProperties": false
   },
   "auditLog.auditLogListQuerySchema": {
@@ -6415,6 +7363,9 @@
         "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
       }
     },
-    "required": ["page", "limit"]
+    "required": [
+      "page",
+      "limit"
+    ]
   }
 }

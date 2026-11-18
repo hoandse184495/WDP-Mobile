@@ -1,4 +1,5 @@
-import { OwnerJournalAccess } from '@/features/horses/components/owner-journal-access';
+import { FeedForecastOverview } from '@/features/inventory/components/feed-forecast-overview';
+import { OwnerOverview } from './owner-overview';
 import { useQuery } from '@tanstack/react-query';
 import { router, type Href } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
@@ -103,6 +104,7 @@ export default function HomeScreen() {
         )}
       </View>
 
+      {query.data?.feedForecast && <FeedForecastOverview data={query.data.feedForecast} />}
       <View style={styles.section}>
         <SectionHeader title="Truy cập nhanh" />
         <View style={styles.shortcutPanel}>
@@ -130,66 +132,69 @@ export default function HomeScreen() {
         </View>
       </View>
 
-      {query.data?.sections.map((section) => (
-        <Card key={section.title}>
-          <SectionHeader
-            title={section.title}
-            action={
-              <Pressable
-                accessibilityRole="button"
-                accessibilityLabel={`Xem tất cả: ${section.title}`}
-                onPress={() => router.push(section.path as Href)}
-                style={styles.seeAll}
-              >
-                <Text style={styles.seeAllText}>Tất cả</Text>
-                <Icon name="arrow" color={colors.primary} size={14} />
-              </Pressable>
-            }
-          />
-          {!section.items.length && (
-            <View style={styles.empty}>
-              <View style={styles.emptyIcon}>
-                <Icon name="check" color={colors.primary} size={20} />
+      {user.role !== 'horse_owner' &&
+        query.data?.sections.map((section) => (
+          <Card key={section.title}>
+            <SectionHeader
+              title={section.title}
+              action={
+                <Pressable
+                  accessibilityRole="button"
+                  accessibilityLabel={`Xem tất cả: ${section.title}`}
+                  onPress={() => router.push(section.path as Href)}
+                  style={styles.seeAll}
+                >
+                  <Text style={styles.seeAllText}>Tất cả</Text>
+                  <Icon name="arrow" color={colors.primary} size={14} />
+                </Pressable>
+              }
+            />
+            {!section.items.length && (
+              <View style={styles.empty}>
+                <View style={styles.emptyIcon}>
+                  <Icon name="check" color={colors.primary} size={20} />
+                </View>
+                <Text style={[ui.muted, ui.grow, { fontSize: 12 }]}>{section.empty}</Text>
               </View>
-              <Text style={[ui.muted, ui.grow, { fontSize: 12 }]}>{section.empty}</Text>
-            </View>
-          )}
-          {section.items.map((item, index) => (
-            <Pressable
-              key={item.id}
-              accessibilityRole="button"
-              onPress={() => router.push(item.path as Href)}
-              style={({ pressed }) => [
-                styles.record,
-                index > 0 && styles.recordDivider,
-                { opacity: pressed ? 0.7 : 1 },
-              ]}
-            >
-              <View
-                style={[
-                  styles.recordIcon,
-                  { backgroundColor: item.danger ? colors.goldSoft : colors.primarySoft },
+            )}
+            {section.items.map((item, index) => (
+              <Pressable
+                key={item.id}
+                accessibilityRole="button"
+                onPress={() => router.push(item.path as Href)}
+                style={({ pressed }) => [
+                  styles.record,
+                  index > 0 && styles.recordDivider,
+                  { opacity: pressed ? 0.7 : 1 },
                 ]}
               >
-                <Icon
-                  name={item.danger ? 'warning' : 'file'}
-                  size={18}
-                  color={item.danger ? colors.gold : colors.primary}
-                />
-              </View>
-              <View style={[ui.grow, { gap: 3 }]}>
-                <Text style={ui.label}>{item.title}</Text>
-                <Text style={[styles.caption, { lineHeight: 18 }]} numberOfLines={2}>
-                  {item.detail}
-                </Text>
-                {item.danger && <Text style={styles.attention}>Cần chú ý</Text>}
-              </View>
-              <Icon name="chevron" size={15} color="#9AADA3" />
-            </Pressable>
-          ))}
-        </Card>
-      ))}
-      {user.role === 'horse_owner' && <OwnerJournalAccess />}
+                <View
+                  style={[
+                    styles.recordIcon,
+                    { backgroundColor: item.danger ? colors.goldSoft : colors.primarySoft },
+                  ]}
+                >
+                  <Icon
+                    name={item.danger ? 'warning' : 'file'}
+                    size={18}
+                    color={item.danger ? colors.gold : colors.primary}
+                  />
+                </View>
+                <View style={[ui.grow, { gap: 3 }]}>
+                  <Text style={ui.label}>{item.title}</Text>
+                  <Text style={[styles.caption, { lineHeight: 18 }]} numberOfLines={2}>
+                    {item.detail}
+                  </Text>
+                  {item.danger && <Text style={styles.attention}>Cần chú ý</Text>}
+                </View>
+                <Icon name="chevron" size={15} color="#9AADA3" />
+              </Pressable>
+            ))}
+          </Card>
+        ))}
+      {user.role === 'horse_owner' && query.data?.owner && (
+        <OwnerOverview data={query.data.owner} />
+      )}
       {query.data && <OverviewCharts overview={query.data} />}
     </Screen>
   );

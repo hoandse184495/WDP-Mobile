@@ -34,6 +34,7 @@ export function referenceSource(
     return operation.id === 'horses.pedigree'
       ? { path: '/horses/:id/pedigree/options', key: 'horses', paged: true }
       : horses;
+  if (key === 'assignedGroomIds') return { path: '/inventory/options', key: 'grooms' };
   if (key === 'responsibleVetId') return { path: '/inventory/options', key: 'vets' };
   if (['ownerId', 'trainerId', 'vetId'].includes(key))
     return users(

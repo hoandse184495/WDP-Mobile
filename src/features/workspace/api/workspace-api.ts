@@ -53,6 +53,16 @@ export const workspaceApi = {
     date = clubDate(),
   ): Promise<WorkspaceRecord> => {
     if (module === 'sessions') return sessionApi.get(id, signal);
+    // These modules no longer expose GET /:id. Re-read the authorized, paginated collection.
+    if (['training', 'medical', 'injuries'].includes(module)) {
+      for (let current = 1; ; current++) {
+        const result = await workspaceApi.list(module, current, undefined, signal);
+        const record = result.items.find((row) => (row._id ?? row.id) === id);
+        if (record) return record;
+        if (current >= result.pagination.totalPages) break;
+      }
+      throw new AppError('Không tìm thấy hồ sơ trong phạm vi được phép.', 404);
+    }
     if (module === 'stalls') {
       const data = await requestData(
         apiClient.get('/stables/stalls/' + encodeURIComponent(id) + '/details', {

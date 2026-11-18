@@ -16,6 +16,12 @@ export function operationSchema(operation: Operation, context?: JsonRecord): Inp
 }
 export function operationInitial(operation: Operation, context: JsonRecord): JsonRecord {
   const row = { ...context, ...operation.initial };
+  if (operation.module === 'warehouses') {
+    delete row.stableId;
+    row.assignedGroomIds = Array.isArray(row.assignedGroomIds)
+      ? row.assignedGroomIds.map(entityId).filter(Boolean)
+      : [];
+  }
   if (operation.id === 'incidents.status') row.status = incidentTransitions(context)[0];
   if (operation.module === 'receipts')
     row.warehouseId = context.warehouseId ?? entityId(context.warehouse);
@@ -147,9 +153,14 @@ export function prepareOperation(operation: Operation, input: JsonRecord): JsonR
     body.repeatDays = 0;
   if (operation.id === 'replenishments.decision' && body.status !== 'approved')
     delete body.quantity;
-  if (operation.contract === 'inventory.warehouseCreate') {
-    if (body.type !== 'stable') delete body.stableId;
-    if (body.type !== 'medicine_cabinet') delete body.responsibleVetId;
+  if (operation.module === 'warehouses') {
+    // New warehouses are independent of stables. Do not silently clear legacy stable links on edit.
+    delete body.stableId;
+    if (body.type === 'medicine_cabinet') body.assignedGroomIds = [];
+    else if (operation.id === 'warehouses.edit') body.responsibleVetId = null;
+    else delete body.responsibleVetId;
+    if (Array.isArray(body.assignedGroomIds))
+      body.assignedGroomIds = [...new Set(body.assignedGroomIds.map(entityId).filter(Boolean))];
   }
   return body;
 }
@@ -235,7 +246,7 @@ export function operationErrors(
       errors.push('Cần xuất đủ toàn bộ lượng còn lại của đơn trong một lần.');
   }
   if (
-    operation.contract === 'inventory.warehouseCreate' &&
+    operation.module === 'warehouses' &&
     body.type === 'medicine_cabinet' &&
     !body.responsibleVetId
   )
@@ -274,12 +285,7 @@ export function operationErrors(
     Date.parse(String(body.quarantineReleaseAt)) < Date.parse(String(body.examinationDate))
   )
     errors.push('Hết cách ly không được trước thời điểm khám.');
-  if (
-    operation.contract === 'inventory.warehouseCreate' &&
-    body.type === 'stable' &&
-    !body.stableId
-  )
-    errors.push('Kho khu vực phải chọn khu chuồng.');
+
   if (operation.id === 'disposals.decision' && body.status === 'confirmed' && !body.handling)
     errors.push('Chọn cách xử lý vật tư.');
   if (operation.id === 'medical.encounter' && body.injury && body.injuries)

@@ -46,6 +46,7 @@ export type TrainingInput = z.infer<typeof trainingSchema>;
 export const reviewSchema = z.object({
   performanceRating: z.number().min(1).max(5),
   trainerNotes: z.string().trim().max(4000),
+  overrideReason: z.string().trim().min(5).max(1000).optional(),
   fitnessScore: z.number().finite().min(0).max(100).optional(),
 });
 export type ReviewInput = z.infer<typeof reviewSchema>;

@@ -1,3 +1,5 @@
+import { HorseDocuments } from './horse-documents';
+import { choiceLabel } from '@/features/operations/contracts/labels';
 import { ClinicalHoldNotice, HorseTrainingActions } from './training-hold';
 import { isClinicalHold } from '../utils/clinical-hold';
 import { HorseLockHistory } from './horse-lock-history';
@@ -80,7 +82,7 @@ function HorseDetail() {
       <Card>
         <Text style={ui.heading}>Hồ sơ</Text>
         <Detail label="Giống" value={horse.breed} />
-        <Detail label="Giới tính" value={horse.gender} />
+        <Detail label="Giới tính" value={choiceLabel(horse.gender)} />
         <Detail label="Ngày sinh" value={formatDate(horse.dateOfBirth)} />
         <Detail label="Màu lông" value={horse.color} />
         <Detail label="Chủ sở hữu" value={referenceName(horse.ownerId)} />
@@ -90,6 +92,7 @@ function HorseDetail() {
       <HorseLockHistory id={id} />
       <HorseIdentity horse={horse} />
       <HorsePedigree id={id} />
+      <HorseDocuments id={id} />
       <Card>
         <Text style={ui.heading}>Thể trạng</Text>
         <Detail label="Thể lực / 100" value={horse.fitnessScore} />

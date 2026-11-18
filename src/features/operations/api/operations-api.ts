@@ -1,3 +1,5 @@
+import { taskApi } from '@/features/tasks/api/task-api';
+import { workspaceApi } from '@/features/workspace/api/workspace-api';
 import { cabinetApi } from '@/features/inventory/api/medicine-cabinet-api';
 import { horseApi } from '@/features/horses/api/horse-api';
 import { objectId } from '@/shared/types/api';
@@ -37,9 +39,31 @@ export const operationsApi = {
     signal?: AbortSignal,
     page = 1,
     selectedHorseId?: string,
+    incidentTarget?: { taskId?: string; stallId?: string },
   ): Promise<JsonRecord> => {
     const cached = asRecord(queryClient.getQueryData(['operation-context', operation.id, id]));
     if (operation.scope === 'collection') {
+      if (operation.id === 'incidents.create') {
+        if (incidentTarget?.taskId) {
+          objectId.parse(incidentTarget.taskId);
+          const task = await taskApi.detail(incidentTarget.taskId, signal);
+          return {
+            taskId: task._id,
+            ...(entityId(task.horseId)
+              ? { horseId: entityId(task.horseId) }
+              : { stallId: entityId(task.stallId) }),
+            taskImpact: task.status === 'in_progress' ? 'cannot_continue' : 'cannot_start',
+          };
+        }
+        if (selectedHorseId) {
+          objectId.parse(selectedHorseId);
+          return { horseId: selectedHorseId };
+        }
+        if (incidentTarget?.stallId) {
+          objectId.parse(incidentTarget.stallId);
+          return { stallId: incidentTarget.stallId };
+        }
+      }
       if (selectedHorseId && ['medical.encounter', 'medical.create'].includes(operation.id)) {
         objectId.parse(selectedHorseId);
         const horse = await horseApi.detail(selectedHorseId, signal);
@@ -90,6 +114,9 @@ export const operationsApi = {
       const row = Array.isArray(rows) ? rows.find((item) => entityId(item) === id) : null;
       if (!row) throw new AppError('Hồ sơ không còn trong phạm vi truy cập.');
       return { ...asRecord(row), _details: data };
+    }
+    if (['training', 'medical', 'injuries'].includes(operation.module)) {
+      return workspaceApi.detail(operation.module, id!, signal);
     }
     if (config?.detailKey) {
       const data = await requestData(

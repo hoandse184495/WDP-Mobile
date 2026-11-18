@@ -1,3 +1,5 @@
+import type { FeedForecast } from '@/features/inventory/api/feed-forecast-api';
+import type { Horse } from '@/features/horses/types/horse';
 import type { Role } from '@/core/constants/roles';
 import { horseApi } from '@/features/horses/api/horse-api';
 import { workspaceApi } from '@/features/workspace/api/workspace-api';
@@ -20,6 +22,13 @@ export interface OverviewSection {
   empty: string;
 }
 export interface Overview {
+  feedForecast?: FeedForecast;
+  owner?: {
+    horses: Horse[];
+    plans: WorkspaceRecord[];
+    sessions: WorkspaceRecord[];
+    records: WorkspaceRecord[];
+  };
   metrics: { label: string; value: number | string }[];
   sections: OverviewSection[];
   health?: Record<'ready' | 'monitoring' | 'injured' | 'isolated', number>;
@@ -130,6 +139,7 @@ export async function loadRoleOverview(role: Role, signal?: AbortSignal): Promis
     return {
       metrics,
       sections,
+      ...('feedForecast' in data ? { feedForecast: data.feedForecast } : {}),
       ...('health' in data ? { health: data.health, activity: data.activity } : {}),
     };
   }
@@ -237,6 +247,7 @@ export async function loadRoleOverview(role: Role, signal?: AbortSignal): Promis
     );
     const scores = horses.map((horse) => horse.fitnessScore).filter(Number.isFinite);
     return {
+      owner: { horses, plans, sessions, records },
       metrics: [
         { label: 'Ngựa thuộc sở hữu', value: horses.length },
         {
@@ -247,8 +258,8 @@ export async function loadRoleOverview(role: Role, signal?: AbortSignal): Promis
         },
         { label: 'Giáo án đang áp dụng', value: plans.length },
         {
-          label: 'Ngựa cần theo dõi',
-          value: horses.filter((horse) => horse.healthStatus !== 'ready').length,
+          label: 'Ngựa sẵn sàng / tổng đàn',
+          value: `${horses.filter((horse) => horse.healthStatus === 'ready').length} / ${horses.length}`,
         },
       ],
       sections: [
@@ -265,7 +276,7 @@ export async function loadRoleOverview(role: Role, signal?: AbortSignal): Promis
             id: recordId(row),
             title: horseName(row),
             detail: String(row.trainerNotes || 'Chờ nhận xét chuyên môn'),
-            path: '/session-review/' + recordId(row),
+            path: '/records/sessions/' + recordId(row),
           })),
         },
         section(

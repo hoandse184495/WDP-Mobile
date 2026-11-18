@@ -15,7 +15,6 @@ export const finishSchema = z.object({
   notes: z.string().trim().max(1000),
   measurements: measurementsSchema.optional(),
   feedingOutcome: z.enum(['normal', 'partial', 'refused', 'not_fed']).optional(),
-  autoCompleteCheckpoints: z.boolean().optional(),
   acknowledgeRationChange: z.boolean().optional(),
   notIssuedReason: z.string().trim().min(3).max(1000).optional(),
   feedingLeftovers: z

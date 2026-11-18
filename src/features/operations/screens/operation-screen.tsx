@@ -87,7 +87,8 @@ function OperationForm({
     operation.id === 'schedules.complete' &&
     ['vaccination', 'deworming'].includes(String(context.type));
   const schema =
-    operation.id === 'replenishments.create' && role === 'warehouse_keeper'
+    operation.id === 'replenishments.create' &&
+    ['warehouse_keeper', 'veterinarian'].includes(role ?? '')
       ? {
           ...baseSchema,
           properties: Object.fromEntries(
@@ -293,17 +294,22 @@ function LoadOperation({
   operation,
   id,
   horseId,
+  taskId,
+  stallId,
 }: {
   operation: Operation;
   id?: string;
   horseId?: string;
+  taskId?: string;
+  stallId?: string;
 }) {
   const user = useSession((state) => state.user)!;
   const [reloadKey, setReloadKey] = useState(0);
   const [page, setPage] = useState(1);
   const query = useQuery({
-    queryKey: ['operation', operation.id, id, reloadKey, page, ...(horseId ? [horseId] : [])],
-    queryFn: ({ signal }) => operationsApi.context(operation, id, signal, page, horseId),
+    queryKey: ['operation', operation.id, id, reloadKey, page, horseId, taskId, stallId],
+    queryFn: ({ signal }) =>
+      operationsApi.context(operation, id, signal, page, horseId, { taskId, stallId }),
     staleTime: 0,
     retry: false,
   });
@@ -374,10 +380,14 @@ export default function OperationScreen() {
     operation: id,
     id: recordId,
     horseId,
+    taskId,
+    stallId,
   } = useLocalSearchParams<{
     operation: string;
     id?: string;
     horseId?: string;
+    taskId?: string;
+    stallId?: string;
   }>();
   const operation = findOperation(id);
   if (!operation)
@@ -391,7 +401,13 @@ export default function OperationScreen() {
       {operation.recordSelection && !recordId ? (
         <RecordSelection operation={operation} />
       ) : (
-        <LoadOperation operation={operation} id={recordId} horseId={horseId} />
+        <LoadOperation
+          operation={operation}
+          id={recordId}
+          horseId={horseId}
+          taskId={taskId}
+          stallId={stallId}
+        />
       )}
     </RoleGuard>
   );

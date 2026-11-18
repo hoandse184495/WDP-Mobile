@@ -17,7 +17,7 @@ export function RecordSummary({
   const status = record.displayStatus ?? record.status;
   const statusLabels: Record<string, string> = {
     pending_review: config.path === '/rations' ? 'Chờ bác sĩ duyệt' : 'Chờ xác nhận',
-    approved: 'Đã duyệt',
+    approved: config.path === '/rations' ? 'Đang áp dụng' : 'Đã duyệt',
     withdrawn: 'Đã thu hồi',
     expired: 'Hết hiệu lực',
     changes_requested: 'Cần chỉnh sửa',

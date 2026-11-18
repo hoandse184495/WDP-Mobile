@@ -24,6 +24,7 @@ function normalize(text: string) {
 
 export function Choice<T extends string>({
   label,
+  compact = false,
   options,
   value,
   onChange,
@@ -36,6 +37,7 @@ export function Choice<T extends string>({
   onRetry,
 }: {
   label: string;
+  compact?: boolean;
   options: readonly Option<T>[];
   value?: T;
   onChange: (value: T) => void;
@@ -77,7 +79,7 @@ export function Choice<T extends string>({
   const close = () => setOpen(false);
   return (
     <View style={{ gap: 9 }}>
-      <Text style={ui.label}>{label}</Text>
+      {!compact && <Text style={ui.label}>{label}</Text>}
       <Pressable
         accessibilityRole="button"
         accessibilityLabel={label}
@@ -90,11 +92,16 @@ export function Choice<T extends string>({
         }}
         style={({ pressed }) => [
           styles.trigger,
+          compact && { minHeight: 44, paddingVertical: 10, paddingHorizontal: 11, borderRadius: 9 },
           pressed && { backgroundColor: colors.primarySoft },
         ]}
       >
         <Text
-          style={[ui.body, { flex: 1, color: selected ? colors.ink : colors.muted }]}
+          style={[
+            ui.body,
+            compact && { fontSize: 12, lineHeight: 18 },
+            { flex: 1, color: selected ? colors.ink : colors.muted },
+          ]}
           numberOfLines={2}
         >
           {selected?.label ?? (value ? 'Mục đã chọn' : 'Chọn ' + label.toLocaleLowerCase('vi'))}

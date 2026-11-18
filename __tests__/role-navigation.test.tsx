@@ -1,3 +1,5 @@
+import { allowedOperation, findOperation } from '@/features/operations/contracts/registry';
+import { getModule } from '@/features/workspace/types/catalog';
 import { fireEvent, render, screen } from '@testing-library/react-native';
 import { router } from 'expo-router';
 import { allRoles } from '@/core/constants/roles';
@@ -18,9 +20,17 @@ test('owner has no staff or inventory controls; warehouse has no clinical or hor
     group.items.map((item) => item.key),
   );
   expect(owner).toEqual(
-    expect.arrayContaining(['horses', 'training', 'sessions', 'medical', 'admissions', 'rations']),
+    expect.arrayContaining(['horses', 'training', 'sessions', 'medical', 'rations']),
   );
-  for (const key of ['tasks', 'team', 'injuries', 'warehouses', 'prescriptions', 'stables'])
+  for (const key of [
+    'tasks',
+    'team',
+    'injuries',
+    'warehouses',
+    'prescriptions',
+    'stables',
+    'admissions',
+  ])
     expect(owner).not.toContain(key);
   const warehouse = navigationGroups('warehouse_keeper').flatMap((group) =>
     group.items.map((item) => item.key),
@@ -42,9 +52,9 @@ test('menu searches authorized destinations and opens the selected screen', asyn
     status: 'authenticated',
   });
   await render(<MenuScreen />);
-  expect(screen.queryByRole('button', { name: 'Bệnh án' })).toBeNull();
-  await fireEvent.changeText(screen.getByLabelText('Tìm chức năng'), 'bệnh');
-  await fireEvent.press(screen.getByRole('button', { name: 'Bệnh án' }));
+  expect(screen.queryByRole('button', { name: 'Lịch sử thăm khám' })).toBeNull();
+  await fireEvent.changeText(screen.getByLabelText('Tìm chức năng'), 'thăm');
+  await fireEvent.press(screen.getByRole('button', { name: 'Lịch sử thăm khám' }));
   expect(router.push).toHaveBeenCalledWith('/workspace/medical');
   expect(screen.queryByText('Nhân sự')).toBeNull();
 });
@@ -66,4 +76,15 @@ test('action sheet opens on demand and invokes only the selected action', async 
   expect(second).toHaveBeenCalledTimes(1);
   expect(first).not.toHaveBeenCalled();
   expect(screen.queryByText('Sửa hồ sơ')).toBeNull();
+});
+
+test('owner cannot open old admissions pages or perform old admission actions', () => {
+  expect(destination('admissions', 'horse_owner')).toBeUndefined();
+  expect(workspaces.horse_owner.shortcuts).not.toContain('admissions');
+  expect(getModule('admissions')?.roles).not.toContain('horse_owner');
+  for (const id of ['admissions.create', 'admissions.edit', 'admissions.submit']) {
+    expect(
+      allowedOperation(findOperation(id)!, 'horse_owner', { _id: 'a1', status: 'draft' }, 'owner'),
+    ).toBe(false);
+  }
 });

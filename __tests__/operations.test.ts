@@ -62,22 +62,7 @@ test('clinical assignment, medical support and counting actions are scoped to as
       id,
     ),
   ).toBe(false);
-  expect(
-    allowedOperation(
-      op('tasks.checkpoint'),
-      'groom',
-      { type: 'bathing', status: 'in_progress', groomId: id },
-      id,
-    ),
-  ).toBe(false);
-  expect(
-    allowedOperation(
-      op('tasks.checkpoint'),
-      'groom',
-      { type: 'medical_support', status: 'in_progress', groomId: id },
-      id,
-    ),
-  ).toBe(true);
+  expect(findOperation('tasks.checkpoint')).toBeUndefined();
   expect(
     allowedOperation(
       op('tasks.edit'),

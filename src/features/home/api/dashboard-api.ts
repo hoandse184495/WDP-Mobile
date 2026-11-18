@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { feedForecastApi } from '@/features/inventory/api/feed-forecast-api';
 import { apiClient, requestData } from '@/core/network/api-client';
 import { horseApi } from '@/features/horses/api/horse-api';
 import { Role } from '@/core/constants/roles';
@@ -54,24 +55,28 @@ const dashboardSchema = z.object({
 });
 export async function loadDashboard(role: Role, signal?: AbortSignal) {
   if (role === 'warehouse_keeper') {
-    const results = await Promise.all([
-      requestData(
-        apiClient.get('/inventory/warehouses', { params: { page: 1, limit: 1 }, signal }),
-      ),
-      requestData(
-        apiClient.get('/prescriptions', {
-          params: { page: 1, limit: 1, status: 'waiting' },
-          signal,
-        }),
-      ),
-      requestData(
-        apiClient.get('/inventory/replenishments', {
-          params: { page: 1, limit: 1, status: 'pending' },
-          signal,
-        }),
-      ),
+    const [results, feedForecast] = await Promise.all([
+      Promise.all([
+        requestData(
+          apiClient.get('/inventory/warehouses', { params: { page: 1, limit: 1 }, signal }),
+        ),
+        requestData(
+          apiClient.get('/prescriptions', {
+            params: { page: 1, limit: 1, status: 'waiting' },
+            signal,
+          }),
+        ),
+        requestData(
+          apiClient.get('/inventory/replenishments', {
+            params: { page: 1, limit: 1, status: 'pending' },
+            signal,
+          }),
+        ),
+      ]),
+      feedForecastApi.get(signal),
     ]);
     return {
+      feedForecast,
       metrics: results.map((data, index) => ({
         label: ['Kho được quản lý', 'Đơn thuốc chờ cấp', 'Yêu cầu bổ sung chờ xử lý'][index],
         value: z.object({ total: z.number() }).parse(data.pagination).total,

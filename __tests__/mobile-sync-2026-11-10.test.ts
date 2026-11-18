@@ -29,8 +29,8 @@ const ration = (): JsonRecord => {
   });
 };
 
-test.each(allRoles)('%s ration permissions match direct application in the backend', (role) => {
-  const canManage = ['club_manager', 'head_trainer', 'veterinarian'].includes(role);
+test.each(allRoles)('%s ration editing controls match the current web roles', (role) => {
+  const canManage = ['club_manager', 'head_trainer'].includes(role);
   expect(allowedOperation(op('rations.create'), role)).toBe(canManage);
   expect(
     allowedOperation(op('rations.edit'), role, { status: 'approved', authorId: other }, id),

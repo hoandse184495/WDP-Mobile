@@ -1,3 +1,4 @@
+import { sessionVersion } from '@/features/auth/utils/session';
 import * as DocumentPicker from 'expo-document-picker';
 import * as Sharing from 'expo-sharing';
 import { Directory, File, Paths } from 'expo-file-system';
@@ -30,17 +31,12 @@ export async function uploadAdmissionDocument(admissionId: string, kind: string)
     }),
   );
 }
-export async function openPrivateDocument(
-  admissionId: string,
-  attachmentId: string,
-  fileName: string,
-) {
+export async function openAuthenticatedDocument(path: string, fileName: string) {
+  const version = sessionVersion();
   if (!(await Sharing.isAvailableAsync()))
     throw new AppError('Thiết bị chưa hỗ trợ mở hoặc chia sẻ tài liệu.');
-  const response = await apiClient.get<ArrayBuffer>(
-    `/admissions/${admissionId}/attachments/${attachmentId}`,
-    { responseType: 'arraybuffer' },
-  );
+  const response = await apiClient.get<ArrayBuffer>(path, { responseType: 'arraybuffer' });
+  if (version !== sessionVersion()) throw new AppError('Phiên đăng nhập đã thay đổi.');
   const directory = new Directory(Paths.cache, 'equine-private');
   directory.create({ idempotent: true, intermediates: true });
   const safeName = fileName.replace(/[\\/:*?"<>|\x00-\x1f]/g, '_').slice(-160);
@@ -55,4 +51,11 @@ export async function openPrivateDocument(
   } finally {
     if (file.exists) file.delete();
   }
+}
+
+export function openPrivateDocument(admissionId: string, attachmentId: string, fileName: string) {
+  return openAuthenticatedDocument(
+    `/admissions/${admissionId}/attachments/${attachmentId}`,
+    fileName,
+  );
 }

@@ -9,7 +9,7 @@ export const workspaces: Record<
     title: 'Tổng quan vận hành',
     description: 'Sức khỏe đàn ngựa, huấn luyện và các việc cần xử lý.',
     primary: 'tasks',
-    shortcuts: ['admissions', 'stables', 'training', 'staffWork'],
+    shortcuts: ['horses', 'stables', 'training', 'staffWork'],
   },
   head_trainer: {
     title: 'Bảng điều hành HLV',
@@ -27,17 +27,17 @@ export const workspaces: Record<
     title: 'Bảng công việc',
     description: 'Công việc hôm nay, hướng dẫn tập và chăm sóc ngựa được giao.',
     primary: 'tasks',
-    shortcuts: ['training', 'stables', 'incidents', 'feedIssues'],
+    shortcuts: ['training', 'stables', 'incidents', 'replenishments'],
   },
   horse_owner: {
     title: 'Đàn ngựa của tôi',
     description: 'Theo dõi sức khỏe, tiến độ huấn luyện và nhận xét chuyên môn.',
     primary: 'horses',
-    shortcuts: ['training', 'sessions', 'medical', 'admissions'],
+    shortcuts: ['training', 'sessions', 'medical', 'rations'],
   },
   warehouse_keeper: {
     title: 'Điều hành kho',
-    description: 'Cấp phát theo đơn, bổ sung vật tư và kiểm kê được giao.',
+    description: 'Dự báo thức ăn, chuyển kho hai chiều và điều phối kiểm kê.',
     primary: 'prescriptions',
     shortcuts: ['warehouses', 'replenishments', 'stocktakes', 'ledger'],
   },
@@ -54,7 +54,6 @@ export const destinationGroups = [
       'occupancies',
       'assignments',
       'trainerAssignments',
-      'areaAssignments',
       'grooms',
     ],
   },
@@ -80,7 +79,15 @@ export const destinationGroups = [
   { title: 'Quản trị hệ thống', keys: ['team', 'staffWork', 'audit'] },
 ];
 
+export const ownerTitles: Record<string, string> = {
+  training: 'Tiến độ huấn luyện',
+  sessions: 'Kết quả buổi tập',
+  medical: 'Lịch sử thăm khám',
+  rations: 'Khẩu phần ăn',
+};
+
 export function destination(key: string, role: Role) {
+  if (['admissions', 'feedIssues', 'areaAssignments'].includes(key)) return undefined;
   if (key === 'medicineCabinet')
     return ['club_manager', 'veterinarian', 'warehouse_keeper'].includes(role)
       ? { title: 'Tủ thuốc thú y', path: '/medicine-cabinet' }
@@ -104,7 +111,10 @@ export function destination(key: string, role: Role) {
       : undefined;
   const config = modules[key];
   return config?.roles.includes(role)
-    ? { title: config.title, path: `/workspace/${key}` }
+    ? {
+        title: role === 'horse_owner' ? (ownerTitles[key] ?? config.title) : config.title,
+        path: `/workspace/${key}`,
+      }
     : undefined;
 }
 

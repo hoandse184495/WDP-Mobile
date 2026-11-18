@@ -49,9 +49,9 @@ test('owner summary includes all horse pages and links to read-only clinical and
     );
   const result = await loadRoleOverview('horse_owner');
   expect(horseApi.list).toHaveBeenCalledTimes(2);
-  expect(result.metrics.map((metric) => metric.value)).toEqual([2, '70.0%', 0, 1]);
+  expect(result.metrics.map((metric) => metric.value)).toEqual([2, '70.0%', 0, '1 / 2']);
   expect(result.sections[0].items).toHaveLength(2);
-  expect(result.sections[1].items[0].path).toBe('/session-review/s1');
+  expect(result.sections[1].items[0].path).toBe('/records/sessions/s1');
   expect(jest.mocked(workspaceApi.list).mock.calls.map(([module]) => module)).not.toContain(
     'injuries',
   );

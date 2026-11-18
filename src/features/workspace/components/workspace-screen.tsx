@@ -1,3 +1,6 @@
+import { ownerTitles } from '@/features/home/config/workspaces';
+import { TrainingPlanFilters } from '@/features/training/components/training-plan-filters';
+import { TrainingPlanCard } from '@/features/training/components/training-plan-card';
 import { RecordSummary } from './record-summary';
 import { ClinicalHoldQueue } from '@/features/horses/components/clinical-hold-queue';
 import { AuditChanges } from '@/features/audit/components/audit-changes';
@@ -54,7 +57,9 @@ function WorkspaceList({ module, horseId }: { module: string; horseId?: string }
         header={
           <View style={{ gap: 12, marginBottom: 18 }}>
             <ScreenHeader
-              title={config.title}
+              title={
+                user?.role === 'horse_owner' ? (ownerTitles[module] ?? config.title) : config.title
+              }
               subtitle={config.description}
               eyebrow="KHÔNG GIAN LÀM VIỆC"
               action={
@@ -71,7 +76,15 @@ function WorkspaceList({ module, horseId }: { module: string; horseId?: string }
             )}
             <OperationPanel module={module} collection />
             {module === 'medical' && <ClinicalHoldQueue />}
-            <WorkspaceFilters module={module} horseScoped={Boolean(horseId)} onApply={setFilters} />
+            {module === 'training' ? (
+              <TrainingPlanFilters horseScoped={Boolean(horseId)} onApply={setFilters} />
+            ) : (
+              <WorkspaceFilters
+                module={module}
+                horseScoped={Boolean(horseId)}
+                onApply={setFilters}
+              />
+            )}
             {module === 'training' && (
               <Button
                 secondary
@@ -106,64 +119,68 @@ function WorkspaceList({ module, horseId }: { module: string; horseId?: string }
             )}
           </View>
         }
-        renderItem={(record) => (
-          <View style={ui.card}>
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel={`Mở ${recordTitle(record)}`}
-              onPress={() => open(record)}
-              style={{ gap: 10 }}
-            >
-              <View style={ui.between}>
-                <View style={[ui.row, ui.grow, { gap: 9 }]}>
-                  <View style={[ui.iconTile, { width: 32, height: 32, borderRadius: 10 }]}>
-                    <Icon name={moduleIcons[module] ?? 'file'} size={16} color={colors.primary} />
+        renderItem={(record) =>
+          module === 'training' ? (
+            <TrainingPlanCard plan={record} onPress={() => open(record)} />
+          ) : (
+            <View style={ui.card}>
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel={`Mở ${recordTitle(record)}`}
+                onPress={() => open(record)}
+                style={{ gap: 10 }}
+              >
+                <View style={ui.between}>
+                  <View style={[ui.row, ui.grow, { gap: 9 }]}>
+                    <View style={[ui.iconTile, { width: 32, height: 32, borderRadius: 10 }]}>
+                      <Icon name={moduleIcons[module] ?? 'file'} size={16} color={colors.primary} />
+                    </View>
+                    <Text style={[ui.heading, ui.grow, { fontSize: 15, lineHeight: 21 }]}>
+                      {recordTitle(record)}
+                    </Text>
                   </View>
-                  <Text style={[ui.heading, ui.grow, { fontSize: 15, lineHeight: 21 }]}>
-                    {recordTitle(record)}
-                  </Text>
+                  <Icon name="chevron" color={colors.muted} size={16} />
                 </View>
-                <Icon name="chevron" color={colors.muted} size={16} />
-              </View>
-              {expanded === recordId(record) ? (
-                <RecordDetails config={config} record={record} />
-              ) : (
-                <RecordSummary config={config} record={record} />
+                {expanded === recordId(record) ? (
+                  <RecordDetails config={config} record={record} />
+                ) : (
+                  <RecordSummary config={config} record={record} />
+                )}
+              </Pressable>
+              {module === 'audit' && expanded === recordId(record) && (
+                <AuditChanges metadata={record.metadata} />
               )}
-            </Pressable>
-            {module === 'audit' && expanded === recordId(record) && (
-              <AuditChanges metadata={record.metadata} />
-            )}
-            {!config.detailKey && <OperationPanel module={module} record={record} />}
-            {module === 'sessions' &&
-              user?.role === 'head_trainer' &&
-              record.status === 'completed' && (
+              {!config.detailKey && <OperationPanel module={module} record={record} />}
+              {module === 'sessions' &&
+                ['club_manager', 'head_trainer'].includes(user?.role ?? '') &&
+                record.status === 'completed' && (
+                  <Button
+                    secondary
+                    title="Đánh giá buổi tập"
+                    onPress={() =>
+                      router.push({
+                        pathname: '/session-review/[id]',
+                        params: { id: recordId(record) },
+                      })
+                    }
+                  />
+                )}
+              {!config.detailKey && (
                 <Button
                   secondary
-                  title="Đánh giá buổi tập"
-                  onPress={() =>
-                    router.push({
-                      pathname: '/session-review/[id]',
-                      params: { id: recordId(record) },
-                    })
+                  title={
+                    module === 'warehouses'
+                      ? 'Xem tồn kho'
+                      : expanded === recordId(record)
+                        ? 'Thu gọn'
+                        : 'Xem thêm'
                   }
+                  onPress={() => open(record)}
                 />
               )}
-            {!config.detailKey && (
-              <Button
-                secondary
-                title={
-                  module === 'warehouses'
-                    ? 'Xem tồn kho'
-                    : expanded === recordId(record)
-                      ? 'Thu gọn'
-                      : 'Xem thêm'
-                }
-                onPress={() => open(record)}
-              />
-            )}
-          </View>
-        )}
+            </View>
+          )
+        }
       />
     </Screen>
   );
